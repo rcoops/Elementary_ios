@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "A5164F7C6695E491634CD9062B9318EF4E5308A6",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "A5164F7C6695E491634CD9062B9318EF4E5308A6" : 9223372036854775807,
+    "B36358CE099E761BFAD2586F4FC27C090FAF685B" : 9223372036854775807
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "346F6ABE-52BA-4725-A532-A19417FD83E9",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "A5164F7C6695E491634CD9062B9318EF4E5308A6" : "Elementary\/",
+    "B36358CE099E761BFAD2586F4FC27C090FAF685B" : "Elementary\/Elementary\/"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "Elementary",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "Elementary.xcodeproj",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "github.com:rcoops\/Elementary_ios.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "A5164F7C6695E491634CD9062B9318EF4E5308A6"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "github.com:rcoops\/Elementary_ios.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "B36358CE099E761BFAD2586F4FC27C090FAF685B"
+    }
+  ]
+}

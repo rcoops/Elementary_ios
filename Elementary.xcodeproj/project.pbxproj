@@ -14,6 +14,8 @@
 		1D02D83C2083CB50001F7BAF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1D02D83A2083CB50001F7BAF /* LaunchScreen.storyboard */; };
 		1D02D8472083CB50001F7BAF /* ElementaryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D02D8462083CB50001F7BAF /* ElementaryTests.swift */; };
 		1D02D8522083CB50001F7BAF /* ElementaryUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D02D8512083CB50001F7BAF /* ElementaryUITests.swift */; };
+		1D02D8612083CF54001F7BAF /* Element.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D02D8602083CF54001F7BAF /* Element.swift */; };
+		1D02D8632083D903001F7BAF /* CSVScanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D02D8622083D903001F7BAF /* CSVScanner.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,6 +49,8 @@
 		1D02D84D2083CB50001F7BAF /* ElementaryUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ElementaryUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		1D02D8512083CB50001F7BAF /* ElementaryUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ElementaryUITests.swift; sourceTree = "<group>"; };
 		1D02D8532083CB50001F7BAF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		1D02D8602083CF54001F7BAF /* Element.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Element.swift; sourceTree = "<group>"; };
+		1D02D8622083D903001F7BAF /* CSVScanner.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CSVScanner.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,6 +101,8 @@
 		1D02D8302083CB50001F7BAF /* Elementary */ = {
 			isa = PBXGroup;
 			children = (
+				1D02D8642083D90C001F7BAF /* Util */,
+				1D02D85F2083CF29001F7BAF /* Constants */,
 				1D02D8312083CB50001F7BAF /* AppDelegate.swift */,
 				1D02D8332083CB50001F7BAF /* ViewController.swift */,
 				1D02D8352083CB50001F7BAF /* Main.storyboard */,
@@ -123,6 +129,22 @@
 				1D02D8532083CB50001F7BAF /* Info.plist */,
 			);
 			path = ElementaryUITests;
+			sourceTree = "<group>";
+		};
+		1D02D85F2083CF29001F7BAF /* Constants */ = {
+			isa = PBXGroup;
+			children = (
+				1D02D8602083CF54001F7BAF /* Element.swift */,
+			);
+			name = Constants;
+			sourceTree = "<group>";
+		};
+		1D02D8642083D90C001F7BAF /* Util */ = {
+			isa = PBXGroup;
+			children = (
+				1D02D8622083D903001F7BAF /* CSVScanner.swift */,
+			);
+			name = Util;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -260,7 +282,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				1D02D8342083CB50001F7BAF /* ViewController.swift in Sources */,
+				1D02D8632083D903001F7BAF /* CSVScanner.swift in Sources */,
 				1D02D8322083CB50001F7BAF /* AppDelegate.swift in Sources */,
+				1D02D8612083CF54001F7BAF /* Element.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
