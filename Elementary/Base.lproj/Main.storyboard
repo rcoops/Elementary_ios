@@ -40,7 +40,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Hdz-qM-6cm">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter name here!" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Hdz-qM-6cm">
                                 <rect key="frame" x="139" y="285" width="220" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <nil key="textColor"/>
@@ -70,10 +70,14 @@
                                     <color key="titleColor" red="0.38006078389999998" green="1" blue="0.23914328009999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                     <color key="titleShadowColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <connections>
+                                    <action selector="newGameAction:" destination="nyN-6p-LGd" eventType="touchUpInside" id="FQd-Jk-TtA"/>
+                                </connections>
                             </button>
-                            <pickerView contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jCA-lg-9Lc">
+                            <pickerView alpha="0.90000000000000002" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jCA-lg-9Lc">
                                 <rect key="frame" x="210" y="371" width="79" height="120"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <connections>
                                     <outlet property="dataSource" destination="nyN-6p-LGd" id="EY0-lh-56I"/>
                                     <outlet property="delegate" destination="nyN-6p-LGd" id="wY1-Ss-JwH"/>
@@ -83,10 +87,42 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <tabBarItem key="tabBarItem" title="New Game" image="ic_new_game" id="Xvr-GM-wvV"/>
+                    <connections>
+                        <outlet property="avatarPicker" destination="jCA-lg-9Lc" id="m4Y-CK-5rN"/>
+                        <outlet property="txtPlayerName" destination="Hdz-qM-6cm" id="NyB-rs-A2J"/>
+                        <segue destination="d0f-bc-dyJ" kind="show" identifier="game" id="1On-cs-mFd"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="GOk-YG-dLW" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-167.19999999999999" y="-317.09145427286359"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="aqk-Ek-Ztm">
+            <objects>
+                <viewController id="d0f-bc-dyJ" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="hdt-bq-hYv"/>
+                        <viewControllerLayoutGuide type="bottom" id="Hjq-Bl-AYS"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Dzd-y0-mCA">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Test" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="e6y-ZL-0Ft">
+                                <rect key="frame" x="179" y="305" width="42" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="jQg-yn-ARb" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="524" y="-317"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="3KA-Lc-Q32">

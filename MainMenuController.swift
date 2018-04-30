@@ -13,9 +13,17 @@ class MainMenuController : UIViewController, UIPickerViewDataSource, UIPickerVie
     
     let avatars = [#imageLiteral(resourceName: "av_1"), #imageLiteral(resourceName: "av_2"), #imageLiteral(resourceName: "av_3"), #imageLiteral(resourceName: "av_4"), #imageLiteral(resourceName: "av_5"), #imageLiteral(resourceName: "av_6"), #imageLiteral(resourceName: "av_7")]
     
+    @IBOutlet weak var avatarPicker: UIPickerView!
+    
+    @IBOutlet weak var txtPlayerName: UITextField!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setBackground()
+        for avatar in avatarPicker.subviews {
+            avatar.alpha = 1.0
+        }
+        txtPlayerName.becomeFirstResponder()
     }
     
     private func setBackground() {
@@ -54,6 +62,27 @@ class MainMenuController : UIViewController, UIPickerViewDataSource, UIPickerVie
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         
         // do something with selected row
+    }
+    
+    @IBAction func newGameAction(_ sender: Any) {
+        if (isNameValid()) {
+            self.performSegue(withIdentifier: "game", sender: self)
+        } else {
+            alertWithTitle(title: "Player Name Empty", message: "You need a player name before starting silly!", ViewController: self, toFocus: txtPlayerName)
+        }
+    }
+    
+    func isNameValid() -> Bool {
+        return (txtPlayerName.text?.isEmpty ?? true) == false
+    }
+    
+    func alertWithTitle(title: String!, message: String, ViewController: UIViewController, toFocus:UITextField) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let action = UIAlertAction(title: "OK", style: UIAlertActionStyle.cancel,handler: {_ in
+            toFocus.becomeFirstResponder()
+        });
+        alert.addAction(action)
+        ViewController.present(alert, animated: true, completion:nil)
     }
     
 }
