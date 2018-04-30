@@ -97,10 +97,10 @@
             </objects>
             <point key="canvasLocation" x="-167.19999999999999" y="-317.09145427286359"/>
         </scene>
-        <!--View Controller-->
+        <!--Test View Controller-->
         <scene sceneID="aqk-Ek-Ztm">
             <objects>
-                <viewController id="d0f-bc-dyJ" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="TestViewController" id="d0f-bc-dyJ" customClass="TestViewController" customModule="Elementary" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="hdt-bq-hYv"/>
                         <viewControllerLayoutGuide type="bottom" id="Hjq-Bl-AYS"/>
@@ -116,9 +116,19 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2yw-67-2Or">
+                                <rect key="frame" x="164" y="178" width="46" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Button"/>
+                                <connections>
+                                    <action selector="testButtonPushed:" destination="d0f-bc-dyJ" eventType="touchUpInside" id="UE5-9s-Y6y"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
+                    <connections>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jQg-yn-ARb" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
