@@ -36,7 +36,7 @@
                         <viewControllerLayoutGuide type="top" id="Nbs-d2-Qnf"/>
                         <viewControllerLayoutGuide type="bottom" id="HNQ-lf-3Zy"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="5nr-Ph-VN4" customClass="MainMenuView" customModule="Elementary" customModuleProvider="target">
+                    <view key="view" contentMode="scaleToFill" id="5nr-Ph-VN4">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
