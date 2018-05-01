@@ -11,20 +11,11 @@ import Foundation
 class PlayersModel {
     
     var players = [Player]()
+    let scoresFileName = "scores"
+    let scoresFileExtension = "csv"
     
     init() {
-        accessScores({ path in
-            let data = try String(contentsOfFile: path, encoding: .utf8)
-            let myLines = data.components(separatedBy: .newlines)
-            for line in myLines {
-                if !line.isEmpty {
-                    let player = Player.fromCsvString(userStr: line)
-                    players.append(player)
-                }
-            }
-            sortPlayers() // Just to be sure
-//            printPlayers()
-        })
+        readFile()
     }
     
     open func newScore(player: Player) {
@@ -42,17 +33,14 @@ class PlayersModel {
     }
     
     open func writeToFile() {
-        let fileName = "scores"
-        let docDirUrl = try! FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
-        
-        let fileUrl = docDirUrl.appendingPathComponent(fileName).appendingPathExtension("csv")
+        let fileUrl = Bundle.main.url(forResource: scoresFileName, withExtension: scoresFileExtension)!
         
         let outStr = players.map { $0.toCsvString() }.joined(separator: "\n")
         
         do {
             try outStr.write(to: fileUrl, atomically: true, encoding: String.Encoding.utf8)
-        } catch let error as NSError {
-            print("failed to write to URL")
+        } catch {
+            print("failed to write to file")
             print(error)
         }
     }
@@ -60,6 +48,25 @@ class PlayersModel {
     open func printPlayers() {
         for player in players {
             print(player.toCsvString())
+        }
+    }
+    
+    private func readFile() {
+        let path = Bundle.main.path(forResource: scoresFileName, ofType: scoresFileExtension)!
+        do {
+            let data = try String(contentsOfFile: path, encoding: .utf8)
+            let myLines = data.components(separatedBy: .newlines)
+            for line in myLines {
+                if !line.isEmpty {
+                    let player = Player.fromCsvString(userStr: line)
+                    players.append(player)
+                }
+            }
+            sortPlayers() // Just to be sure
+            printPlayers()
+        } catch {
+            print("failed to read from file")
+            print(error)
         }
     }
     
@@ -78,3 +85,4 @@ class PlayersModel {
     }
     
 }
+
