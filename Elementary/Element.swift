@@ -130,6 +130,18 @@ struct Element {
     public static let BK    = Element(chemicalSymbol: "Bk", fullName: "Berkelium",       atomicNumber: 97, atomicMass: 247,    hexColourCode: "8A4FE3",   naturalState: State.SOLID,  bondingType: BondingType.METALLIC,           group: Group.ACTINOID)
     public static let CF    = Element(chemicalSymbol: "Cf", fullName: "Californium",     atomicNumber: 98, atomicMass: 251,    hexColourCode: "A136D4",   naturalState: State.SOLID,  bondingType: BondingType.METALLIC,           group: Group.ACTINOID);
     
+    public static let all = [H, HE, LI, BE, B, C, N, O, F, NE, NA, MG, AL, SI, P, S, CL, AR, K, CA, SC, TI, V, CR, MN, FE, CO, NI, CU, ZN, GA, GE, AS, SE, BR, KR, RB, SR, Y, ZR, NB, MO, TC, RU, RH, PD, AG, CD, IN, SN, SB, TE, I, XE, CS, BA, LA, CE, PR, ND, PM, SM, EU, GD, TB, DY, HO, ER, TM, YB, LU, HF, TA, W, RE, OS, IR, PT, AU, HG, TL, PB, BI, PO, AT, RN, FR, RA, AC, TH, PA, U, NP, PU, AM, CM, BK, CF]
+    
+    
+    public static func getRandomEight() -> [Element] {
+        var chosen = Set<Int>()
+        while (chosen.count < 8) {
+            chosen.insert(Int(arc4random_uniform(UInt32(Element.all.count))))
+        }
+
+        return chosen.map { all[$0] }
+    }
+    
     struct State {
         
         public let label : String
@@ -173,6 +185,10 @@ struct Element {
         public static let METALLOID             = Group(label: "Metalloid")
         public static let NON_METAL             = Group(label: "Non-\nMetal")
         public static let NOBLE_GAS             = Group(label: "Noble\nGas")
+    }
+    
+    func randomInt(min: Int, max:Int) -> Int {
+        return min + Int(arc4random_uniform(UInt32(max - min + 1)))
     }
     
 }
