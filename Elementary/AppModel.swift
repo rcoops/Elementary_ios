@@ -13,11 +13,17 @@ class AppModel {
     
     var currentPlayer: Player?
     var highScores = [Player]()
+    var quizQuestion: QuizQuestion?
     private let scoresFileName = "scores"
     private let scoresFileExtension = "csv"
     
     init() {
         readFile()
+    }
+    
+    open func initQuizQuestion() -> QuizQuestion {
+        quizQuestion = QuizQuestion()
+        return quizQuestion!
     }
     
     open func initPlayer(name: String, avatarName: String) {

@@ -191,4 +191,22 @@ struct Element {
         return min + Int(arc4random_uniform(UInt32(max - min + 1)))
     }
     
+    
+    static func getPropertyNameAndValue(_ element: Element, _ propertyIndex: Int) -> Answer {
+        switch propertyIndex {
+        case 1:
+            return Answer(property: "Atomic Number: ", value: String(element.atomicNumber))
+        case 2:
+            return Answer(property: "Atomic Mass: ", value: String(element.atomicMass))
+        case 3:
+            return Answer(property: "Natural State: ", value: element.naturalState.label)
+        case 4:
+            return Answer(property: "Bonding Type: ", value: String(element.bondingType.label))
+        case 5:
+            return Answer(property: "Element Group: ", value: element.group.label)
+        default:
+            return Answer(property: "Full Name: ", value: element.fullName)
+        }
+    }
+    
 }
