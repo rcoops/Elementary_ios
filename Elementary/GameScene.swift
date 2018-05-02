@@ -11,15 +11,15 @@ import SpriteKit
 import UIKit
 
 class GameScene : SKScene, SKPhysicsContactDelegate {
-//    var sprite: SKSpriteNode!
-//    var touchPoint: CGPoint = CGPoint()
-//    var touching: Bool = false
+    var sprite: SKNode!
+    var touchPoint: CGPoint = CGPoint()
+    var touching: Bool = false
     
     let model = (UIApplication.shared.delegate as! AppDelegate).appModel
     let points = [(-75, 0), (-52, 52), (0, 75), (52, 52), (75, 0), (52, -52), (0, -75), (-52, -52)]
     var spinnerShape: SKShapeNode?
-    var startingAngle: CGFloat?
-    var startingTime: TimeInterval?
+    var startingAngle: CGFloat? = 0
+    var startingTime: TimeInterval? = 0
     var answerBoxes = [AnswerBox]()
     
     override func didMove(to view: SKView) {
@@ -44,7 +44,7 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
             addChild(box.container)
         }
     }
-    
+    // https://stackoverflow.com/questions/28245653/how-to-throw-skspritenode
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         for touch in touches {
             let location = touch.location(in:self)
@@ -56,6 +56,11 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
                 startingAngle = atan2(dy, dx)
                 startingTime = touch.timestamp
                 node.physicsBody?.angularVelocity = 0
+            } else if node.name?.contains("E_") ?? false {
+                touchPoint = location
+                touching = true
+                sprite = node.name!.contains("label") ? node.parent! : node
+                testTouchElement(sprite.name!, touchPoint)
             }
         }
     }
@@ -67,13 +72,16 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
             if node.name == "spinner" {
                 doSpin(location: location, node: node, timestamp: touch.timestamp)
             } else if node.name?.contains("E_") ?? false {
+                touchPoint = location
                 let node = node.name!.contains("label") ? node.parent! : node
-                let dx = location.x - node.position.x
-                let dy = location.y - node.position.y
-                node.physicsBody?.pinned = false
-                node.physicsBody?.affectedByGravity = true
+                testTouchElement(node.name!, touchPoint)
             }
         }
+    }
+    
+    private func testTouchElement(_ nodeName: String, _ location: CGPoint) {
+        print(nodeName)
+        print(touchPoint)
     }
     
     private func doSpin(location: CGPoint, node: SKNode, timestamp: TimeInterval) {
@@ -103,6 +111,7 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         startingAngle = 0
         startingTime = 0
+        touching = false
     }
     
     private func initBackground() {
@@ -162,14 +171,16 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
         }
     }
     
-//    override func update(_ currentTime: CFTimeInterval) {
-//        if touching {
-//            let dt: CGFloat = 1.0/60.0
-//            let distance = CGVector(dx: touchPoint.x-sprite.position.x, dy: touchPoint.y-sprite.position.y)
-//            let velocity = CGVector(dx: distance.dx/dt, dy: distance.dy/dt)
-//            sprite.physicsBody!.velocity=velocity
-//        }
-//    }
+    override func update(_ currentTime: CFTimeInterval) {
+        if touching {
+            let dt: CGFloat = 1.0
+            let distance = CGVector(dx: touchPoint.x-sprite.position.x, dy: touchPoint.y-sprite.position.y)
+            let velocity = CGVector(dx: distance.dx/dt, dy: distance.dy/dt)
+            sprite.physicsBody?.pinned = false
+//            sprite.physicsBody?.applyForce(velocity)
+            sprite.physicsBody!.velocity=velocity
+        }
+    }
     
     // https://stackoverflow.com/questions/2509443/check-if-uicolor-is-dark-or-bright
     func getTextColour(colour: UIColor) -> UIColor {
