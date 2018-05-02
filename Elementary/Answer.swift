@@ -16,4 +16,5 @@ class Answer {
         self.property = property
         self.value = value
     }
+    
 }

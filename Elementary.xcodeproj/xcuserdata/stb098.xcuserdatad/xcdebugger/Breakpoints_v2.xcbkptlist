@@ -549,11 +549,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Elementary/GameScene.swift"
-            timestampString = "546965089.647882"
+            timestampString = "546967591.5373811"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "66"
-            endingLineNumber = "66"
+            startingLineNumber = "62"
+            endingLineNumber = "62"
             landmarkName = "touchesMoved(_:with:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -565,7 +565,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Elementary/GameScene.swift"
-            timestampString = "546965089.647882"
+            timestampString = "546967591.5373811"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "40"
@@ -581,27 +581,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Elementary/AnswerBox.swift"
-            timestampString = "546965089.647882"
+            timestampString = "546966608.167057"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "40"
-            endingLineNumber = "40"
-            landmarkName = "initLabels(_:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Elementary/AnswerBox.swift"
-            timestampString = "546965089.647882"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "45"
-            endingLineNumber = "45"
+            startingLineNumber = "38"
+            endingLineNumber = "38"
             landmarkName = "initLabels(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -629,7 +613,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Elementary/GameScene.swift"
-            timestampString = "546965089.647882"
+            timestampString = "546967591.5373811"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "39"

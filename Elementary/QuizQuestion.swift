@@ -17,10 +17,12 @@ class QuizQuestion {
         self.elements = elements
         
         let chosenAnswerElementIndexes = Generator.generateRandomDistinctIndexes(max: elements.count)
-        let propertyIndexes = Generator.generateRandomDistinctIndexes(max: 7)
+        let propertyIndexes = Generator.generateRandomDistinctIndexes(max: 6)
         
         let answerElements = chosenAnswerElementIndexes.map { elements[$0] }
-        answers = answerElements.enumerated().map { Element.getPropertyNameAndValue($1, propertyIndexes[$0]) }
+        let allProperties: Array<Element.Property> = Array(Element.Property.all())
+        let chosenProperties: Array<Element.Property> = propertyIndexes.map { allProperties[$0] }
+        answers = answerElements.enumerated().map { Element.getPropertyNameAndValue($1, chosenProperties[$0]) }
     }
     
     private class Generator {

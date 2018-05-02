@@ -45,3 +45,10 @@ extension String {
     }
 
 }
+
+extension CGFloat {
+    // Cant be bothered with radians
+    func toRadians() -> CGFloat {
+        return self * CGFloat(Double.pi) / 180
+    }
+}

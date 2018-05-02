@@ -32,18 +32,14 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
     }
     
     private func initAnswers(answers: [Answer]) {
-        let top = AnswerBox(size: CGSize(width: frame.width, height: 30), position: CGPoint(x: frame.midX, y: frame.maxY - 79))
-        let bottom = AnswerBox(size: CGSize(width: frame.width, height: 30), position: CGPoint(x: frame.midX, y: frame.minY + 15))
-        let left = AnswerBox(size: CGSize(width: frame.height, height: 30), position: CGPoint(x: frame.minX + 15, y: frame.midY), rotation: -1.5708)
-        let right = AnswerBox(size: CGSize(width: frame.height, height: 30), position: CGPoint(x: frame.maxX - 15, y: frame.midY), rotation: 1.5708)
+        let top = AnswerBox(answer: answers[0], size: CGSize(width: frame.width, height: 30), position: CGPoint(x: frame.midX, y: frame.maxY - 79))
+        let bottom = AnswerBox(answer: answers[1], size: CGSize(width: frame.width, height: 30), position: CGPoint(x: frame.midX, y: frame.minY + 15))
+        let left = AnswerBox(answer: answers[2], size: CGSize(width: frame.height - 126, height: 30), position: CGPoint(x: frame.minX + 15, y: frame.midY - 32), rotationDegrees: 90)
+        let right = AnswerBox(answer: answers[3], size: CGSize(width: frame.height - 126, height: 30), position: CGPoint(x: frame.maxX - 15, y: frame.midY - 32), rotationDegrees: -90)
         answerBoxes = [left, right, top, bottom]
         for box in answerBoxes {
             addChild(box.container)
         }
-        top.initLabels(answers[0])
-        bottom.initLabels(answers[1])
-        left.initLabels(answers[2])
-        right.initLabels(answers[3])
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
