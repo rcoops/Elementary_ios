@@ -11,6 +11,9 @@ import SpriteKit
 import UIKit
 
 class GameScene : SKScene, SKPhysicsContactDelegate {
+//    var sprite: SKSpriteNode!
+//    var touchPoint: CGPoint = CGPoint()
+//    var touching: Bool = false
     
     let model = (UIApplication.shared.delegate as! AppDelegate).appModel
     let points = [(-75, 0), (-52, 52), (0, 75), (52, 52), (75, 0), (52, -52), (0, -75), (-52, -52)]
@@ -58,43 +61,48 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        for touch in touches{
+        for touch in touches {
             let location = touch.location(in:self)
             let node = atPoint(location)
             if node.name == "spinner" {
+                doSpin(location: location, node: node, timestamp: touch.timestamp)
+            } else if node.name?.contains("E_") ?? false {
+                let node = node.name!.contains("label") ? node.parent! : node
                 let dx = location.x - node.position.x
                 let dy = location.y - node.position.y
-                
-                let angle = atan2(dy, dx)
-                // Calculate angular velocity; handle wrap at pi/-pi
-                if startingAngle == nil {
-                    startingAngle = atan2(dy, dx)
-                    startingTime = touch.timestamp
-                }
-                var deltaAngle = angle - startingAngle!
-                if abs(deltaAngle) > CGFloat.pi {
-                    if (deltaAngle > 0) {
-                        deltaAngle = deltaAngle - CGFloat.pi * 2
-                    }
-                    else {
-                        deltaAngle = deltaAngle + CGFloat.pi * 2
-                    }
-                }
-                let dt = CGFloat(touch.timestamp - startingTime!)
-                let velocity = deltaAngle / dt
-                
-                node.physicsBody?.angularVelocity = velocity
-                
-                // Update angle and time
-                startingAngle = angle
-                startingTime = touch.timestamp
+                node.physicsBody?.pinned = false
+                node.physicsBody?.affectedByGravity = true
             }
         }
     }
     
+    private func doSpin(location: CGPoint, node: SKNode, timestamp: TimeInterval) {
+        let dx = location.x - node.position.x
+        let dy = location.y - node.position.y
+        
+        let angle = atan2(dy, dx)
+        var deltaAngle = angle - startingAngle!
+        if abs(deltaAngle) > CGFloat.pi {
+            if (deltaAngle > 0) {
+                deltaAngle = deltaAngle - CGFloat.pi * 2
+            }
+            else {
+                deltaAngle = deltaAngle + CGFloat.pi * 2
+            }
+        }
+        let dt = CGFloat(timestamp - startingTime!)
+        let velocity = deltaAngle / dt
+        
+        node.physicsBody?.angularVelocity = velocity
+        
+        // Update angle and time
+        startingAngle = angle
+        startingTime = timestamp
+    }
+    
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        startingAngle = nil
-        startingTime = nil
+        startingAngle = 0
+        startingTime = 0
     }
     
     private func initBackground() {
@@ -125,7 +133,7 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
         middle.physicsBody = SKPhysicsBody(circleOfRadius: 40)
         middle.physicsBody!.pinned = true
         middle.physicsBody?.affectedByGravity = false
-        middle.zPosition = 1.0
+        middle.zPosition = 0.5
         spinnerShape.addChild(middle)
         addChild(spinnerShape)
         addElements(spinnerShape, elements)
@@ -138,6 +146,7 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
             name.text = element.chemicalSymbol
             name.fontSize = 20
             name.position = CGPoint(x: circle.frame.midX, y: circle.frame.midY - 6)
+            name.name = "E_label_\(index)"
             circle.strokeColor = SKColor.black
             circle.glowWidth = 0.5
             circle.fillColor = UIColor(element.hexColourCode)
@@ -145,12 +154,22 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
             circle.zPosition = 1
             circle.physicsBody = SKPhysicsBody(circleOfRadius: 20)
             circle.physicsBody!.pinned = true
-            circle.name = "E_\(index)"
+            let circleName = "E_\(index)"
+            circle.name = circleName
             circle.addChild(name)
             spinnerShape.addChild(circle)
             circle.position = CGPoint(x: points[index].0, y: points[index].1)
         }
     }
+    
+//    override func update(_ currentTime: CFTimeInterval) {
+//        if touching {
+//            let dt: CGFloat = 1.0/60.0
+//            let distance = CGVector(dx: touchPoint.x-sprite.position.x, dy: touchPoint.y-sprite.position.y)
+//            let velocity = CGVector(dx: distance.dx/dt, dy: distance.dy/dt)
+//            sprite.physicsBody!.velocity=velocity
+//        }
+//    }
     
     // https://stackoverflow.com/questions/2509443/check-if-uicolor-is-dark-or-bright
     func getTextColour(colour: UIColor) -> UIColor {
@@ -166,6 +185,7 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
     
     // User Defaults
     // NSKeyedArchiver
+    // https://developer.apple.com/documentation/swift/hashable
     // bounce once then fall off screen
     //https://www.smashingmagazine.com/2016/11/how-to-build-a-spritekit-game-in-swift-3-part-1/
     
