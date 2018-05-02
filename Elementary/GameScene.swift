@@ -15,6 +15,9 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
     let elementRelativePositionFromRadius = 80
     let points = [(-75, 0), (-52, 52), (0, 75), (52, 52), (75, 0), (52, -52), (0, -75), (-52, -52)]
     let names = ["1","2","3","4","5","6","7","8"]
+    let rotateRec = UIRotationGestureRecognizer()
+    var elementSpinner: SKShapeNode?
+    
     override func didMove(to view: SKView) {
         setBackground()
         setElementSpinner()
@@ -30,6 +33,7 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
     // https://stackoverflow.com/questions/26727774/how-to-draw-a-elementSpinner-in-swift-using-spritekit
     private func setElementSpinner(){
         let elementSpinner = SKShapeNode(circleOfRadius: 100)
+        self.elementSpinner = elementSpinner
         elementSpinner.position = CGPoint(x: frame.midX, y: frame.midY)
         let spinnerColour = UIColor(red: 255.0, green: 255.0, blue: 255.0, alpha: 0.5)
         elementSpinner.strokeColor = spinnerColour
@@ -38,6 +42,8 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
         self.addChild(elementSpinner)
         let elements = Element.getRandomEight()
         addElements(elementSpinner, elements)
+        rotateRec.addTarget(self, action: #selector (GameScene.rotatedView (_:) ))
+        self.view!.addGestureRecognizer(rotateRec)
     }
     
     func addElements(_ elementSpinner: SKShapeNode, _ elements: [Element]) {
@@ -56,6 +62,28 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
             circle.addChild(name)
             elementSpinner.addChild(circle)
             circle.position = CGPoint(x: points[index].0, y: points[index].1)
+        }
+    }
+    
+    func rotatedView(_ sender:UIRotationGestureRecognizer) {
+        if (sender.state == .began) {
+            print("rotation began")
+        }
+        if (sender.state == .changed) {
+            
+            print("rotation changed")
+            let oneRevolution = SKAction.rotate(byAngle: 360, duration: 100.0)
+            let `repeat` = SKAction.repeatForever(oneRevolution)
+            elementSpinner?.run(`repeat`)
+            //you could easily make any sprite's rotation equal this amount like so...
+            //thePlayer.zRotation = -sender.rotation
+            
+            //convert rotation to degrees...
+            let rotateAmount = Measurement(value: Double(sender.rotation), unit: UnitAngle.radians).converted(to: .degrees).value
+            print("\(rotateAmount) degreess" )
+        }
+        if (sender.state == .ended) {
+            print("rotation ended")
         }
     }
     

@@ -27,6 +27,7 @@ extension UIColor {
     }
 }
 
+// Get round weird requirement for 'index' to be provided rather than just an int
 extension String {
     func index(from: Int) -> Index {
         return self.index(startIndex, offsetBy: from)

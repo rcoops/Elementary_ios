@@ -143,9 +143,16 @@
                     <view key="view" contentMode="scaleToFill" id="ibJ-qL-TG7" customClass="SKView">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <gestureRecognizers/>
+                        <connections>
+                            <outletCollection property="gestureRecognizers" destination="5yC-mZ-mxE" appends="YES" id="9cr-hC-T0x"/>
+                        </connections>
                     </view>
+                    <connections>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="46j-C8-C3b" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <rotationGestureRecognizer id="5yC-mZ-mxE"/>
             </objects>
             <point key="canvasLocation" x="1261" y="-311"/>
         </scene>
