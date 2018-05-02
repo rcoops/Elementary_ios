@@ -11,7 +11,9 @@ import UIKit
 
 class MainMenuController : UIViewController, UIPickerViewDataSource, UIPickerViewDelegate {
     
-    let avatars = [#imageLiteral(resourceName: "av_1"), #imageLiteral(resourceName: "av_2"), #imageLiteral(resourceName: "av_3"), #imageLiteral(resourceName: "av_4"), #imageLiteral(resourceName: "av_5"), #imageLiteral(resourceName: "av_6"), #imageLiteral(resourceName: "av_7")]
+    let appDelegate = UIApplication.shared.delegate as! AppDelegate
+    let avatarNames = (1...7).map { "av_\(String($0))" }
+    var selectedAvatarName = ""
     
     @IBOutlet weak var avatarPicker: UIPickerView!
     
@@ -23,6 +25,7 @@ class MainMenuController : UIViewController, UIPickerViewDataSource, UIPickerVie
         for avatar in avatarPicker.subviews {
             avatar.alpha = 1.0
         }
+        selectedAvatarName = avatarNames[avatarPicker.selectedRow(inComponent: 0)]
         txtPlayerName.becomeFirstResponder()
     }
     
@@ -42,7 +45,7 @@ class MainMenuController : UIViewController, UIPickerViewDataSource, UIPickerVie
     }
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return avatars.count
+        return avatarNames.count
     }
     
     // MARK: UIPickerViewDelegate
@@ -53,19 +56,20 @@ class MainMenuController : UIViewController, UIPickerViewDataSource, UIPickerVie
         
         let myImageView = UIImageView(frame: CGRect(origin: CGPoint(x: myView.center.x - 25, y: 0), size: CGSize(width: 50, height: 50)))
         
-        myImageView.image = avatars[row]
+        myImageView.image = UIImage(named: avatarNames[row])
         myView.addSubview(myImageView)
         
         return myView
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        
+        selectedAvatarName = avatarNames[row]
         // do something with selected row
     }
     
     @IBAction func newGameAction(_ sender: Any) {
         if (isNameValid()) {
+            appDelegate.appModel.initPlayer(name: txtPlayerName.text!, avatarName: selectedAvatarName)
             self.performSegue(withIdentifier: "game", sender: self)
         } else {
             alertWithTitle(title: "Player Name Empty", message: "You need a player name before starting silly!", ViewController: self, toFocus: txtPlayerName)

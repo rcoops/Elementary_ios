@@ -15,14 +15,18 @@ class Player {
     var imageName: String
     var score: Int = 0
     
-    init(name: String, imageName: String) {
+    init(_ name: String, _ imageName: String) {
         self.name = name
         self.imageName = imageName
     }
     
     convenience init(name: String, imageName: String, score: Int) {
-        self.init(name: name, imageName: imageName)
+        self.init(name, imageName)
         self.score = score
+    }
+    
+    func adjustScore(_ scoreAdjustment: Int) {
+        score += scoreAdjustment
     }
     
     func toCsvString() -> String {

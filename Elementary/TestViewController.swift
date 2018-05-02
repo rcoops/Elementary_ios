@@ -17,10 +17,10 @@ class TestViewController : UIViewController {
     }
     
     @IBAction func testButtonPushed(_ sender: Any) {
-        let playersModel = appDelegate.playersModel
-        playersModel.newScore(player: Player(name: "ted", imageName: "av_4", score: 1000))
-        playersModel.writeToFile()
-        playersModel.printPlayers()
+        let appModel = appDelegate.appModel
+        appModel.newScore(player: Player(name: "ted", imageName: "av_4", score: 1000))
+        appModel.writeToFile()
+        appModel.printHighScores()
     }
     
 }

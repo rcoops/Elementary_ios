@@ -7,35 +7,45 @@
 //
 
 import Foundation
+import UIKit
 
-class PlayersModel {
+class AppModel {
     
-    var players = [Player]()
-    let scoresFileName = "scores"
-    let scoresFileExtension = "csv"
+    var currentPlayer: Player?
+    var highScores = [Player]()
+    private let scoresFileName = "scores"
+    private let scoresFileExtension = "csv"
     
     init() {
         readFile()
     }
     
+    open func initPlayer(name: String, avatarName: String) {
+        currentPlayer = Player(name, avatarName)
+    }
+    
+    open func adjustPlayerScore(scoreAdjustment: Int) {
+        currentPlayer?.adjustScore(scoreAdjustment)
+    }
+    
     open func newScore(player: Player) {
         if (isHighScore(player)) {
-            if players.count >= 10 {
-                players.removeLast()
+            if highScores.count >= 10 {
+                highScores.removeLast()
             }
-            players.append(player)
-            sortPlayers()
+            highScores.append(player)
+            sortHighScores()
         }
     }
     
     open func isHighScore(_ player: Player) -> Bool {
-        return player.score > (players.last?.score ?? -1)
+        return player.score > (highScores.last?.score ?? -1)
     }
     
     open func writeToFile() {
         let fileUrl = Bundle.main.url(forResource: scoresFileName, withExtension: scoresFileExtension)!
         
-        let outStr = players.map { $0.toCsvString() }.joined(separator: "\n")
+        let outStr = highScores.map { $0.toCsvString() }.joined(separator: "\n")
         
         do {
             try outStr.write(to: fileUrl, atomically: true, encoding: String.Encoding.utf8)
@@ -45,9 +55,9 @@ class PlayersModel {
         }
     }
     
-    open func printPlayers() {
-        for player in players {
-            print(player.toCsvString())
+    open func printHighScores() {
+        for score in highScores {
+            print(score.toCsvString())
         }
     }
     
@@ -59,11 +69,11 @@ class PlayersModel {
             for line in myLines {
                 if !line.isEmpty {
                     let player = Player.fromCsvString(userStr: line)
-                    players.append(player)
+                    highScores.append(player)
                 }
             }
-            sortPlayers() // Just to be sure
-            printPlayers()
+            sortHighScores() // Just to be sure
+            printHighScores()
         } catch {
             print("failed to read from file")
             print(error)
@@ -80,8 +90,8 @@ class PlayersModel {
         }
     }
     
-    private func sortPlayers() {
-        players.sort(by: { $0.score > $1.score })
+    private func sortHighScores() {
+        highScores.sort(by: { $0.score > $1.score })
     }
     
 }

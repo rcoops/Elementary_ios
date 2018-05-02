@@ -21,7 +21,7 @@
 		A2D71BFC2098E67500DFECF7 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2D71BFB2098E67500DFECF7 /* Extensions.swift */; };
 		A2F52FF420975AA800C01FFF /* MainMenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2F52FF320975AA800C01FFF /* MainMenuController.swift */; };
 		A2F52FFA2097871500C01FFF /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2F52FF92097871500C01FFF /* Player.swift */; };
-		A2F52FFC2097884200C01FFF /* PlayersModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2F52FFB2097884200C01FFF /* PlayersModel.swift */; };
+		A2F52FFC2097884200C01FFF /* AppModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2F52FFB2097884200C01FFF /* AppModel.swift */; };
 		A2F52FFF209789BB00C01FFF /* scores.csv in Resources */ = {isa = PBXBuildFile; fileRef = A2F52FFE209789BB00C01FFF /* scores.csv */; };
 		A2F53001209797E600C01FFF /* TestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2F53000209797E600C01FFF /* TestViewController.swift */; };
 /* End PBXBuildFile section */
@@ -64,7 +64,7 @@
 		A2D71BFB2098E67500DFECF7 /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		A2F52FF320975AA800C01FFF /* MainMenuController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MainMenuController.swift; path = ../MainMenuController.swift; sourceTree = "<group>"; };
 		A2F52FF92097871500C01FFF /* Player.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
-		A2F52FFB2097884200C01FFF /* PlayersModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayersModel.swift; sourceTree = "<group>"; };
+		A2F52FFB2097884200C01FFF /* AppModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppModel.swift; sourceTree = "<group>"; };
 		A2F52FFE209789BB00C01FFF /* scores.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = scores.csv; sourceTree = "<group>"; };
 		A2F53000209797E600C01FFF /* TestViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -179,7 +179,7 @@
 			isa = PBXGroup;
 			children = (
 				A2F52FF92097871500C01FFF /* Player.swift */,
-				A2F52FFB2097884200C01FFF /* PlayersModel.swift */,
+				A2F52FFB2097884200C01FFF /* AppModel.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -331,7 +331,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A2D71BFA2098C67700DFECF7 /* GameScene.swift in Sources */,
-				A2F52FFC2097884200C01FFF /* PlayersModel.swift in Sources */,
+				A2F52FFC2097884200C01FFF /* AppModel.swift in Sources */,
 				A2F52FFA2097871500C01FFF /* Player.swift in Sources */,
 				A2F53001209797E600C01FFF /* TestViewController.swift in Sources */,
 				1D02D8342083CB50001F7BAF /* ViewController.swift in Sources */,
