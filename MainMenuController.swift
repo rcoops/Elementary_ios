@@ -69,7 +69,7 @@ class MainMenuController : UIViewController, UIPickerViewDataSource, UIPickerVie
     
     @IBAction func newGameAction(_ sender: Any) {
         if (isNameValid()) {
-            appDelegate.appModel.initPlayer(name: txtPlayerName.text!, avatarName: selectedAvatarName)
+            appDelegate.appModel.initPlayer(name: txtPlayerName.text!, avatarName: selectedAvatarName) // txt must have content for name valid check
             self.performSegue(withIdentifier: "game", sender: self)
         } else {
             alertWithTitle(title: "Player Name Empty", message: "You need a player name before starting silly!", ViewController: self, toFocus: txtPlayerName)
