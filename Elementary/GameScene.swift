@@ -107,10 +107,10 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
     // https://stackoverflow.com/questions/26727774/how-to-draw-a-elementSpinner-in-swift-using-spritekit
     private func initElementSpinner(elements: [Element]){
         let spinnerColour = UIColor(red: 255.0, green: 255.0, blue: 255.0, alpha: 0.5)
-        let spinnerShape = SKShapeNode(circleOfRadius: 100)
-        spinnerShape.physicsBody = SKPhysicsBody(circleOfRadius: 100)
+        let spinnerShape = SKShapeNode(circleOfRadius: 120)
         self.spinnerShape = spinnerShape
-        spinnerShape.position = CGPoint(x: frame.midX, y: frame.midY)
+        spinnerShape.physicsBody = SKPhysicsBody(circleOfRadius: 120)
+        spinnerShape.position = CGPoint(x: frame.midX, y: frame.midY - 50)
         spinnerShape.physicsBody?.pinned = true
         spinnerShape.physicsBody?.affectedByGravity = false
         spinnerShape.physicsBody!.angularDamping = 0.25
@@ -118,6 +118,15 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
         spinnerShape.glowWidth = 1.0
         spinnerShape.fillColor = spinnerColour
         spinnerShape.name = "spinner"
+        let middle = SKShapeNode(circleOfRadius: 40)
+        middle.fillColor = SKColor(red: 0, green: 50, blue: 255, alpha: 0.75)
+        middle.glowWidth = 0.6
+        middle.strokeColor = spinnerColour
+        middle.physicsBody = SKPhysicsBody(circleOfRadius: 40)
+        middle.physicsBody!.pinned = true
+        middle.physicsBody?.affectedByGravity = false
+        middle.zPosition = 1.0
+        spinnerShape.addChild(middle)
         addChild(spinnerShape)
         addElements(spinnerShape, elements)
     }
@@ -132,6 +141,7 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
             circle.strokeColor = SKColor.black
             circle.glowWidth = 0.5
             circle.fillColor = UIColor(element.hexColourCode)
+            name.fontColor = getTextColour(colour: circle.fillColor)
             circle.zPosition = 1
             circle.physicsBody = SKPhysicsBody(circleOfRadius: 20)
             circle.physicsBody!.pinned = true
@@ -140,6 +150,13 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
             spinnerShape.addChild(circle)
             circle.position = CGPoint(x: points[index].0, y: points[index].1)
         }
+    }
+    
+    // https://stackoverflow.com/questions/2509443/check-if-uicolor-is-dark-or-bright
+    func getTextColour(colour: UIColor) -> UIColor {
+        let components = colour.cgColor.components!.map { $0 * 255 }
+        let brightness = (components[0] * 299 + components[1] * 587 + components[2] * 114) / 1000
+        return brightness > 125 ? UIColor.black : UIColor.white
     }
     // make children into sprite and and physics.boy.pointtowards
     
