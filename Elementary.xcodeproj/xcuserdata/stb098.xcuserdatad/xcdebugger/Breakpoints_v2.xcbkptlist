@@ -452,22 +452,6 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Elementary/GameScene.swift"
-            timestampString = "546946491.317179"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "42"
-            endingLineNumber = "42"
-            landmarkName = "setElementSpinner()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
             filePath = "MainMenuController.swift"
             timestampString = "546944717.729355"
             startingColumnNumber = "9223372036854775807"
@@ -565,12 +549,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Elementary/GameScene.swift"
-            timestampString = "546946458.195231"
+            timestampString = "546953392.133934"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "77"
-            endingLineNumber = "77"
-            landmarkName = "rotatedView(_:)"
+            startingLineNumber = "42"
+            endingLineNumber = "42"
+            landmarkName = "touchesMoved(_:with:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

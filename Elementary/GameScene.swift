@@ -12,15 +12,68 @@ import UIKit
 
 class GameScene : SKScene, SKPhysicsContactDelegate {
     
-    let elementRelativePositionFromRadius = 80
     let points = [(-75, 0), (-52, 52), (0, 75), (52, 52), (75, 0), (52, -52), (0, -75), (-52, -52)]
-    let names = ["1","2","3","4","5","6","7","8"]
-    let rotateRec = UIRotationGestureRecognizer()
-    var elementSpinner: SKShapeNode?
+    var spinnerShape: SKShapeNode?
+    var startingAngle: CGFloat?
+    var startingTime: TimeInterval?
     
     override func didMove(to view: SKView) {
         setBackground()
         setElementSpinner()
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        for touch in touches {
+            let location = touch.location(in:self)
+            let node = atPoint(location)
+            if node.name == "wheel"{
+                let dx = location.x - node.position.x
+                let dy = location.y - node.position.y
+                // Store angle and current time
+                startingAngle = atan2(dy, dx)
+                startingTime = touch.timestamp
+                node.physicsBody?.angularVelocity = 0
+            }
+        }
+    }
+    
+    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+        for touch in touches{
+            let location = touch.location(in:self)
+            let node = atPoint(location)
+            if node.name == "wheel" || node.name == "spinner" {
+                let dx = location.x - node.position.x
+                let dy = location.y - node.position.y
+                
+                let angle = atan2(dy, dx)
+                // Calculate angular velocity; handle wrap at pi/-pi
+                var deltaAngle = angle - startingAngle!
+                if abs(deltaAngle) > CGFloat.pi {
+                    if (deltaAngle > 0) {
+                        deltaAngle = deltaAngle - CGFloat.pi * 2
+                    }
+                    else {
+                        deltaAngle = deltaAngle + CGFloat.pi * 2
+                    }
+                }
+                let dt = CGFloat(touch.timestamp - startingTime!)
+                let velocity = deltaAngle / dt
+                
+                node.physicsBody?.angularVelocity = velocity
+                for child in node.children {
+                    child.zRotation = -dt
+                }
+                
+                // Update angle and time
+                startingAngle = angle
+                startingTime = touch.timestamp
+            }
+        }
+    }
+    
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        startingAngle = nil
+        startingTime = nil
     }
     
     private func setBackground() {
@@ -32,60 +85,42 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
     
     // https://stackoverflow.com/questions/26727774/how-to-draw-a-elementSpinner-in-swift-using-spritekit
     private func setElementSpinner(){
-        let elementSpinner = SKShapeNode(circleOfRadius: 100)
-        self.elementSpinner = elementSpinner
-        elementSpinner.position = CGPoint(x: frame.midX, y: frame.midY)
         let spinnerColour = UIColor(red: 255.0, green: 255.0, blue: 255.0, alpha: 0.5)
-        elementSpinner.strokeColor = spinnerColour
-        elementSpinner.glowWidth = 1.0
-        elementSpinner.fillColor = spinnerColour
-        self.addChild(elementSpinner)
+        let spinnerShape = SKShapeNode(circleOfRadius: 100)
+        spinnerShape.physicsBody = SKPhysicsBody(circleOfRadius: 100)
+        self.spinnerShape = spinnerShape
+        spinnerShape.position = CGPoint(x: frame.midX, y: frame.midY)
+        spinnerShape.physicsBody?.pinned = true
+        spinnerShape.physicsBody?.affectedByGravity = false
+        spinnerShape.physicsBody!.angularDamping = 0.25
+        spinnerShape.strokeColor = spinnerColour
+        spinnerShape.glowWidth = 1.0
+        spinnerShape.fillColor = spinnerColour
+        spinnerShape.name = "wheel"
+        addChild(spinnerShape)
         let elements = Element.getRandomEight()
-        addElements(elementSpinner, elements)
-        rotateRec.addTarget(self, action: #selector (GameScene.rotatedView (_:) ))
-        self.view!.addGestureRecognizer(rotateRec)
+        addElements(spinnerShape, elements)
     }
     
-    func addElements(_ elementSpinner: SKShapeNode, _ elements: [Element]) {
+    func addElements(_ spinnerShape: SKShapeNode, _ elements: [Element]) {
         for (index, element) in elements.enumerated() {
-            let circle = SKShapeNode(circleOfRadius: 100)
+            let circle = SKShapeNode(circleOfRadius: 20)
             let name = SKLabelNode(fontNamed: "Chalkduster")
             name.text = element.chemicalSymbol
-            name.fontSize = 100
-            name.position = CGPoint(x: circle.frame.midX, y: circle.frame.midY - 30)
+            name.fontSize = 20
+            name.position = CGPoint(x: circle.frame.midX, y: circle.frame.midY - 6)
             circle.strokeColor = SKColor.black
             circle.glowWidth = 0.5
-            circle.xScale = 0.20
-            circle.yScale = 0.20
             circle.fillColor = UIColor(element.hexColourCode)
             circle.zPosition = 1
+            circle.physicsBody = SKPhysicsBody(circleOfRadius: 20)
+            circle.physicsBody!.pinned = true
             circle.addChild(name)
-            elementSpinner.addChild(circle)
+            spinnerShape.addChild(circle)
             circle.position = CGPoint(x: points[index].0, y: points[index].1)
         }
     }
-    
-    func rotatedView(_ sender:UIRotationGestureRecognizer) {
-        if (sender.state == .began) {
-            print("rotation began")
-        }
-        if (sender.state == .changed) {
-            
-            print("rotation changed")
-            let oneRevolution = SKAction.rotate(byAngle: 360, duration: 100.0)
-            let `repeat` = SKAction.repeatForever(oneRevolution)
-            elementSpinner?.run(`repeat`)
-            //you could easily make any sprite's rotation equal this amount like so...
-            //thePlayer.zRotation = -sender.rotation
-            
-            //convert rotation to degrees...
-            let rotateAmount = Measurement(value: Double(sender.rotation), unit: UnitAngle.radians).converted(to: .degrees).value
-            print("\(rotateAmount) degreess" )
-        }
-        if (sender.state == .ended) {
-            print("rotation ended")
-        }
-    }
+    // make children into sprite and and physics.boy.pointtowards
     
     // child rotation
     //https://stackoverflow.com/questions/27571794/how-to-rotate-parent-skspritenode-only-and-not-the-child-node
@@ -95,5 +130,8 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
     // NSKeyedArchiver
     // bounce once then fall off screen
     //https://www.smashingmagazine.com/2016/11/how-to-build-a-spritekit-game-in-swift-3-part-1/
+    
+    // control rotate
+    // https://stackoverflow.com/questions/32143382/drag-rotate-a-node-around-a-fixed-point
 }
 
