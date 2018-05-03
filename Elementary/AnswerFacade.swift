@@ -12,7 +12,7 @@ import SpriteKit
 class AnswerFacade : SKElementHolderFacade {
     
     private let label = SKLabelNode()
-    private static let backgroundColour = SKColor(red: 255, green: 255, blue: 255, alpha: 0.75)
+    private static let backgroundColour = UIColor.createTranslucent(red: 255, green: 255, blue: 255)
     let answer: Answer
     
     let container: SKShapeNode

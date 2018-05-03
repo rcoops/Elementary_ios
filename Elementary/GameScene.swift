@@ -32,6 +32,8 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
     let doesNotCollideWithElementCategory:UInt32 = 0x1 << 9;
     
     override func didMove(to view: SKView) {
+        let livesLabel = SKLabelNode(text: "Lives")
+        livesLabel.fontColor = UIColor.createTranslucent(red: 155, green: 0, blue: 255)
         initQuizRound()
         physicsWorld.gravity = CGVector(dx: 0.0, dy: -9.8);
         physicsWorld.contactDelegate = self
@@ -134,7 +136,7 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
         let elementFacade = getFacade(nodeA: bodyA?.node, nodeB: bodyB?.node, facades: elementFacades)
         let matches = Element.Property.hasMatchingPropertyValue(for: elementFacade.element, and: answerFacade.answer.property, matches: answerFacade.answer.value)
         let redGreen: (CGFloat, CGFloat) = matches ? (0, 255) : (255, 0)
-        answerFacade.container.fillColor = UIColor(red: redGreen.0, green: redGreen.1, blue: 0, alpha: 0.75)
+        answerFacade.container.fillColor = UIColor.createTranslucent(red: redGreen.0, green: redGreen.1, blue: 0)
         newRoundOrEndGame(matches: matches)
     }
     
@@ -197,7 +199,7 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
         spinnerShape.fillColor = spinnerColour
         spinnerShape.name = "spinner"
         let middle = SKShapeNode(circleOfRadius: 40)
-        middle.fillColor = SKColor(red: 0, green: 50, blue: 255, alpha: 0.75)
+        middle.fillColor = UIColor.createTranslucent(red: 0, green: 50, blue: 255)
         middle.glowWidth = 0.6
         middle.strokeColor = spinnerColour
         middle.physicsBody = SKPhysicsBody(circleOfRadius: 40)
@@ -205,7 +207,7 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
         middle.physicsBody?.affectedByGravity = false
         middle.zPosition = 0.5
         middle.physicsBody?.categoryBitMask = spinnerMiddleCategory
-        middle.physicsBody?.contactTestBitMask = GameScene.elementCategory
+        middle.physicsBody?.collisionBitMask = collidesWithElementCategory
         spinnerShape.addChild(middle)
         addChild(spinnerShape)
         addElements(spinnerShape, elements)
