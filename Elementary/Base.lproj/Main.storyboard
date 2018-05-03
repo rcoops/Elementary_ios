@@ -10,28 +10,9 @@
     </dependencies>
     <scenes>
         <!--High Scores-->
-        <scene sceneID="nxH-V2-WYQ">
-            <objects>
-                <viewController id="gWV-cR-fxw" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="wWU-sc-hO1"/>
-                        <viewControllerLayoutGuide type="bottom" id="W8j-oK-hYn"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="sGr-b1-Qvw">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </view>
-                    <tabBarItem key="tabBarItem" title="High Scores" image="scores@3" selectedImage="scores@3" id="ZLa-C8-6xD" userLabel="High Scores"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="tM5-6Y-qjA" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-1111" y="861"/>
-        </scene>
-        <!--High Scores-->
         <scene sceneID="u8t-GZ-7ZM">
             <objects>
-                <tableViewController id="7Pf-Mc-jIr" customClass="HighScoresController" customModule="Elementary" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController title="High Scores" id="7Pf-Mc-jIr" customClass="HighScoresController" customModule="Elementary" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="W1L-oD-hg0">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -87,7 +68,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="sCk-ln-9df" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-167.19999999999999" y="427.73613193403304"/>
+            <point key="canvasLocation" x="-167" y="459"/>
         </scene>
         <!--New Game-->
         <scene sceneID="Bex-IF-s6f">
@@ -156,7 +137,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="GOk-YG-dLW" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-167.19999999999999" y="-317.09145427286359"/>
+            <point key="canvasLocation" x="108" y="-519"/>
         </scene>
         <!--Game View Controller-->
         <scene sceneID="ow2-PS-Qzq">
@@ -181,7 +162,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="46j-C8-C3b" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <rotationGestureRecognizer id="5yC-mZ-mxE"/>
             </objects>
-            <point key="canvasLocation" x="1261" y="-311"/>
+            <point key="canvasLocation" x="956" y="-695"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="3KA-Lc-Q32">
@@ -222,7 +203,6 @@
     <resources>
         <image name="ic_new_game" width="25" height="25"/>
         <image name="ic_scores" width="25" height="25"/>
-        <image name="scores@3" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="I0x-sQ-jE2"/>
