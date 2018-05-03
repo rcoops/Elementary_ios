@@ -187,25 +187,25 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
         let spinnerColour = UIColor(red: 255.0, green: 255.0, blue: 255.0, alpha: 0.5)
         let spinnerShape = SKShapeNode(circleOfRadius: 120)
         self.spinnerShape = spinnerShape
-        spinnerShape.physicsBody = SKPhysicsBody(circleOfRadius: 120)
         spinnerShape.position = CGPoint(x: frame.midX, y: frame.midY - 50)
+        spinnerShape.strokeColor = spinnerColour
+        spinnerShape.glowWidth = 1.0
+        spinnerShape.fillColor = spinnerColour
+        spinnerShape.name = "spinner"
+        spinnerShape.physicsBody = SKPhysicsBody(circleOfRadius: 120)
         spinnerShape.physicsBody?.pinned = true
         spinnerShape.physicsBody?.affectedByGravity = false
         spinnerShape.physicsBody?.categoryBitMask = spinnerCategory
         spinnerShape.physicsBody?.angularDamping = 0.25
         spinnerShape.physicsBody?.collisionBitMask = doesNotCollideWithElementCategory
-        spinnerShape.strokeColor = spinnerColour
-        spinnerShape.glowWidth = 1.0
-        spinnerShape.fillColor = spinnerColour
-        spinnerShape.name = "spinner"
         let middle = SKShapeNode(circleOfRadius: 40)
         middle.fillColor = UIColor.createTranslucent(red: 0, green: 50, blue: 255)
         middle.glowWidth = 0.6
+        middle.zPosition = 0.5
         middle.strokeColor = spinnerColour
         middle.physicsBody = SKPhysicsBody(circleOfRadius: 40)
         middle.physicsBody!.pinned = true
         middle.physicsBody?.affectedByGravity = false
-        middle.zPosition = 0.5
         middle.physicsBody?.categoryBitMask = spinnerMiddleCategory
         middle.physicsBody?.collisionBitMask = collidesWithElementCategory
         spinnerShape.addChild(middle)
@@ -227,11 +227,21 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
             let spritePosition = sprite.position + spinnerShape!.position
             let distance = CGVector(dx: touchPoint.x - spritePosition.x, dy: touchPoint.y - spritePosition.y)
             let velocity = CGVector(dx: distance.dx/dt, dy: distance.dy/dt)
-//            print("TouchPos: \(touchPoint), SpritePos: \(spritePosition)")
-//            print("Velocity: \(velocity)")
             sprite.physicsBody?.pinned = false
             sprite.physicsBody!.velocity=velocity
         }
+//        var allOut = false
+//        for node in elementFacades.map({ $0.shape }) {
+//            if !intersects(node) {
+//                allOut = true
+//            }
+//        }
+        let allOut = elementFacades
+            .reduce(true, { current, node in (current && intersects(node.shape)) })
+        if allOut {
+            initQuizRound()
+        }
+        
     }
     // make children into sprite and and physics.boy.pointtowards
     
