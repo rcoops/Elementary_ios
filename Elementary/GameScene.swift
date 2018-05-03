@@ -60,7 +60,6 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
                 touchPoint = location
                 touching = true
                 sprite = node.name!.contains("label") ? node.parent! : node
-                testTouchElement(sprite.name!, touchPoint)
             }
         }
     }
@@ -74,14 +73,8 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
             } else if node.name?.contains("E_") ?? false {
                 touchPoint = location
                 let node = node.name!.contains("label") ? node.parent! : node
-                testTouchElement(node.name!, touchPoint)
             }
         }
-    }
-    
-    private func testTouchElement(_ nodeName: String, _ location: CGPoint) {
-        print(nodeName)
-        print(touchPoint)
     }
     
     private func doSpin(location: CGPoint, node: SKNode, timestamp: TimeInterval) {
@@ -162,6 +155,7 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
             name.fontColor = getTextColour(colour: circle.fillColor)
             circle.zPosition = 1
             circle.physicsBody = SKPhysicsBody(circleOfRadius: 20)
+            circle.physicsBody?.affectedByGravity = false
             circle.physicsBody!.pinned = true
             let circleName = "E_\(index)"
             circle.name = circleName
@@ -173,11 +167,13 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
     
     override func update(_ currentTime: CFTimeInterval) {
         if touching {
-            let dt: CGFloat = 1.0
-            let distance = CGVector(dx: touchPoint.x-sprite.position.x, dy: touchPoint.y-sprite.position.y)
+            let dt: CGFloat = 1.0 / 2.0
+            let spritePosition = sprite.position + spinnerShape!.position
+            print("TouchPos: \(touchPoint), SpritePos: \(spritePosition)")
+            let distance = CGVector(dx: touchPoint.x - spritePosition.x, dy: touchPoint.y - spritePosition.y)
             let velocity = CGVector(dx: distance.dx/dt, dy: distance.dy/dt)
+            print("Velocity: \(velocity)")
             sprite.physicsBody?.pinned = false
-//            sprite.physicsBody?.applyForce(velocity)
             sprite.physicsBody!.velocity=velocity
         }
     }
