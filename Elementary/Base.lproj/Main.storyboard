@@ -12,6 +12,7 @@
         <!--High Scores-->
         <scene sceneID="nxH-V2-WYQ">
             <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="tM5-6Y-qjA" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <viewController id="gWV-cR-fxw" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="wWU-sc-hO1"/>
@@ -24,7 +25,6 @@
                     </view>
                     <tabBarItem key="tabBarItem" title="High Scores" image="scores@3" selectedImage="scores@3" id="ZLa-C8-6xD" userLabel="High Scores"/>
                 </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="tM5-6Y-qjA" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-1111" y="861"/>
         </scene>
@@ -163,7 +163,6 @@
                     </tabBar>
                     <connections>
                         <segue destination="nyN-6p-LGd" kind="relationship" relationship="viewControllers" id="pRg-5w-1s9"/>
-                        <segue destination="gWV-cR-fxw" kind="relationship" relationship="viewControllers" id="gqk-Ou-hbw"/>
                         <segue destination="7Pf-Mc-jIr" kind="relationship" relationship="viewControllers" id="HzC-V4-KST"/>
                     </connections>
                 </tabBarController>

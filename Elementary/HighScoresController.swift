@@ -29,13 +29,11 @@ class HighScoresController : UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath as IndexPath)
         let highScores = model.highScores
         cell.textLabel?.text = highScores[indexPath.row].name
+        cell.textLabel?.backgroundColor = UIColor.clear
         cell.imageView?.image = UIImage(named: highScores[indexPath.row].imageName)
-        cell.accessoryType = .detailDisclosureButton
+        cell.imageView?.backgroundColor = UIColor.clear
+        cell.layer.backgroundColor = UIColor.clear.cgColor
         return cell
-    }
-    
-    @objc(tableView:accessoryButtonTappedForRowWithIndexPath:) override func tableView(_ tableView: UITableView, accessoryButtonTappedForRowWith accessoryButtonTappedFroRowWith: IndexPath) {
-        
     }
     
 }
