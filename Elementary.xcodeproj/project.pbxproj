@@ -16,8 +16,10 @@
 		1D02D8522083CB50001F7BAF /* ElementaryUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D02D8512083CB50001F7BAF /* ElementaryUITests.swift */; };
 		1D02D8612083CF54001F7BAF /* Element.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D02D8602083CF54001F7BAF /* Element.swift */; };
 		1D02D8632083D903001F7BAF /* CSVScanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D02D8622083D903001F7BAF /* CSVScanner.swift */; };
+		A20B1DD8209B22D0007A3067 /* ElementFacade.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20B1DD7209B22D0007A3067 /* ElementFacade.swift */; };
+		A20B1DDA209B2668007A3067 /* SKElementHolderFacade.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20B1DD9209B2668007A3067 /* SKElementHolderFacade.swift */; };
 		A2C491D22099DF7B0000A122 /* QuizQuestion.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2C491D12099DF7B0000A122 /* QuizQuestion.swift */; };
-		A2C491D42099E8130000A122 /* AnswerBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2C491D32099E8130000A122 /* AnswerBox.swift */; };
+		A2C491D42099E8130000A122 /* AnswerFacade.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2C491D32099E8130000A122 /* AnswerFacade.swift */; };
 		A2C491D62099EB450000A122 /* Answer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2C491D52099EB450000A122 /* Answer.swift */; };
 		A2D71BF62098C62A00DFECF7 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2D71BF52098C62A00DFECF7 /* GameViewController.swift */; };
 		A2D71BFA2098C67700DFECF7 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2D71BF92098C67700DFECF7 /* GameScene.swift */; };
@@ -62,8 +64,10 @@
 		1D02D8532083CB50001F7BAF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1D02D8602083CF54001F7BAF /* Element.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Element.swift; sourceTree = "<group>"; };
 		1D02D8622083D903001F7BAF /* CSVScanner.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CSVScanner.swift; sourceTree = "<group>"; };
+		A20B1DD7209B22D0007A3067 /* ElementFacade.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ElementFacade.swift; sourceTree = "<group>"; };
+		A20B1DD9209B2668007A3067 /* SKElementHolderFacade.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SKElementHolderFacade.swift; sourceTree = "<group>"; };
 		A2C491D12099DF7B0000A122 /* QuizQuestion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuizQuestion.swift; sourceTree = "<group>"; };
-		A2C491D32099E8130000A122 /* AnswerBox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnswerBox.swift; sourceTree = "<group>"; };
+		A2C491D32099E8130000A122 /* AnswerFacade.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnswerFacade.swift; sourceTree = "<group>"; };
 		A2C491D52099EB450000A122 /* Answer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Answer.swift; sourceTree = "<group>"; };
 		A2D71BF52098C62A00DFECF7 /* GameViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
 		A2D71BF92098C67700DFECF7 /* GameScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
@@ -176,7 +180,9 @@
 		A2C491D72099ED120000A122 /* SKComponents */ = {
 			isa = PBXGroup;
 			children = (
-				A2C491D32099E8130000A122 /* AnswerBox.swift */,
+				A20B1DD7209B22D0007A3067 /* ElementFacade.swift */,
+				A2C491D32099E8130000A122 /* AnswerFacade.swift */,
+				A20B1DD9209B2668007A3067 /* SKElementHolderFacade.swift */,
 			);
 			name = SKComponents;
 			sourceTree = "<group>";
@@ -348,15 +354,17 @@
 			buildActionMask = 2147483647;
 			files = (
 				A2D71BFA2098C67700DFECF7 /* GameScene.swift in Sources */,
+				A20B1DD8209B22D0007A3067 /* ElementFacade.swift in Sources */,
 				A2F52FFC2097884200C01FFF /* AppModel.swift in Sources */,
 				A2F52FFA2097871500C01FFF /* Player.swift in Sources */,
 				A2C491D62099EB450000A122 /* Answer.swift in Sources */,
 				A2F53001209797E600C01FFF /* TestViewController.swift in Sources */,
 				1D02D8342083CB50001F7BAF /* ViewController.swift in Sources */,
 				A2D71BF62098C62A00DFECF7 /* GameViewController.swift in Sources */,
-				A2C491D42099E8130000A122 /* AnswerBox.swift in Sources */,
+				A2C491D42099E8130000A122 /* AnswerFacade.swift in Sources */,
 				A2C491D22099DF7B0000A122 /* QuizQuestion.swift in Sources */,
 				1D02D8632083D903001F7BAF /* CSVScanner.swift in Sources */,
+				A20B1DDA209B2668007A3067 /* SKElementHolderFacade.swift in Sources */,
 				1D02D8322083CB50001F7BAF /* AppDelegate.swift in Sources */,
 				1D02D8612083CF54001F7BAF /* Element.swift in Sources */,
 				A2D71BFC2098E67500DFECF7 /* Extensions.swift in Sources */,

@@ -9,7 +9,7 @@
 import Foundation
 import SpriteKit
 
-class AnswerBox {
+class AnswerFacade : SKElementHolderFacade {
     
     private let label = SKLabelNode()
     private static let backgroundColour = SKColor(red: 255, green: 255, blue: 255, alpha: 0.75)
@@ -20,11 +20,15 @@ class AnswerBox {
     init(answer: Answer, size: CGSize, position: CGPoint, rotationDegrees: CGFloat = 0) {
         self.answer = answer
         container = SKShapeNode(rectOf: size)
-        container.fillColor = AnswerBox.backgroundColour
-        container.strokeColor = AnswerBox.backgroundColour
+        container.fillColor = AnswerFacade.backgroundColour
+        container.strokeColor = AnswerFacade.backgroundColour
         initLabels(answer)
         container.position = position
         container.zRotation = rotationDegrees.toRadians()
+    }
+    
+    func getNode() -> SKShapeNode {
+        return container
     }
     
     required init?(coder aDecoder: NSCoder) {

@@ -21,12 +21,13 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
     var spinnerShape: SKShapeNode?
     var startingAngle: CGFloat? = 0
     var startingTime: TimeInterval? = 0
-    var answerBoxes = [AnswerBox]()
+    var answerFacades = [AnswerFacade]()
+    var elementFacades = [ElementFacade]()
     
-    let elementCategory:UInt32 = 0x1 << 0;
+    static let elementCategory:UInt32 = 0x1 << 0;
+    static let answerCategory:UInt32 = 0x1 << 3;
     let spinnerCategory:UInt32 = 0x1 << 1;
     let spinnerMiddleCategory:UInt32 = 0x1 << 2;
-    let answerCategory:UInt32 = 0x1 << 3;
     let collidesWithElementCategory:UInt32 = 0x1 << 8;
     let doesNotCollideWithElementCategory:UInt32 = 0x1 << 9;
     
@@ -45,20 +46,20 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
     }
     
     private func initAnswers(answers: [Answer]) {
-        let top = AnswerBox(answer: answers[0], size: CGSize(width: frame.width, height: 30), position: CGPoint(x: frame.midX, y: frame.maxY - 79))
+        let top = AnswerFacade(answer: answers[0], size: CGSize(width: frame.width, height: 30), position: CGPoint(x: frame.midX, y: frame.maxY - 79))
         setRecanglularPhysicsBody(for: top.container)
-        let bottom = AnswerBox(answer: answers[1], size: CGSize(width: frame.width, height: 30), position: CGPoint(x: frame.midX, y: frame.minY + 15))
+        let bottom = AnswerFacade(answer: answers[1], size: CGSize(width: frame.width, height: 30), position: CGPoint(x: frame.midX, y: frame.minY + 15))
         setRecanglularPhysicsBody(for: bottom.container)
-        let left = AnswerBox(answer: answers[2], size: CGSize(width: frame.height - 126, height: 30), position: CGPoint(x: frame.minX + 15, y: frame.midY - 32), rotationDegrees: 90)
+        let left = AnswerFacade(answer: answers[2], size: CGSize(width: frame.height - 126, height: 30), position: CGPoint(x: frame.minX + 15, y: frame.midY - 32), rotationDegrees: 90)
         setRecanglularPhysicsBody(for: left.container, rotated: true)
-        let right = AnswerBox(answer: answers[3], size: CGSize(width: frame.height - 126, height: 30), position: CGPoint(x: frame.maxX - 15, y: frame.midY - 32), rotationDegrees: -90)
+        let right = AnswerFacade(answer: answers[3], size: CGSize(width: frame.height - 126, height: 30), position: CGPoint(x: frame.maxX - 15, y: frame.midY - 32), rotationDegrees: -90)
         setRecanglularPhysicsBody(for: right.container, rotated: true)
-        answerBoxes = [left, right, top, bottom]
-        for box in answerBoxes {
+        answerFacades = [left, right, top, bottom]
+        for box in answerFacades {
             addChild(box.container)
             box.container.physicsBody?.affectedByGravity = false
             box.container.physicsBody?.pinned = true
-            box.container.physicsBody?.categoryBitMask = answerCategory
+            box.container.physicsBody?.categoryBitMask = GameScene.answerCategory
         }
     }
     
@@ -96,7 +97,6 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
                 doSpin(location: location, node: node, timestamp: touch.timestamp)
             } else if node.name?.contains("E_") ?? false {
                 touchPoint = location
-                let node = node.name!.contains("label") ? node.parent! : node
             }
         }
     }
@@ -135,29 +135,49 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
         let bodyA = contact.bodyA.node?.physicsBody
         let bodyB = contact.bodyB.node?.physicsBody
         if (isElementOnAnswer(bodyA?.categoryBitMask, bodyB?.categoryBitMask)) {
-            bodyA?.collisionBitMask = 0
-            bodyA?.categoryBitMask = 0
-            bodyB?.collisionBitMask = 0
-            bodyB?.categoryBitMask = 0
-            bodyA?.affectedByGravity = true
-            bodyB?.affectedByGravity = true
-            bodyA?.pinned = false
-            bodyB?.pinned = false
-            let answerNode = getAnswerNode(nodeA: bodyA?.node, nodeB: bodyB?.node)
+            [bodyA, bodyB].forEach({ setNodeToFall(physicsBody: $0) })
+            let answerFacade = getFacade(nodeA: bodyA?.node, nodeB: bodyB?.node, facades: answerFacades)
+            let elementFacade = getFacade(nodeA: bodyA?.node, nodeB: bodyB?.node, facades: elementFacades)
+            let matches = Element.Property.hasMatchingPropertyValue(for: elementFacade.element, and: answerFacade.answer.value, matches: answerFacade.answer.property)
+            let redGreen: (CGFloat, CGFloat) = matches ? (0, 255) : (255, 0)
+            answerFacade.container.fillColor = UIColor(red: redGreen.0, green: redGreen.1, blue: 0, alpha: 0.75)
             
-            print("Collision!")
         }
     }
     
-    private func getAnswerNode(nodeA: SKNode?, nodeB: SKNode?) -> SKNode? {
-        if nodeA?.name?.contains("E_") ?? false {
-            return nodeB
-        }
-        return nodeA
+    private func setNodeToFall(physicsBody: SKPhysicsBody?) {
+        physicsBody?.collisionBitMask = 0
+        physicsBody?.categoryBitMask = 0
+        physicsBody?.affectedByGravity = true
+        physicsBody?.pinned = false
+    }
+    
+    private func getNode(nodeA: SKNode?, nodeB: SKNode?, getAnswer: Bool) -> SKNode? {
+        let nodeNameA = nodeA?.name
+        let nodeNameB = nodeB?.name
+        let elementIsNodeA = nodeA?.name?.contains("E_") ?? false
+        return elementIsNodeA == getAnswer ? nodeB : nodeA
+    }
+    
+    private func getFacade<T : SKElementHolderFacade>(nodeA: SKNode?, nodeB: SKNode?, facades: Array<T>) -> T {
+        let answer = facades.first is AnswerFacade ? true : false
+        let node = getNode(nodeA: nodeA, nodeB: nodeB, getAnswer: answer)
+        
+        return facades.first(where: { $0.getNode() == node} )!
+    }
+    
+    private func getAnswerFacade(nodeA: SKNode?, nodeB: SKNode?) -> AnswerFacade {
+        let node = getNode(nodeA: nodeA, nodeB: nodeB, getAnswer: true)
+        return answerFacades.first(where: { $0.container == node} )!
+    }
+    
+    private func getElementFacade(nodeA: SKNode?, nodeB: SKNode?) -> ElementFacade {
+        let node = getNode(nodeA: nodeA, nodeB: nodeB, getAnswer: false)
+        return elementFacades.first(where: { $0.shape == node} )!
     }
     
     private func isElementOnAnswer(_ maskA: UInt32?, _ maskB: UInt32?) -> Bool  {
-        return (maskA == elementCategory && maskB == answerCategory) || (maskA == answerCategory && maskB == elementCategory)
+        return (maskA == GameScene.elementCategory && maskB == GameScene.answerCategory) || (maskA == GameScene.answerCategory && maskB == GameScene.elementCategory)
     }
     
     private func initBackground() {
@@ -192,7 +212,7 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
         middle.physicsBody?.affectedByGravity = false
         middle.zPosition = 0.5
         middle.physicsBody?.categoryBitMask = spinnerMiddleCategory
-        middle.physicsBody?.contactTestBitMask = elementCategory
+        middle.physicsBody?.contactTestBitMask = GameScene.elementCategory
         spinnerShape.addChild(middle)
         addChild(spinnerShape)
         addElements(spinnerShape, elements)
@@ -200,27 +220,30 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
     
     func addElements(_ spinnerShape: SKShapeNode, _ elements: [Element]) {
         for (index, element) in elements.enumerated() {
-            let elementShape = SKShapeNode(circleOfRadius: 20)
-            elementShape.fillColor = UIColor(element.hexColourCode)
-            let name = SKLabelNode(fontNamed: "Chalkduster")
-            name.text = element.chemicalSymbol
-            name.fontSize = 20
-            name.position = CGPoint(x: elementShape.frame.midX, y: elementShape.frame.midY - 6)
-            name.name = "E_label_\(index)"
-            name.fontColor = getTextColour(colour: elementShape.fillColor)
-            elementShape.strokeColor = SKColor.black
-            elementShape.glowWidth = 0.5
-            elementShape.zPosition = 1
-            elementShape.physicsBody = SKPhysicsBody(circleOfRadius: 20)
-            elementShape.physicsBody?.affectedByGravity = false
-            elementShape.physicsBody?.pinned = true
-            elementShape.physicsBody?.categoryBitMask = elementCategory
-            elementShape.physicsBody?.contactTestBitMask = answerCategory
-            elementShape.physicsBody?.collisionBitMask = 0
-            elementShape.name = "E_\(index)"
-            elementShape.addChild(name)
-            elementShape.position = CGPoint(x: points[index].0, y: points[index].1)
-            spinnerShape.addChild(elementShape)
+            let elementFacade = ElementFacade(element: element, startingPosition: CGPoint(x: points[index].0, y: points[index].1), index: index)
+            elementFacades.append(elementFacade)
+            spinnerShape.addChild(elementFacade.shape)
+//            let elementShape = SKShapeNode(circleOfRadius: 20)
+//            elementShape.fillColor = UIColor(element.hexColourCode)
+//            let name = SKLabelNode(fontNamed: "Chalkduster")
+//            name.text = element.chemicalSymbol
+//            name.fontSize = 20
+//            name.position = CGPoint(x: elementShape.frame.midX, y: elementShape.frame.midY - 6)
+//            name.name = "E_label_\(index)"
+//            name.fontColor = getTextColour(colour: elementShape.fillColor)
+//            elementShape.strokeColor = SKColor.black
+//            elementShape.glowWidth = 0.5
+//            elementShape.zPosition = 1
+//            elementShape.physicsBody = SKPhysicsBody(circleOfRadius: 20)
+//            elementShape.physicsBody?.affectedByGravity = false
+//            elementShape.physicsBody?.pinned = true
+//            elementShape.physicsBody?.categoryBitMask = elementCategory
+//            elementShape.physicsBody?.contactTestBitMask = answerCategory
+//            elementShape.physicsBody?.collisionBitMask = 0
+//            elementShape.name = "E_\(index)"
+//            elementShape.addChild(name)
+//            elementShape.position = CGPoint(x: points[index].0, y: points[index].1)
+//            spinnerShape.addChild(elementShape)
         }
     }
     
@@ -235,13 +258,6 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
             sprite.physicsBody?.pinned = false
             sprite.physicsBody!.velocity=velocity
         }
-    }
-    
-    // https://stackoverflow.com/questions/2509443/check-if-uicolor-is-dark-or-bright
-    func getTextColour(colour: UIColor) -> UIColor {
-        let components = colour.cgColor.components!.map { $0 * 255 }
-        let brightness = (components[0] * 299 + components[1] * 587 + components[2] * 114) / 1000
-        return brightness > 125 ? UIColor.black : UIColor.white
     }
     // make children into sprite and and physics.boy.pointtowards
     

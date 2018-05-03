@@ -246,6 +246,20 @@ struct Element : Equatable, Hashable {
             return Property.getValue(for: self, from: element)
         }
         
+        public static func getValue(for property: String, from element: Element) -> String {
+            let property = getProperty(for: property)
+            return getValue(for: property, from: element)
+        }
+        
+        public static func getProperty(for propertyLabel: String) -> Property {
+            return all().first(where: { $0.label == propertyLabel })!
+        }
+        
+        public static func hasMatchingPropertyValue(for element: Element, and propertyLabel: String, matches expectedValue: String) -> Bool {
+            let actualPropertyValue = getValue(for: propertyLabel, from: element)
+            return actualPropertyValue == expectedValue
+        }
+        
         public static func getValue(for property: Property, from element: Element) -> String {
             switch (property) {
             case ATOMIC_NUMBER:
@@ -274,8 +288,8 @@ struct Element : Equatable, Hashable {
         }
     }
     
-    static func getPropertyNameAndValue(_ element: Element, _ property: Property) -> Answer {
-        return Answer(property: property.label, value: property.getValue(from: element))
+    static func getAnswer(_ element: Element, _ property: Property) -> Answer {
+        return Answer(element: element, property: property.label, value: property.getValue(from: element))
     }
     
 }

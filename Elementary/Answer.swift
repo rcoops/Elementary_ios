@@ -11,10 +11,12 @@ import Foundation
 class Answer {
     let property: String
     let value: String
+    let element: Element
     
-    init(property: String, value: String) {
+    init(element: Element, property: String, value: String) {
         self.property = property
         self.value = value
+        self.element = element
     }
     
 }
