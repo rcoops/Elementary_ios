@@ -33,7 +33,7 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
     static let answerCategory:UInt32 = 0x1 << 2;
     let spinnerMiddleCategory:UInt32 = 0x1 << 3;
     let worldCategory:UInt32 = 0x1 << 4;
-    let fakeCategory:UInt32 = 0x1 << 5;
+    let fallingCategory:UInt32 = 0x1 << 5;
     
     override func didMove(to view: SKView) {
         initQuizRound()
@@ -96,7 +96,6 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
         }
     }
     
-    // https://stackoverflow.com/questions/28245653/how-to-throw-skspritenode
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         for touch in touches {
             let location = touch.location(in:self)
@@ -135,12 +134,13 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
         let angle = atan2(dy, dx)
         var deltaAngle = angle - startingAngle!
         if abs(deltaAngle) > CGFloat.pi {
-            if (deltaAngle > 0) {
-                deltaAngle = deltaAngle - CGFloat.pi * 2
-            }
-            else {
-                deltaAngle = deltaAngle + CGFloat.pi * 2
-            }
+            let adjustment = deltaAngle > 0 ? 2.0 : -2.0
+            deltaAngle = deltaAngle + CGFloat.pi * CGFloat(adjustment)
+//            if (deltaAngle > 0) {
+//            }
+//            else {
+//                deltaAngle = deltaAngle + CGFloat.pi * 2
+//            }
         }
         let dt = CGFloat(timestamp - startingTime!)
         let velocity = deltaAngle / dt
@@ -185,8 +185,9 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
             endGame()
         }
         if model.answeredCount == 4 {
-            let messagePrefix = model.correctAnswerCount > 2 ? "Well done!" : "Uh Oh"
-            gameManager?.showPopup(title: "Round End", message: "\(messagePrefix), You got \(String(model.correctAnswerCount)) answers correct")
+            let goodScore = model.correctAnswerCount > 2
+            let messagePrefix = goodScore ? "Well done!" : "Uh Oh,"
+            gameManager?.showPopup(title: "Round End", message: "\(messagePrefix) You got \(goodScore ? "" : "only ")\(String(model.correctAnswerCount)) answers correct")
             initQuizRound()
         } else {
             var title = "Wrong!"
@@ -208,9 +209,9 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
     }
     
     private func setNodeToFall(physicsBody: SKPhysicsBody?) {
-        physicsBody?.categoryBitMask = fakeCategory
-        physicsBody?.contactTestBitMask = fakeCategory
-        physicsBody?.collisionBitMask = fakeCategory
+        physicsBody?.categoryBitMask = fallingCategory
+        physicsBody?.contactTestBitMask = fallingCategory
+        physicsBody?.collisionBitMask = fallingCategory
         physicsBody?.affectedByGravity = true
         physicsBody?.allowsRotation = true
     }
@@ -237,7 +238,6 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
         addChild(background)
     }
     
-    // https://stackoverflow.com/questions/26727774/how-to-draw-a-elementSpinner-in-swift-using-spritekit
     private func initElementSpinner(elements: [Element]){
         let spinnerColour = UIColor(red: 255.0, green: 255.0, blue: 255.0, alpha: 0.5)
         let spinnerShape = SKShapeNode(circleOfRadius: 120)
@@ -293,19 +293,6 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
             newRoundOrEndGame(matches: false)
         }
     }
-    // make children into sprite and and physics.boy.pointtowards
     
-    // child rotation
-    //https://stackoverflow.com/questions/27571794/how-to-rotate-parent-skspritenode-only-and-not-the-child-node
-    
-    
-    // User Defaults
-    // NSKeyedArchiver
-    // https://developer.apple.com/documentation/swift/hashable
-    // bounce once then fall off screen
-    //https://www.smashingmagazine.com/2016/11/how-to-build-a-spritekit-game-in-swift-3-part-1/
-    
-    // control rotate
-    // https://stackoverflow.com/questions/32143382/drag-rotate-a-node-around-a-fixed-point
 }
 

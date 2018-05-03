@@ -69,19 +69,17 @@ extension UIColor {
 }
 
 extension UIViewController {
-//    func alertWithTitle(title: String!, message: String, ViewController: UIViewController, toFocus: UITextField? = nil) {
-//        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-//        let action = UIAlertAction(title: "OK", style: UIAlertActionStyle.cancel, handler: {_ in
-//            toFocus?.becomeFirstResponder()
-//        })
-//        alert.addAction(action)
-//        ViewController.present(alert, animated: true, completion:nil)
-//    }
-    func alertWithTitle(title: String!, message: String, ViewController: UIViewController, action: UIAlertAction? = nil) {
+    func alertWithTitle(title: String!, message: String, ViewController: UIViewController, action: ((UIAlertAction) -> Swift.Void)? = nil) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        if let action = action {
-            alert.addAction(action)
-        }
+        alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.cancel, handler: action))
         ViewController.present(alert, animated: true, completion:nil)
     }
+    
+    func setBackground(_ image: UIImage) {
+        let backgroundImage = UIImageView(frame: UIScreen.main.bounds)
+        backgroundImage.image = image
+        backgroundImage.contentMode =  UIViewContentMode.scaleAspectFill
+        self.view.insertSubview(backgroundImage, at: 0)
+    }
+    
 }

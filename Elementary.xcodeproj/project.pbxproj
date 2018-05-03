@@ -17,6 +17,7 @@
 		1D02D8612083CF54001F7BAF /* Element.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D02D8602083CF54001F7BAF /* Element.swift */; };
 		A20B1DD8209B22D0007A3067 /* ElementFacade.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20B1DD7209B22D0007A3067 /* ElementFacade.swift */; };
 		A20B1DDA209B2668007A3067 /* SKNodeFacade.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20B1DD9209B2668007A3067 /* SKNodeFacade.swift */; };
+		A20B1DDE209B7A41007A3067 /* HighScoresController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20B1DDD209B7A41007A3067 /* HighScoresController.swift */; };
 		A2C491D22099DF7B0000A122 /* QuizQuestion.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2C491D12099DF7B0000A122 /* QuizQuestion.swift */; };
 		A2C491D42099E8130000A122 /* AnswerFacade.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2C491D32099E8130000A122 /* AnswerFacade.swift */; };
 		A2C491D62099EB450000A122 /* Answer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2C491D52099EB450000A122 /* Answer.swift */; };
@@ -63,6 +64,7 @@
 		1D02D8602083CF54001F7BAF /* Element.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Element.swift; sourceTree = "<group>"; };
 		A20B1DD7209B22D0007A3067 /* ElementFacade.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ElementFacade.swift; sourceTree = "<group>"; };
 		A20B1DD9209B2668007A3067 /* SKNodeFacade.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SKNodeFacade.swift; sourceTree = "<group>"; };
+		A20B1DDD209B7A41007A3067 /* HighScoresController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HighScoresController.swift; sourceTree = "<group>"; };
 		A2C491D12099DF7B0000A122 /* QuizQuestion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuizQuestion.swift; sourceTree = "<group>"; };
 		A2C491D32099E8130000A122 /* AnswerFacade.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnswerFacade.swift; sourceTree = "<group>"; };
 		A2C491D52099EB450000A122 /* Answer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Answer.swift; sourceTree = "<group>"; };
@@ -200,6 +202,7 @@
 			children = (
 				A2F52FF320975AA800C01FFF /* MainMenuController.swift */,
 				A2D71BF52098C62A00DFECF7 /* GameViewController.swift */,
+				A20B1DDD209B7A41007A3067 /* HighScoresController.swift */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -341,6 +344,7 @@
 			files = (
 				A2D71BFA2098C67700DFECF7 /* GameScene.swift in Sources */,
 				A20B1DD8209B22D0007A3067 /* ElementFacade.swift in Sources */,
+				A20B1DDE209B7A41007A3067 /* HighScoresController.swift in Sources */,
 				A2F52FFC2097884200C01FFF /* AppModel.swift in Sources */,
 				A2F52FFA2097871500C01FFF /* Player.swift in Sources */,
 				A2C491D62099EB450000A122 /* Answer.swift in Sources */,

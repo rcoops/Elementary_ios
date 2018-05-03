@@ -24,9 +24,7 @@ class GameViewController : UIViewController, GameManager {
     }
     
     func endGame() {
-        let action = UIAlertAction(title: "OK", style: UIAlertActionStyle.cancel, handler: {_ in
-            self.performSegue(withIdentifier: "home", sender: self)
-        })
+        let action: ((UIAlertAction) -> Swift.Void) = { _ in self.performSegue(withIdentifier: "home", sender: self) }
         alertWithTitle(title: "Game Over", message: "Uh oh! You're out of lives, your score is \(model.currentPlayer!.score)", ViewController: self, action: action)
     }
     

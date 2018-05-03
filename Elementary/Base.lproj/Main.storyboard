@@ -22,7 +22,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="High Scores" id="ZLa-C8-6xD"/>
+                    <tabBarItem key="tabBarItem" title="High Scores" image="scores@3" selectedImage="scores@3" id="ZLa-C8-6xD" userLabel="High Scores"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tM5-6Y-qjA" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -86,7 +86,7 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="New Game" image="ic_new_game" id="Xvr-GM-wvV"/>
+                    <tabBarItem key="tabBarItem" title="New Game" image="ic_new_game" selectedImage="ic_new_game" id="Xvr-GM-wvV"/>
                     <connections>
                         <outlet property="avatarPicker" destination="jCA-lg-9Lc" id="m4Y-CK-5rN"/>
                         <outlet property="txtPlayerName" destination="Hdz-qM-6cm" id="NyB-rs-A2J"/>
@@ -160,6 +160,7 @@
     </scenes>
     <resources>
         <image name="ic_new_game" width="25" height="25"/>
+        <image name="scores@3" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="Nx2-ij-Cri"/>

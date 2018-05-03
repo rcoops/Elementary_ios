@@ -21,19 +21,12 @@ class MainMenuController : UIViewController, UIPickerViewDataSource, UIPickerVie
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setBackground()
+        setBackground(#imageLiteral(resourceName: "main_background"))
         for avatar in avatarPicker.subviews {
             avatar.alpha = 1.0
         }
         selectedAvatarName = avatarNames[avatarPicker.selectedRow(inComponent: 0)]
         txtPlayerName.becomeFirstResponder()
-    }
-    
-    private func setBackground() {
-        let backgroundImage = UIImageView(frame: UIScreen.main.bounds)
-        backgroundImage.image = #imageLiteral(resourceName: "main_background")
-        backgroundImage.contentMode =  UIViewContentMode.scaleAspectFill
-        self.view.insertSubview(backgroundImage, at: 0)
     }
     
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
@@ -72,11 +65,8 @@ class MainMenuController : UIViewController, UIPickerViewDataSource, UIPickerVie
             appDelegate.appModel.initPlayer(name: txtPlayerName.text!, avatarName: selectedAvatarName) // txt must have content for name valid check
             self.performSegue(withIdentifier: "game", sender: self)
         } else {
-            let action = UIAlertAction(title: "OK", style: UIAlertActionStyle.cancel, handler: {_ in
-                self.txtPlayerName?.becomeFirstResponder()
-            })
+            let action: ((UIAlertAction) -> Swift.Void) = { _ in self.txtPlayerName?.becomeFirstResponder() }
             alertWithTitle(title: "Player Name Empty", message: "You need a player name before starting silly!", ViewController: self, action: action)
-            
         }
     }
     

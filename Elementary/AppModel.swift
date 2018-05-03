@@ -49,9 +49,9 @@ class AppModel {
             if let player = currentPlayer {
                 highScores.append(player)
             }
-            
             sortHighScores()
         }
+        writeToFile()
     }
     
     open func isHighScore(_ player: Player?) -> Bool {
@@ -59,16 +59,10 @@ class AppModel {
     }
     
     open func writeToFile() {
-        let fileUrl = Bundle.main.url(forResource: scoresFileName, withExtension: scoresFileExtension)!
+        var fileUrl = Bundle.main.path(forResource: scoresFileName, ofType: scoresFileExtension)!
         
         let outStr = highScores.map { $0.toCsvString() }.joined(separator: "\n")
-        
-        do {
-            try outStr.write(to: fileUrl, atomically: true, encoding: String.Encoding.utf8)
-        } catch {
-            print("failed to write to file")
-            print(error)
-        }
+        outStr.write(to: &fileUrl)
     }
     
     open func printHighScores() {
@@ -93,16 +87,6 @@ class AppModel {
         } catch {
             print("failed to read from file")
             print(error)
-        }
-    }
-    
-    private func accessScores(_ action: (String) throws -> Void) {
-        if let path = Bundle.main.path(forResource: "scores", ofType: "csv") {
-            do {
-                try action(path)
-            } catch {
-                print(error)
-            }
         }
     }
     
