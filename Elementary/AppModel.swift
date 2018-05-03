@@ -15,6 +15,7 @@ class AppModel {
     var highScores = [Player]()
     var quizQuestion: QuizQuestion?
     var answeredCount = 0
+    var correctAnswerCount = 0
     private let scoresFileName = "scores"
     private let scoresFileExtension = "csv"
     

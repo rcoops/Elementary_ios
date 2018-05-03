@@ -47,6 +47,7 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
     
     private func initQuizRound() {
         model.answeredCount = 0
+        model.correctAnswerCount = 0
         removeAllChildren()
         initBackground()
         let quizQuestion = model.initQuizQuestion()
@@ -172,12 +173,12 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
     
     private func newRoundOrEndGame(matches: Bool) {
         if matches {
-            model.currentPlayer!.adjustScore(model.answeredCount * 10)
+            model.correctAnswerCount += 1
+            model.currentPlayer!.adjustScore(model.correctAnswerCount * 10)
         } else if model.isGameOverOnDeductLife() {
             endGame()
         }
-        if model.answeredCount == 4 || restart {
-            restart = false
+        if model.answeredCount == 4 {
             initQuizRound()
         } else {
             updateHud()
@@ -269,6 +270,8 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
         let allOut = elementFacades
             .reduce(true, { current, node in (current && !intersects(node.shape)) })
         if allOut && restart {
+            model.answeredCount = 4
+            restart = false
             newRoundOrEndGame(matches: false)
         }
     }
