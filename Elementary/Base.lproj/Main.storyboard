@@ -26,7 +26,36 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tM5-6Y-qjA" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-166" y="387"/>
+            <point key="canvasLocation" x="-1111" y="861"/>
+        </scene>
+        <!--High Scores-->
+        <scene sceneID="u8t-GZ-7ZM">
+            <objects>
+                <tableViewController id="7Pf-Mc-jIr" customClass="HighScoresController" customModule="Elementary" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="W1L-oD-hg0">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" alpha="0.0" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="scoreIdentifier" id="JTj-FH-6qo">
+                                <rect key="frame" x="0.0" y="28" width="375" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="JTj-FH-6qo" id="SLr-3v-8bl">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="7Pf-Mc-jIr" id="Aqx-yE-PXv"/>
+                            <outlet property="delegate" destination="7Pf-Mc-jIr" id="HUM-Yf-9WX"/>
+                        </connections>
+                    </tableView>
+                    <tabBarItem key="tabBarItem" title="High Scores" image="ic_scores" id="nbT-aG-dSH"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="sCk-ln-9df" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-167" y="428"/>
         </scene>
         <!--New Game-->
         <scene sceneID="Bex-IF-s6f">
@@ -135,6 +164,7 @@
                     <connections>
                         <segue destination="nyN-6p-LGd" kind="relationship" relationship="viewControllers" id="pRg-5w-1s9"/>
                         <segue destination="gWV-cR-fxw" kind="relationship" relationship="viewControllers" id="gqk-Ou-hbw"/>
+                        <segue destination="7Pf-Mc-jIr" kind="relationship" relationship="viewControllers" id="HzC-V4-KST"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qJo-v8-9aA" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -160,9 +190,10 @@
     </scenes>
     <resources>
         <image name="ic_new_game" width="25" height="25"/>
+        <image name="ic_scores" width="25" height="25"/>
         <image name="scores@3" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="Nx2-ij-Cri"/>
+        <segue reference="pRg-5w-1s9"/>
     </inferredMetricsTieBreakers>
 </document>
