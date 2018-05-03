@@ -22,7 +22,7 @@ class AnswerFacade : SKElementHolderFacade {
         container = SKShapeNode(rectOf: size)
         container.fillColor = AnswerFacade.backgroundColour
         container.strokeColor = AnswerFacade.backgroundColour
-        initLabels(answer)
+        initLabel(answer)
         container.position = position
         container.zRotation = rotationDegrees.toRadians()
         setRecanglularPhysicsBody(for: container, rotated: rotationDegrees != 0)
@@ -36,7 +36,7 @@ class AnswerFacade : SKElementHolderFacade {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func initLabels(_ answer: Answer) {
+    func initLabel(_ answer: Answer) {
         label.fontSize = 20
         label.text = "\(answer.property): \(answer.value)"
         label.fontColor = SKColor.black

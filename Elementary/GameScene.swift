@@ -16,6 +16,8 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
     var touchPoint: CGPoint = CGPoint()
     var touching: Bool = false
     
+    let lives = SKLabelNode(fontNamed: "AvenirNext-Bold")
+    let score = SKLabelNode(fontNamed: "AvenirNext-Bold")
     let model = (UIApplication.shared.delegate as! AppDelegate).appModel
     let points = [(-75, 0), (-52, 52), (0, 75), (52, 52), (75, 0), (52, -52), (0, -75), (-52, -52)]
     var spinnerShape: SKShapeNode?
@@ -32,11 +34,26 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
     let doesNotCollideWithElementCategory:UInt32 = 0x1 << 9;
     
     override func didMove(to view: SKView) {
-        let livesLabel = SKLabelNode(text: "Lives")
-        livesLabel.fontColor = UIColor.createTranslucent(red: 155, green: 0, blue: 255)
         initQuizRound()
+        let avatar = SKSpriteNode(imageNamed: model.currentPlayer!.imageName)
+        avatar.alpha = 0.4
+        avatar.size = CGSize(width: 40, height: 40)
+        avatar.position = CGPoint(x: 60, y: 40 + avatar.frame.height / 2)
+        addChild(avatar)
+        let scoreImage = SKSpriteNode(imageNamed: "ic_score")
+        scoreImage.alpha = 0.4
+        scoreImage.position = CGPoint(x: 260, y: 40 + scoreImage.frame.height / 2)
+        addChild(scoreImage)
+        initHudLabel(label: lives, position: CGPoint(x: 100, y: 80 + avatar.frame.height))
+        initHudLabel(label: score, position: CGPoint(x: 300, y: 80 + avatar.frame.height))
         physicsWorld.gravity = CGVector(dx: 0.0, dy: -9.8);
         physicsWorld.contactDelegate = self
+    }
+    
+    private func initHudLabel(label: SKLabelNode, position: CGPoint) {
+        label.fontColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.4)
+        label.fontSize = 30
+        label.position = CGPoint(x: position.x, y: (position.y - label.frame.height) / 2)
     }
     
     private func initQuizRound() {
@@ -46,8 +63,20 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
         let quizQuestion = model.initQuizQuestion()
         initElementSpinner(elements: quizQuestion.elements)
         initAnswers(answers: quizQuestion.answers)
+        initHud()
     }
     
+    private func initHud() {
+        addChild(lives)
+        addChild(score)
+        updateHud()
+    }
+    
+    private func updateHud() {
+        lives.text = String(model.currentPlayer!.lives)
+        score.text = String(model.currentPlayer!.score)
+    }
+
     private func initAnswers(answers: [Answer]) {
         let top = AnswerFacade(answer: answers[0], size: CGSize(width: frame.width, height: 30), position: CGPoint(x: frame.midX, y: frame.maxY - 79))
         let bottom = AnswerFacade(answer: answers[1], size: CGSize(width: frame.width, height: 30), position: CGPoint(x: frame.midX, y: frame.minY + 15))
@@ -141,15 +170,22 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
     }
     
     private func newRoundOrEndGame(matches: Bool) {
-        if !matches && model.isGameOverOnDeductLife() {
+        if matches {
+            switch (model.answeredCount) {
+            case 1,2,3,4:
+                model.currentPlayer!.adjustScore(model.answeredCount * 10)
+            case 4:
+                initQuizRound()
+            default:
+                break
+            }
+        } else if model.isGameOverOnDeductLife() {
             endGame()
-        } else if model.answeredCount == 4 {
-            initQuizRound()
         }
+        updateHud()
     }
     
     private func endGame() {
-        
     }
     
     private func setNodeToFall(physicsBody: SKPhysicsBody?) {
@@ -230,16 +266,10 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
             sprite.physicsBody?.pinned = false
             sprite.physicsBody!.velocity=velocity
         }
-//        var allOut = false
-//        for node in elementFacades.map({ $0.shape }) {
-//            if !intersects(node) {
-//                allOut = true
-//            }
-//        }
         let allOut = elementFacades
             .reduce(true, { current, node in (current && intersects(node.shape)) })
         if allOut {
-            initQuizRound()
+            newRoundOrEndGame(matches: false)
         }
         
     }
