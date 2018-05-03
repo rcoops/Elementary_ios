@@ -11,6 +11,7 @@ import SpriteKit
 import UIKit
 
 class GameScene : SKScene, SKPhysicsContactDelegate {
+    
     var sprite: SKNode!
     var touchPoint: CGPoint = CGPoint()
     var touching: Bool = false
@@ -22,8 +23,17 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
     var startingTime: TimeInterval? = 0
     var answerBoxes = [AnswerBox]()
     
+    let elementCategory:UInt32 = 0x1 << 0;
+    let spinnerCategory:UInt32 = 0x1 << 1;
+    let spinnerMiddleCategory:UInt32 = 0x1 << 2;
+    let answerCategory:UInt32 = 0x1 << 3;
+    let collidesWithElementCategory:UInt32 = 0x1 << 8;
+    let doesNotCollideWithElementCategory:UInt32 = 0x1 << 9;
+    
     override func didMove(to view: SKView) {
         initQuizRound()
+        physicsWorld.gravity = CGVector(dx: 0.0, dy: -9.8);
+        physicsWorld.contactDelegate = self
     }
     
     private func initQuizRound() {
@@ -36,14 +46,28 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
     
     private func initAnswers(answers: [Answer]) {
         let top = AnswerBox(answer: answers[0], size: CGSize(width: frame.width, height: 30), position: CGPoint(x: frame.midX, y: frame.maxY - 79))
+        setRecanglularPhysicsBody(for: top.container)
         let bottom = AnswerBox(answer: answers[1], size: CGSize(width: frame.width, height: 30), position: CGPoint(x: frame.midX, y: frame.minY + 15))
+        setRecanglularPhysicsBody(for: bottom.container)
         let left = AnswerBox(answer: answers[2], size: CGSize(width: frame.height - 126, height: 30), position: CGPoint(x: frame.minX + 15, y: frame.midY - 32), rotationDegrees: 90)
+        setRecanglularPhysicsBody(for: left.container, rotated: true)
         let right = AnswerBox(answer: answers[3], size: CGSize(width: frame.height - 126, height: 30), position: CGPoint(x: frame.maxX - 15, y: frame.midY - 32), rotationDegrees: -90)
+        setRecanglularPhysicsBody(for: right.container, rotated: true)
         answerBoxes = [left, right, top, bottom]
         for box in answerBoxes {
             addChild(box.container)
+            box.container.physicsBody?.affectedByGravity = false
+            box.container.physicsBody?.pinned = true
+            box.container.physicsBody?.categoryBitMask = answerCategory
         }
     }
+    
+    private func setRecanglularPhysicsBody(for node: SKNode, rotated: Bool = false) {
+        let width = rotated ? node.frame.height : node.frame.width
+        let height = rotated ? node.frame.width : node.frame.height
+        node.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: width, height: height))
+    }
+    
     // https://stackoverflow.com/questions/28245653/how-to-throw-skspritenode
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         for touch in touches {
@@ -107,6 +131,35 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
         touching = false
     }
     
+    func didBegin(_ contact: SKPhysicsContact) {
+        let bodyA = contact.bodyA.node?.physicsBody
+        let bodyB = contact.bodyB.node?.physicsBody
+        if (isElementOnAnswer(bodyA?.categoryBitMask, bodyB?.categoryBitMask)) {
+            bodyA?.collisionBitMask = 0
+            bodyA?.categoryBitMask = 0
+            bodyB?.collisionBitMask = 0
+            bodyB?.categoryBitMask = 0
+            bodyA?.affectedByGravity = true
+            bodyB?.affectedByGravity = true
+            bodyA?.pinned = false
+            bodyB?.pinned = false
+            let answerNode = getAnswerNode(nodeA: bodyA?.node, nodeB: bodyB?.node)
+            
+            print("Collision!")
+        }
+    }
+    
+    private func getAnswerNode(nodeA: SKNode?, nodeB: SKNode?) -> SKNode? {
+        if nodeA?.name?.contains("E_") ?? false {
+            return nodeB
+        }
+        return nodeA
+    }
+    
+    private func isElementOnAnswer(_ maskA: UInt32?, _ maskB: UInt32?) -> Bool  {
+        return (maskA == elementCategory && maskB == answerCategory) || (maskA == answerCategory && maskB == elementCategory)
+    }
+    
     private func initBackground() {
         let background = SKSpriteNode(imageNamed: "game_background")
         background.position = CGPoint(x: frame.midX, y: frame.midY)
@@ -123,7 +176,9 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
         spinnerShape.position = CGPoint(x: frame.midX, y: frame.midY - 50)
         spinnerShape.physicsBody?.pinned = true
         spinnerShape.physicsBody?.affectedByGravity = false
-        spinnerShape.physicsBody!.angularDamping = 0.25
+        spinnerShape.physicsBody?.categoryBitMask = spinnerCategory
+        spinnerShape.physicsBody?.angularDamping = 0.25
+        spinnerShape.physicsBody?.collisionBitMask = doesNotCollideWithElementCategory
         spinnerShape.strokeColor = spinnerColour
         spinnerShape.glowWidth = 1.0
         spinnerShape.fillColor = spinnerColour
@@ -136,6 +191,8 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
         middle.physicsBody!.pinned = true
         middle.physicsBody?.affectedByGravity = false
         middle.zPosition = 0.5
+        middle.physicsBody?.categoryBitMask = spinnerMiddleCategory
+        middle.physicsBody?.contactTestBitMask = elementCategory
         spinnerShape.addChild(middle)
         addChild(spinnerShape)
         addElements(spinnerShape, elements)
@@ -143,25 +200,27 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
     
     func addElements(_ spinnerShape: SKShapeNode, _ elements: [Element]) {
         for (index, element) in elements.enumerated() {
-            let circle = SKShapeNode(circleOfRadius: 20)
+            let elementShape = SKShapeNode(circleOfRadius: 20)
+            elementShape.fillColor = UIColor(element.hexColourCode)
             let name = SKLabelNode(fontNamed: "Chalkduster")
             name.text = element.chemicalSymbol
             name.fontSize = 20
-            name.position = CGPoint(x: circle.frame.midX, y: circle.frame.midY - 6)
+            name.position = CGPoint(x: elementShape.frame.midX, y: elementShape.frame.midY - 6)
             name.name = "E_label_\(index)"
-            circle.strokeColor = SKColor.black
-            circle.glowWidth = 0.5
-            circle.fillColor = UIColor(element.hexColourCode)
-            name.fontColor = getTextColour(colour: circle.fillColor)
-            circle.zPosition = 1
-            circle.physicsBody = SKPhysicsBody(circleOfRadius: 20)
-            circle.physicsBody?.affectedByGravity = false
-            circle.physicsBody!.pinned = true
-            let circleName = "E_\(index)"
-            circle.name = circleName
-            circle.addChild(name)
-            spinnerShape.addChild(circle)
-            circle.position = CGPoint(x: points[index].0, y: points[index].1)
+            name.fontColor = getTextColour(colour: elementShape.fillColor)
+            elementShape.strokeColor = SKColor.black
+            elementShape.glowWidth = 0.5
+            elementShape.zPosition = 1
+            elementShape.physicsBody = SKPhysicsBody(circleOfRadius: 20)
+            elementShape.physicsBody?.affectedByGravity = false
+            elementShape.physicsBody?.pinned = true
+            elementShape.physicsBody?.categoryBitMask = elementCategory
+            elementShape.physicsBody?.contactTestBitMask = answerCategory
+            elementShape.physicsBody?.collisionBitMask = 0
+            elementShape.name = "E_\(index)"
+            elementShape.addChild(name)
+            elementShape.position = CGPoint(x: points[index].0, y: points[index].1)
+            spinnerShape.addChild(elementShape)
         }
     }
     
@@ -169,10 +228,10 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
         if touching {
             let dt: CGFloat = 1.0 / 2.0
             let spritePosition = sprite.position + spinnerShape!.position
-            print("TouchPos: \(touchPoint), SpritePos: \(spritePosition)")
             let distance = CGVector(dx: touchPoint.x - spritePosition.x, dy: touchPoint.y - spritePosition.y)
             let velocity = CGVector(dx: distance.dx/dt, dy: distance.dy/dt)
-            print("Velocity: \(velocity)")
+//            print("TouchPos: \(touchPoint), SpritePos: \(spritePosition)")
+//            print("Velocity: \(velocity)")
             sprite.physicsBody?.pinned = false
             sprite.physicsBody!.velocity=velocity
         }
