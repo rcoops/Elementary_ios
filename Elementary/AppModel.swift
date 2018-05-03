@@ -14,11 +14,17 @@ class AppModel {
     var currentPlayer: Player?
     var highScores = [Player]()
     var quizQuestion: QuizQuestion?
+    var answeredCount = 0
     private let scoresFileName = "scores"
     private let scoresFileExtension = "csv"
     
     init() {
         readFile()
+    }
+    
+    open func isGameOverOnDeductLife() -> Bool {
+        currentPlayer?.lives -= 1
+        return currentPlayer?.lives ?? 0 == 0
     }
     
     open func initQuizQuestion() -> QuizQuestion {

@@ -25,6 +25,7 @@ class AnswerFacade : SKElementHolderFacade {
         initLabels(answer)
         container.position = position
         container.zRotation = rotationDegrees.toRadians()
+        setRecanglularPhysicsBody(for: container, rotated: rotationDegrees != 0)
     }
     
     func getNode() -> SKShapeNode {
@@ -41,6 +42,16 @@ class AnswerFacade : SKElementHolderFacade {
         label.fontColor = SKColor.black
         label.position = CGPoint(x: container.frame.midX, y: container.frame.midY - label.frame.midY)
         container.addChild(label)
+    }
+    
+    private func setRecanglularPhysicsBody(for node: SKNode, rotated: Bool = false) {
+        let width = rotated ? node.frame.height : node.frame.width
+        let height = rotated ? node.frame.width : node.frame.height
+        node.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: width, height: height))
+        node.physicsBody?.affectedByGravity = false
+        node.physicsBody?.allowsRotation = false
+//        node.physicsBody?.pinned = true
+        node.physicsBody?.categoryBitMask = GameScene.answerCategory
     }
     
 }
