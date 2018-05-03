@@ -28,7 +28,6 @@
 		A2F52FFA2097871500C01FFF /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2F52FF92097871500C01FFF /* Player.swift */; };
 		A2F52FFC2097884200C01FFF /* AppModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2F52FFB2097884200C01FFF /* AppModel.swift */; };
 		A2F52FFF209789BB00C01FFF /* scores.csv in Resources */ = {isa = PBXBuildFile; fileRef = A2F52FFE209789BB00C01FFF /* scores.csv */; };
-		A2F53001209797E600C01FFF /* TestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2F53000209797E600C01FFF /* TestViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -76,7 +75,6 @@
 		A2F52FF92097871500C01FFF /* Player.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 		A2F52FFB2097884200C01FFF /* AppModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppModel.swift; sourceTree = "<group>"; };
 		A2F52FFE209789BB00C01FFF /* scores.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = scores.csv; sourceTree = "<group>"; };
-		A2F53000209797E600C01FFF /* TestViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -211,7 +209,6 @@
 		A2F52FFD209788F200C01FFF /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				A2F53000209797E600C01FFF /* TestViewController.swift */,
 				A2F52FF320975AA800C01FFF /* MainMenuController.swift */,
 				A2D71BF52098C62A00DFECF7 /* GameViewController.swift */,
 			);
@@ -358,7 +355,6 @@
 				A2F52FFC2097884200C01FFF /* AppModel.swift in Sources */,
 				A2F52FFA2097871500C01FFF /* Player.swift in Sources */,
 				A2C491D62099EB450000A122 /* Answer.swift in Sources */,
-				A2F53001209797E600C01FFF /* TestViewController.swift in Sources */,
 				1D02D8342083CB50001F7BAF /* ViewController.swift in Sources */,
 				A2D71BF62098C62A00DFECF7 /* GameViewController.swift in Sources */,
 				A2C491D42099E8130000A122 /* AnswerFacade.swift in Sources */,

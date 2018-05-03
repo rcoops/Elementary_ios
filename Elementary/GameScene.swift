@@ -12,6 +12,8 @@ import UIKit
 
 class GameScene : SKScene, SKPhysicsContactDelegate {
     
+    var gameManager: GameManager?
+    
     var sprite: SKNode!
     var touchPoint: CGPoint = CGPoint()
     var touching: Bool = false
@@ -37,6 +39,10 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
         initQuizRound()
         physicsWorld.gravity = CGVector(dx: 0.0, dy: -9.8);
         physicsWorld.contactDelegate = self
+    }
+    
+    func setGameManager(_ gameManager: GameManager) {
+        self.gameManager = gameManager
     }
     
     private func initHudLabel(label: SKLabelNode, position: CGPoint) {
@@ -179,14 +185,26 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
             endGame()
         }
         if model.answeredCount == 4 {
+            let messagePrefix = model.correctAnswerCount > 2 ? "Well done!" : "Uh Oh"
+            gameManager?.showPopup(title: "Round End", message: "\(messagePrefix), You got \(String(model.correctAnswerCount)) answers correct")
             initQuizRound()
         } else {
+            var title = "Wrong!"
+            var message = "No points =/"
+            if matches {
+                title = "Correct!"
+                message = "Have another \(String(model.correctAnswerCount * 10)) points!"
+            } else {
+                // play sound
+            }
+            gameManager?.showPopup(title: title, message: message)
             updateHud()
         }
     }
     
     private func endGame() {
-        initQuizRound()
+        model.newScore()
+        gameManager?.endGame()
     }
     
     private func setNodeToFall(physicsBody: SKPhysicsBody?) {

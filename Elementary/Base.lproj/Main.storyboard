@@ -97,41 +97,6 @@
             </objects>
             <point key="canvasLocation" x="-167.19999999999999" y="-317.09145427286359"/>
         </scene>
-        <!--Test View Controller-->
-        <scene sceneID="aqk-Ek-Ztm">
-            <objects>
-                <viewController storyboardIdentifier="TestViewController" id="d0f-bc-dyJ" customClass="TestViewController" customModule="Elementary" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="hdt-bq-hYv"/>
-                        <viewControllerLayoutGuide type="bottom" id="Hjq-Bl-AYS"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="Dzd-y0-mCA">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Test" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="e6y-ZL-0Ft">
-                                <rect key="frame" x="179" y="305" width="42" height="21"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2yw-67-2Or">
-                                <rect key="frame" x="164" y="178" width="46" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Button"/>
-                                <connections>
-                                    <action selector="testButtonPushed:" destination="d0f-bc-dyJ" eventType="touchUpInside" id="UE5-9s-Y6y"/>
-                                </connections>
-                            </button>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="jQg-yn-ARb" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="567" y="-1007"/>
-        </scene>
         <!--Game View Controller-->
         <scene sceneID="ow2-PS-Qzq">
             <objects>
@@ -149,6 +114,7 @@
                         </connections>
                     </view>
                     <connections>
+                        <segue destination="nyN-6p-LGd" kind="show" identifier="home" id="Nx2-ij-Cri"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="46j-C8-C3b" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -195,4 +161,7 @@
     <resources>
         <image name="ic_new_game" width="25" height="25"/>
     </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="Nx2-ij-Cri"/>
+    </inferredMetricsTieBreakers>
 </document>

@@ -68,3 +68,13 @@ extension UIColor {
     }
 }
 
+extension UIViewController {
+    func alertWithTitle(title: String!, message: String, ViewController: UIViewController, toFocus: UITextField? = nil) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let action = UIAlertAction(title: "OK", style: UIAlertActionStyle.cancel, handler: {_ in
+            toFocus?.becomeFirstResponder()
+        });
+        alert.addAction(action)
+        ViewController.present(alert, animated: true, completion:nil)
+    }
+}

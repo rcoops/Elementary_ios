@@ -41,18 +41,21 @@ class AppModel {
         currentPlayer?.adjustScore(scoreAdjustment)
     }
     
-    open func newScore(player: Player) {
-        if (isHighScore(player)) {
+    open func newScore() {
+        if (isHighScore(currentPlayer)) {
             if highScores.count >= 10 {
                 highScores.removeLast()
             }
-            highScores.append(player)
+            if let player = currentPlayer {
+                highScores.append(player)
+            }
+            
             sortHighScores()
         }
     }
     
-    open func isHighScore(_ player: Player) -> Bool {
-        return player.score > (highScores.last?.score ?? -1)
+    open func isHighScore(_ player: Player?) -> Bool {
+        return player?.score ?? -1 > (highScores.last?.score ?? -1)
     }
     
     open func writeToFile() {
