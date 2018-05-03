@@ -13,7 +13,7 @@ class Player {
     
     var name: String
     var imageName: String
-    var score: Int = 0
+    var score: Int = 100
     var lives: Int = 1
     
     init(_ name: String, _ imageName: String) {

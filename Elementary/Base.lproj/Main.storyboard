@@ -12,7 +12,6 @@
         <!--High Scores-->
         <scene sceneID="nxH-V2-WYQ">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="tM5-6Y-qjA" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <viewController id="gWV-cR-fxw" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="wWU-sc-hO1"/>
@@ -25,6 +24,7 @@
                     </view>
                     <tabBarItem key="tabBarItem" title="High Scores" image="scores@3" selectedImage="scores@3" id="ZLa-C8-6xD" userLabel="High Scores"/>
                 </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="tM5-6Y-qjA" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-1111" y="861"/>
         </scene>
@@ -37,13 +37,45 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" alpha="0.0" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="scoreIdentifier" id="JTj-FH-6qo">
+                            <tableViewCell clipsSubviews="YES" alpha="0.0" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="scoreIdentifier" id="JTj-FH-6qo" customClass="HighScoreTableCellView" customModule="Elementary" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="JTj-FH-6qo" id="SLr-3v-8bl">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zbm-cC-yir">
+                                            <rect key="frame" x="76" y="11" width="113" height="21"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zRE-Aa-55q">
+                                            <rect key="frame" x="254" y="11" width="113" height="21"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="-" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cUq-8E-UHf">
+                                            <rect key="frame" x="197" y="11" width="8" height="21"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3Hx-2O-7F3">
+                                            <rect key="frame" x="28" y="2" width="39" height="39"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        </imageView>
+                                    </subviews>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="avatarImageView" destination="3Hx-2O-7F3" id="Qkh-2s-4VU"/>
+                                    <outlet property="nameLabel" destination="Zbm-cC-yir" id="BQF-cE-JmF"/>
+                                    <outlet property="scoreLabel" destination="zRE-Aa-55q" id="XpJ-RW-XBr"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -55,7 +87,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="sCk-ln-9df" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-167" y="428"/>
+            <point key="canvasLocation" x="-167.19999999999999" y="427.73613193403304"/>
         </scene>
         <!--New Game-->
         <scene sceneID="Bex-IF-s6f">
@@ -143,7 +175,7 @@
                         </connections>
                     </view>
                     <connections>
-                        <segue destination="nyN-6p-LGd" kind="show" identifier="home" id="Nx2-ij-Cri"/>
+                        <segue destination="g3l-EO-cEd" kind="show" identifier="home" id="I0x-sQ-jE2"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="46j-C8-C3b" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -193,6 +225,6 @@
         <image name="scores@3" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="pRg-5w-1s9"/>
+        <segue reference="I0x-sQ-jE2"/>
     </inferredMetricsTieBreakers>
 </document>

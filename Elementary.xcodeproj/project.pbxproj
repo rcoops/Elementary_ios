@@ -18,6 +18,7 @@
 		A20B1DD8209B22D0007A3067 /* ElementFacade.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20B1DD7209B22D0007A3067 /* ElementFacade.swift */; };
 		A20B1DDA209B2668007A3067 /* SKNodeFacade.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20B1DD9209B2668007A3067 /* SKNodeFacade.swift */; };
 		A20B1DDE209B7A41007A3067 /* HighScoresController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20B1DDD209B7A41007A3067 /* HighScoresController.swift */; };
+		A20B1DE2209B8A37007A3067 /* HighScoreTableCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20B1DE1209B8A37007A3067 /* HighScoreTableCellView.swift */; };
 		A2C491D22099DF7B0000A122 /* QuizQuestion.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2C491D12099DF7B0000A122 /* QuizQuestion.swift */; };
 		A2C491D42099E8130000A122 /* AnswerFacade.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2C491D32099E8130000A122 /* AnswerFacade.swift */; };
 		A2C491D62099EB450000A122 /* Answer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2C491D52099EB450000A122 /* Answer.swift */; };
@@ -65,6 +66,7 @@
 		A20B1DD7209B22D0007A3067 /* ElementFacade.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ElementFacade.swift; sourceTree = "<group>"; };
 		A20B1DD9209B2668007A3067 /* SKNodeFacade.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SKNodeFacade.swift; sourceTree = "<group>"; };
 		A20B1DDD209B7A41007A3067 /* HighScoresController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HighScoresController.swift; sourceTree = "<group>"; };
+		A20B1DE1209B8A37007A3067 /* HighScoreTableCellView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HighScoreTableCellView.swift; sourceTree = "<group>"; };
 		A2C491D12099DF7B0000A122 /* QuizQuestion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuizQuestion.swift; sourceTree = "<group>"; };
 		A2C491D32099E8130000A122 /* AnswerFacade.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnswerFacade.swift; sourceTree = "<group>"; };
 		A2C491D52099EB450000A122 /* Answer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Answer.swift; sourceTree = "<group>"; };
@@ -166,6 +168,14 @@
 			name = Constants;
 			sourceTree = "<group>";
 		};
+		A20B1DE3209B8B35007A3067 /* Table */ = {
+			isa = PBXGroup;
+			children = (
+				A20B1DE1209B8A37007A3067 /* HighScoreTableCellView.swift */,
+			);
+			name = Table;
+			sourceTree = "<group>";
+		};
 		A2C491D72099ED120000A122 /* SKComponents */ = {
 			isa = PBXGroup;
 			children = (
@@ -200,6 +210,7 @@
 		A2F52FFD209788F200C01FFF /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				A20B1DE3209B8B35007A3067 /* Table */,
 				A2F52FF320975AA800C01FFF /* MainMenuController.swift */,
 				A2D71BF52098C62A00DFECF7 /* GameViewController.swift */,
 				A20B1DDD209B7A41007A3067 /* HighScoresController.swift */,
@@ -348,6 +359,7 @@
 				A2F52FFC2097884200C01FFF /* AppModel.swift in Sources */,
 				A2F52FFA2097871500C01FFF /* Player.swift in Sources */,
 				A2C491D62099EB450000A122 /* Answer.swift in Sources */,
+				A20B1DE2209B8A37007A3067 /* HighScoreTableCellView.swift in Sources */,
 				1D02D8342083CB50001F7BAF /* ViewController.swift in Sources */,
 				A2D71BF62098C62A00DFECF7 /* GameViewController.swift in Sources */,
 				A2C491D42099E8130000A122 /* AnswerFacade.swift in Sources */,

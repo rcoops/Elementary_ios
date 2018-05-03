@@ -42,8 +42,9 @@ class AppModel {
     }
     
     open func newScore() {
-        if (isHighScore(currentPlayer)) {
-            if highScores.count >= 10 {
+        let scoresFull = highScores.count > 9
+        if (isHighScore(currentPlayer) || !scoresFull) {
+            if scoresFull {
                 highScores.removeLast()
             }
             if let player = currentPlayer {
@@ -55,6 +56,8 @@ class AppModel {
     }
     
     open func isHighScore(_ player: Player?) -> Bool {
+        let playerScore = player?.score ?? -1
+        let lowestScore = highScores.last?.score ?? -1
         return player?.score ?? -1 > (highScores.last?.score ?? -1)
     }
     
