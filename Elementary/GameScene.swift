@@ -35,17 +35,6 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
     
     override func didMove(to view: SKView) {
         initQuizRound()
-        let avatar = SKSpriteNode(imageNamed: model.currentPlayer!.imageName)
-        avatar.alpha = 0.4
-        avatar.size = CGSize(width: 40, height: 40)
-        avatar.position = CGPoint(x: 60, y: 40 + avatar.frame.height / 2)
-        addChild(avatar)
-        let scoreImage = SKSpriteNode(imageNamed: "ic_score")
-        scoreImage.alpha = 0.4
-        scoreImage.position = CGPoint(x: 260, y: 40 + scoreImage.frame.height / 2)
-        addChild(scoreImage)
-        initHudLabel(label: lives, position: CGPoint(x: 100, y: 80 + avatar.frame.height))
-        initHudLabel(label: score, position: CGPoint(x: 300, y: 80 + avatar.frame.height))
         physicsWorld.gravity = CGVector(dx: 0.0, dy: -9.8);
         physicsWorld.contactDelegate = self
     }
@@ -67,6 +56,17 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
     }
     
     private func initHud() {
+        let avatar = SKSpriteNode(imageNamed: model.currentPlayer!.imageName)
+        avatar.alpha = 0.4
+        avatar.size = CGSize(width: 40, height: 40)
+        avatar.position = CGPoint(x: 60, y: 40 + avatar.frame.height / 2)
+        addChild(avatar)
+        let scoreImage = SKSpriteNode(imageNamed: "ic_score")
+        scoreImage.alpha = 0.4
+        scoreImage.position = CGPoint(x: 260, y: 40 + scoreImage.frame.height / 2)
+        addChild(scoreImage)
+        initHudLabel(label: lives, position: CGPoint(x: 100, y: 80 + avatar.frame.height))
+        initHudLabel(label: score, position: CGPoint(x: 300, y: 80 + scoreImage.frame.height))
         addChild(lives)
         addChild(score)
         updateHud()
@@ -174,15 +174,17 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
             switch (model.answeredCount) {
             case 1,2,3,4:
                 model.currentPlayer!.adjustScore(model.answeredCount * 10)
-            case 4:
-                initQuizRound()
             default:
                 break
             }
         } else if model.isGameOverOnDeductLife() {
             endGame()
         }
-        updateHud()
+        if model.answeredCount == 4 {
+            initQuizRound()
+        } else {
+            updateHud()
+        }
     }
     
     private func endGame() {
@@ -267,7 +269,7 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
             sprite.physicsBody!.velocity=velocity
         }
         let allOut = elementFacades
-            .reduce(true, { current, node in (current && intersects(node.shape)) })
+            .reduce(true, { current, node in (current && !intersects(node.shape)) })
         if allOut {
             newRoundOrEndGame(matches: false)
         }
