@@ -50,8 +50,9 @@ class AnswerFacade : SKElementHolderFacade {
         node.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: width, height: height))
         node.physicsBody?.affectedByGravity = false
         node.physicsBody?.allowsRotation = false
-//        node.physicsBody?.pinned = true
         node.physicsBody?.categoryBitMask = GameScene.answerCategory
+        node.physicsBody?.contactTestBitMask = GameScene.elementCategory
+        node.physicsBody?.collisionBitMask = GameScene.elementCategory
     }
     
 }

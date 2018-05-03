@@ -30,8 +30,8 @@ class ElementFacade : SKElementHolderFacade {
         shape.physicsBody?.affectedByGravity = false
         shape.physicsBody?.pinned = true
         shape.physicsBody?.categoryBitMask = GameScene.elementCategory
-        shape.physicsBody?.contactTestBitMask = GameScene.answerCategory
-        shape.physicsBody?.collisionBitMask = 0
+        shape.physicsBody?.contactTestBitMask = GameScene.answerCategory | GameScene.elementCategory
+        shape.physicsBody?.collisionBitMask = GameScene.answerCategory | GameScene.elementCategory
         shape.name = "E_\(index)"
         shape.addChild(name)
         shape.position = startingPosition

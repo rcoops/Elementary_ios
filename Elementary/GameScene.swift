@@ -15,6 +15,7 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
     var sprite: SKNode!
     var touchPoint: CGPoint = CGPoint()
     var touching: Bool = false
+    var restart = true
     
     let lives = SKLabelNode(fontNamed: "AvenirNext-Bold")
     let score = SKLabelNode(fontNamed: "AvenirNext-Bold")
@@ -26,12 +27,11 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
     var answerFacades = [AnswerFacade]()
     var elementFacades = [ElementFacade]()
     
-    static let elementCategory:UInt32 = 0x1 << 0;
-    static let answerCategory:UInt32 = 0x1 << 3;
-    let spinnerCategory:UInt32 = 0x1 << 1;
-    let spinnerMiddleCategory:UInt32 = 0x1 << 2;
-    let collidesWithElementCategory:UInt32 = 0x1 << 8;
-    let doesNotCollideWithElementCategory:UInt32 = 0x1 << 9;
+    static let elementCategory:UInt32 = 0x1 << 1;
+    static let answerCategory:UInt32 = 0x1 << 2;
+    let spinnerMiddleCategory:UInt32 = 0x1 << 3;
+    let worldCategory:UInt32 = 0x1 << 4;
+    let fakeCategory:UInt32 = 0x1 << 5;
     
     override func didMove(to view: SKView) {
         initQuizRound()
@@ -53,6 +53,7 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
         initElementSpinner(elements: quizQuestion.elements)
         initAnswers(answers: quizQuestion.answers)
         initHud()
+        restart = true
     }
     
     private func initHud() {
@@ -171,16 +172,12 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
     
     private func newRoundOrEndGame(matches: Bool) {
         if matches {
-            switch (model.answeredCount) {
-            case 1,2,3,4:
-                model.currentPlayer!.adjustScore(model.answeredCount * 10)
-            default:
-                break
-            }
+            model.currentPlayer!.adjustScore(model.answeredCount * 10)
         } else if model.isGameOverOnDeductLife() {
             endGame()
         }
-        if model.answeredCount == 4 {
+        if model.answeredCount == 4 || restart {
+            restart = false
             initQuizRound()
         } else {
             updateHud()
@@ -188,12 +185,13 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
     }
     
     private func endGame() {
+        initQuizRound()
     }
     
     private func setNodeToFall(physicsBody: SKPhysicsBody?) {
-        physicsBody?.contactTestBitMask = 0
-        physicsBody?.categoryBitMask = 0
-        physicsBody?.collisionBitMask = 0
+        physicsBody?.categoryBitMask = fakeCategory
+        physicsBody?.contactTestBitMask = fakeCategory
+        physicsBody?.collisionBitMask = fakeCategory
         physicsBody?.affectedByGravity = true
         physicsBody?.allowsRotation = true
     }
@@ -233,9 +231,9 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
         spinnerShape.physicsBody = SKPhysicsBody(circleOfRadius: 120)
         spinnerShape.physicsBody?.pinned = true
         spinnerShape.physicsBody?.affectedByGravity = false
-        spinnerShape.physicsBody?.categoryBitMask = spinnerCategory
+        spinnerShape.physicsBody?.categoryBitMask = worldCategory
+        spinnerShape.physicsBody?.collisionBitMask = worldCategory
         spinnerShape.physicsBody?.angularDamping = 0.25
-        spinnerShape.physicsBody?.collisionBitMask = doesNotCollideWithElementCategory
         let middle = SKShapeNode(circleOfRadius: 40)
         middle.fillColor = UIColor.createTranslucent(red: 0, green: 50, blue: 255)
         middle.glowWidth = 0.6
@@ -244,8 +242,8 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
         middle.physicsBody = SKPhysicsBody(circleOfRadius: 40)
         middle.physicsBody!.pinned = true
         middle.physicsBody?.affectedByGravity = false
-        middle.physicsBody?.categoryBitMask = spinnerMiddleCategory
-        middle.physicsBody?.collisionBitMask = collidesWithElementCategory
+        middle.physicsBody?.categoryBitMask = GameScene.elementCategory
+        middle.physicsBody?.collisionBitMask = GameScene.elementCategory
         spinnerShape.addChild(middle)
         addChild(spinnerShape)
         addElements(spinnerShape, elements)
@@ -266,14 +264,13 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
             let distance = CGVector(dx: touchPoint.x - spritePosition.x, dy: touchPoint.y - spritePosition.y)
             let velocity = CGVector(dx: distance.dx/dt, dy: distance.dy/dt)
             sprite.physicsBody?.pinned = false
-            sprite.physicsBody!.velocity=velocity
+            sprite.physicsBody?.velocity = velocity
         }
         let allOut = elementFacades
             .reduce(true, { current, node in (current && !intersects(node.shape)) })
-        if allOut {
+        if allOut && restart {
             newRoundOrEndGame(matches: false)
         }
-        
     }
     // make children into sprite and and physics.boy.pointtowards
     
