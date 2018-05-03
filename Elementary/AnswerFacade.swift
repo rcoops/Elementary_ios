@@ -9,7 +9,7 @@
 import Foundation
 import SpriteKit
 
-class AnswerFacade : SKElementHolderFacade {
+class AnswerFacade : SKNodeFacade {
     
     private let label = SKLabelNode()
     private static let backgroundColour = UIColor.createTranslucent(red: 255, green: 255, blue: 255)

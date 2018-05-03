@@ -9,7 +9,7 @@
 import Foundation
 import SpriteKit
 
-class ElementFacade : SKElementHolderFacade {
+class ElementFacade : SKNodeFacade {
     let element: Element
     let shape: SKShapeNode
     

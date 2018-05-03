@@ -9,6 +9,6 @@
 import Foundation
 import SpriteKit
 
-protocol SKElementHolderFacade {
+protocol SKNodeFacade {
     func getNode() -> SKShapeNode
 }

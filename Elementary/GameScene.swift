@@ -219,7 +219,7 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
         return nodeA?.name?.contains("E_") ?? false == getAnswer ? nodeB : nodeA
     }
     
-    private func getFacade<T : SKElementHolderFacade>(nodeA: SKNode?, nodeB: SKNode?, facades: Array<T>) -> T {
+    private func getFacade<T : SKNodeFacade>(nodeA: SKNode?, nodeB: SKNode?, facades: Array<T>) -> T {
         let answer = facades.first is AnswerFacade ? true : false
         let node = getNode(nodeA: nodeA, nodeB: nodeB, getAnswer: answer)
         
