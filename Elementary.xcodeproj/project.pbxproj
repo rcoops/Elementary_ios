@@ -25,6 +25,7 @@
 		A22C20DD209C5C5500701E3F /* music_menu.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = A22C20DB209C5C5500701E3F /* music_menu.mp3 */; };
 		A22C20E0209C5C6300701E3F /* negative.wav in Resources */ = {isa = PBXBuildFile; fileRef = A22C20DE209C5C6300701E3F /* negative.wav */; };
 		A22C20E1209C5C6300701E3F /* positive.wav in Resources */ = {isa = PBXBuildFile; fileRef = A22C20DF209C5C6300701E3F /* positive.wav */; };
+		A22C20E3209C62C800701E3F /* game_over.wav in Resources */ = {isa = PBXBuildFile; fileRef = A22C20E2209C62C800701E3F /* game_over.wav */; };
 		A2C491D22099DF7B0000A122 /* QuizQuestion.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2C491D12099DF7B0000A122 /* QuizQuestion.swift */; };
 		A2C491D42099E8130000A122 /* AnswerFacade.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2C491D32099E8130000A122 /* AnswerFacade.swift */; };
 		A2C491D62099EB450000A122 /* Answer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2C491D52099EB450000A122 /* Answer.swift */; };
@@ -79,6 +80,7 @@
 		A22C20DB209C5C5500701E3F /* music_menu.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = music_menu.mp3; sourceTree = "<group>"; };
 		A22C20DE209C5C6300701E3F /* negative.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = negative.wav; sourceTree = "<group>"; };
 		A22C20DF209C5C6300701E3F /* positive.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = positive.wav; sourceTree = "<group>"; };
+		A22C20E2209C62C800701E3F /* game_over.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = game_over.wav; sourceTree = "<group>"; };
 		A2C491D12099DF7B0000A122 /* QuizQuestion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuizQuestion.swift; sourceTree = "<group>"; };
 		A2C491D32099E8130000A122 /* AnswerFacade.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnswerFacade.swift; sourceTree = "<group>"; };
 		A2C491D52099EB450000A122 /* Answer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Answer.swift; sourceTree = "<group>"; };
@@ -154,6 +156,7 @@
 				A2F52FFE209789BB00C01FFF /* scores.csv */,
 				A22C20DE209C5C6300701E3F /* negative.wav */,
 				A22C20DF209C5C6300701E3F /* positive.wav */,
+				A22C20E2209C62C800701E3F /* game_over.wav */,
 				A22C20DA209C5C5500701E3F /* music_game.mp3 */,
 				A22C20DB209C5C5500701E3F /* music_menu.mp3 */,
 				A22C20D5209C5B5200701E3F /* click.wav */,
@@ -367,6 +370,7 @@
 				A22C20DD209C5C5500701E3F /* music_menu.mp3 in Resources */,
 				A22C20D6209C5B5200701E3F /* click.wav in Resources */,
 				1D02D8392083CB50001F7BAF /* Assets.xcassets in Resources */,
+				A22C20E3209C62C800701E3F /* game_over.wav in Resources */,
 				1D02D8372083CB50001F7BAF /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

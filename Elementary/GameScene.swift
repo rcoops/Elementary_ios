@@ -35,6 +35,10 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
     let worldCategory:UInt32 = 0x1 << 4;
     let fallingCategory:UInt32 = 0x1 << 5;
     
+    let soundCorrect = SKAction.playSoundFileNamed("positive.wav", waitForCompletion: false)
+    let soundIncorrect = SKAction.playSoundFileNamed("negative.wav", waitForCompletion: false)
+    let soundGameOver = SKAction.playSoundFileNamed("game_over.wav", waitForCompletion: false)
+    
     override func didMove(to view: SKView) {
         initQuizRound()
         physicsWorld.gravity = CGVector(dx: 0.0, dy: -9.8);
@@ -136,18 +140,12 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
         if abs(deltaAngle) > CGFloat.pi {
             let adjustment = deltaAngle > 0 ? 2.0 : -2.0
             deltaAngle = deltaAngle + CGFloat.pi * CGFloat(adjustment)
-//            if (deltaAngle > 0) {
-//            }
-//            else {
-//                deltaAngle = deltaAngle + CGFloat.pi * 2
-//            }
         }
         let dt = CGFloat(timestamp - startingTime!)
         let velocity = deltaAngle / dt
         
         node.physicsBody?.angularVelocity = velocity
         
-        // Update angle and time
         startingAngle = angle
         startingTime = timestamp
     }
@@ -172,9 +170,14 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
         let answerFacade = getFacade(nodeA: bodyA?.node, nodeB: bodyB?.node, facades: answerFacades)
         let elementFacade = getFacade(nodeA: bodyA?.node, nodeB: bodyB?.node, facades: elementFacades)
         let matches = Element.Property.hasMatchingPropertyValue(for: elementFacade.element, and: answerFacade.answer.property, matches: answerFacade.answer.value)
+        playAnswerSound(matches: matches)
         let redGreen: (CGFloat, CGFloat) = matches ? (0, 255) : (255, 0)
         answerFacade.container.fillColor = UIColor.createTranslucent(red: redGreen.0, green: redGreen.1, blue: 0)
         newRoundOrEndGame(matches: matches)
+    }
+    
+    private func playAnswerSound(matches: Bool) {
+        run(matches ? soundCorrect : soundIncorrect)
     }
     
     private func newRoundOrEndGame(matches: Bool) {
@@ -205,6 +208,7 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
     
     private func endGame() {
         model.newScore()
+        run(soundGameOver)
         gameManager?.endGame()
     }
     
