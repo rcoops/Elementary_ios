@@ -10,6 +10,7 @@ import Foundation
 import AVFoundation
 
 class MusicPlayer {
+    
     static let musicPlayer = MusicPlayer()
     var audioPlayer: AVAudioPlayer?
     

@@ -18,6 +18,9 @@ class GameViewController : UIViewController, GameManager {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        UserDefaults.standard.addObserver(self, forKeyPath: "volume", options: .new, context: nil)
+        UserDefaults.standard.addObserver(self, forKeyPath: "musicToggle", options: .new, context: nil)
+        setVolume()
         self.navigationController?.interactivePopGestureRecognizer?.addTarget(self, action:#selector(self.handlePopGesture))
         handlePopGesture()
         let scene = GameScene(size: view.bounds.size)
@@ -27,9 +30,39 @@ class GameViewController : UIViewController, GameManager {
         skView.presentScene(scene)
     }
     
+    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+        if let keyPath = keyPath {
+            switch keyPath {
+            case "volume":
+                setVolume()
+                break
+            case "musicToggle":
+                toggleMusic()
+                break
+            default:
+                break
+            }
+        }
+    }
+    
+    private func setVolume() {
+        let volume = UserDefaults.standard.float(forKey: "volume")
+        MusicPlayer.musicPlayer.audioPlayer?.setVolume(volume, fadeDuration: 0.2)
+    }
+    
+    private func toggleMusic() {
+        if UserDefaults.standard.bool(forKey: "musicToggle") {
+            MusicPlayer.musicPlayer.audioPlayer?.play()
+        } else {
+            MusicPlayer.musicPlayer.audioPlayer?.pause()
+        }
+    }
+    
     @objc private func handlePopGesture() {
         if !musicPlaying {
+            setVolume()
             MusicPlayer.musicPlayer.playBackgroundMusic(url: URL(fileURLWithPath: Bundle.main.path(forResource: "music_game", ofType: "mp3")!))
+            toggleMusic()
             musicPlaying = true
         }
     }

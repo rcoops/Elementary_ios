@@ -16,6 +16,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     open let appModel = AppModel()
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+        UserDefaults.standard.set(0.5, forKey: "volume")
+        UserDefaults.standard.set(true, forKey: "musicToggle")
         // Override point for customization after application launch.
         return true
     }

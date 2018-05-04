@@ -29,11 +29,11 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
     var answerFacades = [AnswerFacade]()
     var elementFacades = [ElementFacade]()
     
-    static let elementCategory:UInt32 = 0x1 << 1;
-    static let answerCategory:UInt32 = 0x1 << 2;
-    let spinnerMiddleCategory:UInt32 = 0x1 << 3;
-    let worldCategory:UInt32 = 0x1 << 4;
-    let fallingCategory:UInt32 = 0x1 << 5;
+    static let elementCategory: UInt32 = 0x1 << 1;
+    static let answerCategory: UInt32 = 0x1 << 2;
+    let spinnerMiddleCategory: UInt32 = 0x1 << 3;
+    let worldCategory: UInt32 = 0x1 << 4;
+    let fallingCategory: UInt32 = 0x1 << 5;
     
     let soundCorrect = SKAction.playSoundFileNamed("positive.wav", waitForCompletion: false)
     let soundIncorrect = SKAction.playSoundFileNamed("negative.wav", waitForCompletion: false)
@@ -93,10 +93,10 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
         addChild(avatar)
         let scoreImage = SKSpriteNode(imageNamed: "ic_score")
         scoreImage.alpha = 0.4
-        scoreImage.position = CGPoint(x: 260, y: 40 + scoreImage.frame.height / 2)
+        scoreImage.position = CGPoint(x: 220, y: 40 + scoreImage.frame.height / 2)
         addChild(scoreImage)
-        initHudLabel(label: lives, position: CGPoint(x: 100, y: 80 + avatar.frame.height))
-        initHudLabel(label: score, position: CGPoint(x: 300, y: 80 + scoreImage.frame.height))
+        initHudLabel(label: lives, position: CGPoint(x: 100, y: 55 + avatar.frame.height))
+        initHudLabel(label: score, position: CGPoint(x: 260, y: 55 + scoreImage.frame.height))
         addChild(lives)
         addChild(score)
         updateHud()

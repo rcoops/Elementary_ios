@@ -25,6 +25,8 @@ class MainMenuController : UIViewController, UIPickerViewDataSource, UIPickerVie
     var musicPlaying = false
     
     override func viewDidLoad() {
+        UserDefaults.standard.addObserver(self, forKeyPath: "volume", options: .new, context: nil)
+        UserDefaults.standard.addObserver(self, forKeyPath: "musicToggle", options: .new, context: nil)
         super.viewDidLoad()
         self.navigationController?.interactivePopGestureRecognizer?.addTarget(self, action:#selector(self.handlePopGesture))
         initSound()
@@ -34,11 +36,41 @@ class MainMenuController : UIViewController, UIPickerViewDataSource, UIPickerVie
         txtPlayerName.becomeFirstResponder()
     }
     
+    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+        if let keyPath = keyPath {
+            switch keyPath {
+            case "volume":
+                setVolume()
+                break
+            case "musicToggle":
+                toggleMusic()
+                break
+            default:
+                break
+            }
+        }
+    }
+    
     @objc private func handlePopGesture() {
         if !musicPlaying {
+            setVolume()
             MusicPlayer.musicPlayer.playBackgroundMusic(url: URL(fileURLWithPath: Bundle.main.path(forResource: "music_menu", ofType: "mp3")!))
+            toggleMusic()
             musicPlaying = true
         }
+    }
+    
+    private func toggleMusic() {
+        if UserDefaults.standard.bool(forKey: "musicToggle") {
+            MusicPlayer.musicPlayer.audioPlayer?.play()
+        } else {
+            MusicPlayer.musicPlayer.audioPlayer?.pause()
+        }
+    }
+    
+    private func setVolume() {
+        let volume = UserDefaults.standard.float(forKey: "volume")
+        MusicPlayer.musicPlayer.audioPlayer?.setVolume(volume, fadeDuration: 0.2)
     }
     
     private func initSound() {

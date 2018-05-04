@@ -70,6 +70,66 @@
             </objects>
             <point key="canvasLocation" x="-167" y="459"/>
         </scene>
+        <!--Item-->
+        <scene sceneID="R1U-wn-grB">
+            <objects>
+                <viewController id="fOD-Xf-wfj" customClass="SettingsController" customModule="Elementary" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="tAO-vB-gPj"/>
+                        <viewControllerLayoutGuide type="bottom" id="HFn-6F-1zf"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="drS-c4-xaW">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Volume Settings" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="S5O-Ft-35p">
+                                <rect key="frame" x="16" y="72" width="343" height="65"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="31"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="u0f-c8-7PA">
+                                <rect key="frame" x="252" y="145" width="51" height="31"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <connections>
+                                    <action selector="switchAction:" destination="fOD-Xf-wfj" eventType="valueChanged" id="RzA-Id-rI5"/>
+                                </connections>
+                            </switch>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Music on/off:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RSv-Le-Kb1">
+                                <rect key="frame" x="16" y="145" width="123" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <slider opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="fos-UI-skv">
+                                <rect key="frame" x="191" y="218" width="170" height="31"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <connections>
+                                    <action selector="sliderAction:" destination="fOD-Xf-wfj" eventType="valueChanged" id="uZ7-wR-heV"/>
+                                </connections>
+                            </slider>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Music Volume:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TKU-44-nBw">
+                                <rect key="frame" x="16" y="223" width="144" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="Item" id="oJN-AX-Xfm"/>
+                    <connections>
+                        <outlet property="volumeLabel" destination="TKU-44-nBw" id="stl-ba-Kg2"/>
+                        <outlet property="volumeSlider" destination="fos-UI-skv" id="P50-xL-5EY"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="mmi-Gl-HQo" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-983.20000000000005" y="-712.89355322338838"/>
+        </scene>
         <!--New Game-->
         <scene sceneID="Bex-IF-s6f">
             <objects>
@@ -177,6 +237,7 @@
                     <connections>
                         <segue destination="nyN-6p-LGd" kind="relationship" relationship="viewControllers" id="pRg-5w-1s9"/>
                         <segue destination="7Pf-Mc-jIr" kind="relationship" relationship="viewControllers" id="HzC-V4-KST"/>
+                        <segue destination="fOD-Xf-wfj" kind="relationship" relationship="viewControllers" id="zia-rx-sms"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qJo-v8-9aA" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -205,6 +266,6 @@
         <image name="ic_scores" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="I0x-sQ-jE2"/>
+        <segue reference="1u4-eu-6GJ"/>
     </inferredMetricsTieBreakers>
 </document>
