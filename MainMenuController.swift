@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import AVFoundation
 
 class MainMenuController : UIViewController, UIPickerViewDataSource, UIPickerViewDelegate {
     
@@ -19,14 +20,34 @@ class MainMenuController : UIViewController, UIPickerViewDataSource, UIPickerVie
     
     @IBOutlet weak var txtPlayerName: UITextField!
     
+    let clickSound = URL(fileURLWithPath: Bundle.main.path(forResource: "click", ofType: "wav")!)
+    var soundPlayer: AVAudioPlayer?
+    var musicPlaying = false
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.navigationController?.interactivePopGestureRecognizer?.addTarget(self, action:#selector(self.handlePopGesture))
+        initSound()
+        handlePopGesture()
         setBackground(#imageLiteral(resourceName: "main_background"))
-        for avatar in avatarPicker.subviews {
-            avatar.alpha = 1.0
-        }
         selectedAvatarName = avatarNames[avatarPicker.selectedRow(inComponent: 0)]
         txtPlayerName.becomeFirstResponder()
+    }
+    
+    @objc private func handlePopGesture() {
+        if !musicPlaying {
+            MusicPlayer.musicPlayer.playBackgroundMusic(url: URL(fileURLWithPath: Bundle.main.path(forResource: "music_menu", ofType: "mp3")!))
+            musicPlaying = true
+        }
+    }
+    
+    private func initSound() {
+        do {
+            try soundPlayer = AVAudioPlayer(contentsOf: clickSound)
+        } catch {
+            print("failed to initialise audio")
+            print(error)
+        }
     }
     
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
@@ -63,6 +84,7 @@ class MainMenuController : UIViewController, UIPickerViewDataSource, UIPickerVie
     @IBAction func newGameAction(_ sender: Any) {
         if (isNameValid()) {
             appDelegate.appModel.initPlayer(name: txtPlayerName.text!, avatarName: selectedAvatarName) // txt must have content for name valid check
+            musicPlaying = false
             self.performSegue(withIdentifier: "game", sender: self)
         } else {
             let action: ((UIAlertAction) -> Swift.Void) = { _ in self.txtPlayerName?.becomeFirstResponder() }
