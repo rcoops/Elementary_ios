@@ -48,18 +48,23 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
     }
     
     private func initInstructions() {
-        arrow.alpha = 0.75
+        arrow.alpha = 0.6
         addChild(arrow)
         let arrowPath = UIBezierPath(arcCenter: spinnerShape!.position, radius: 140, startAngle: CGFloat(345).toRadians(), endAngle: CGFloat(-15).toRadians(), clockwise: false)
         arrowPath.move(to: spinnerShape!.position)
         let rotate = SKAction.rotate(byAngle: CGFloat(90).toRadians(), duration: 0)
         let arc = SKAction.follow(arrowPath.cgPath, speed: 600)
-        let rotate2 = SKAction.rotate(byAngle: CGFloat(188.5).toRadians(), duration: 0)
-        let teleport2 = SKAction.move(to: CGPoint(x: frame.midX, y: frame.midY + 80), duration: 0)
+        
+        let rotate2 = SKAction.rotate(byAngle: (arrow.zRotation - 180).toRadians(), duration: 0)
+        let teleport2 = SKAction.move(to: CGPoint(x: frame.midX, y: frame.midY + 60), duration: 0)
         let line = SKAction.move(to: CGPoint(x: frame.midX, y: frame.maxY + 80), duration: 1)
         let teleport = SKAction.move(to: CGPoint(x: 0, y: 0), duration: 0)
         arrow.run(SKAction.repeatForever(SKAction.sequence([rotate, arc, rotate2, teleport2, line, teleport])))
-        let action: ((UIAlertAction) -> Swift.Void) = { _ in self.removeChildren(in: [self.arrow]) }
+        let action: ((UIAlertAction) -> Swift.Void) = { _ in
+            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(4), execute: {
+                self.removeChildren(in: [self.arrow])
+            })
+        }
         gameManager?.showPopup(title: "Instructions", message: "The game is easy! Rotate the spinner to position the element, then flick it into the property you think matches!", action)
     }
     
