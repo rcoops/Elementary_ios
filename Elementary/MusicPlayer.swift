@@ -26,6 +26,7 @@ class MusicPlayer {
             audioPlayer!.play()
         } catch {
             print("Cannot play the file")
+            print(error)
         }
     }
     

@@ -66,12 +66,6 @@ class AppModel {
         outStr.write(to: &fileUrl)
     }
     
-    open func printHighScores() {
-        for score in highScores {
-            print(score.toCsvString())
-        }
-    }
-    
     private func readFile() {
         let path = Bundle.main.path(forResource: scoresFileName, ofType: scoresFileExtension)!
         do {
@@ -84,7 +78,6 @@ class AppModel {
                 }
             }
             sortHighScores() // Just to be sure
-            printHighScores()
         } catch {
             print("failed to read from file")
             print(error)

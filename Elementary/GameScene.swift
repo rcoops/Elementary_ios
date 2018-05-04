@@ -221,8 +221,6 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
             if matches {
                 title = "Correct!"
                 message = "Have another \(String(model.correctAnswerCount * 10)) points!"
-            } else {
-                // play sound
             }
             gameManager?.showPopup(title: title, message: message, nil)
             updateHud()
