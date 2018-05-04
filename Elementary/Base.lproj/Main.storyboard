@@ -70,10 +70,10 @@
             </objects>
             <point key="canvasLocation" x="-167" y="459"/>
         </scene>
-        <!--Item-->
+        <!--Settings-->
         <scene sceneID="R1U-wn-grB">
             <objects>
-                <viewController id="fOD-Xf-wfj" customClass="SettingsController" customModule="Elementary" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="Settings" id="fOD-Xf-wfj" customClass="SettingsController" customModule="Elementary" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="tAO-vB-gPj"/>
                         <viewControllerLayoutGuide type="bottom" id="HFn-6F-1zf"/>
@@ -85,7 +85,7 @@
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Volume Settings" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="S5O-Ft-35p">
                                 <rect key="frame" x="16" y="72" width="343" height="65"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="31"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="21"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -120,7 +120,7 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Item" id="oJN-AX-Xfm"/>
+                    <tabBarItem key="tabBarItem" title="Settings" image="settings" selectedImage="settings" id="oJN-AX-Xfm"/>
                     <connections>
                         <outlet property="volumeLabel" destination="TKU-44-nBw" id="stl-ba-Kg2"/>
                         <outlet property="volumeSlider" destination="fos-UI-skv" id="P50-xL-5EY"/>
@@ -264,6 +264,7 @@
     <resources>
         <image name="ic_new_game" width="25" height="25"/>
         <image name="ic_scores" width="25" height="25"/>
+        <image name="settings" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="1u4-eu-6GJ"/>
