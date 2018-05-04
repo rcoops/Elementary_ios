@@ -38,11 +38,31 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
     let soundCorrect = SKAction.playSoundFileNamed("positive.wav", waitForCompletion: false)
     let soundIncorrect = SKAction.playSoundFileNamed("negative.wav", waitForCompletion: false)
     let soundGameOver = SKAction.playSoundFileNamed("game_over.wav", waitForCompletion: false)
+    let arrow = SKSpriteNode(imageNamed: "arrow-2.png")
     
     override func didMove(to view: SKView) {
         initQuizRound()
         physicsWorld.gravity = CGVector(dx: 0.0, dy: -9.8);
         physicsWorld.contactDelegate = self
+        initInstructions()
+    }
+    
+    private func initInstructions() {
+        arrow.alpha = 0.75
+        let arrowPath = UIBezierPath(arcCenter: spinnerShape!.position, radius: 140, startAngle: CGFloat(345).toRadians(), endAngle: CGFloat(-15).toRadians(), clockwise: false)
+        arrowPath.move(to: spinnerShape!.position)
+        let rotate = SKAction.rotate(byAngle: CGFloat(90).toRadians(), duration: 0)
+        let arc = SKAction.follow(arrowPath.cgPath, speed: 600)
+        let rotate2 = SKAction.rotate(byAngle: CGFloat(188.5).toRadians(), duration: 0)
+        let teleport2 = SKAction.move(to: CGPoint(x: frame.midX, y: frame.midY + 80), duration: 0)
+        let line = SKAction.move(to: CGPoint(x: frame.midX, y: frame.maxY + 80), duration: 1)
+        let teleport = SKAction.move(to: CGPoint(x: 0, y: 0), duration: 0)
+        let spinSequence = SKAction.sequence([rotate, arc, rotate2, teleport2, line, teleport])
+        
+        addChild(arrow)
+        let action: ((UIAlertAction) -> Swift.Void) = { _ in self.removeChildren(in: [self.arrow]) }
+        gameManager?.showPopup(title: "Instructions", message: "The game is easy! Rotate the spinner to position the element, then flick it into the property you think matches!", action)
+        arrow.run(SKAction.repeatForever(spinSequence))
     }
     
     func setGameManager(_ gameManager: GameManager) {
@@ -190,7 +210,7 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
         if model.answeredCount == 4 {
             let goodScore = model.correctAnswerCount > 2
             let messagePrefix = goodScore ? "Well done!" : "Uh Oh,"
-            gameManager?.showPopup(title: "Round End", message: "\(messagePrefix) You got \(goodScore ? "" : "only ")\(String(model.correctAnswerCount)) answers correct")
+            gameManager?.showPopup(title: "Round End", message: "\(messagePrefix) You got \(goodScore ? "" : "only ")\(String(model.correctAnswerCount)) answers correct", nil)
             initQuizRound()
         } else {
             var title = "Wrong!"
@@ -201,7 +221,7 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
             } else {
                 // play sound
             }
-            gameManager?.showPopup(title: title, message: message)
+            gameManager?.showPopup(title: title, message: message, nil)
             updateHud()
         }
     }

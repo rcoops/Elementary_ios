@@ -35,18 +35,18 @@ class GameViewController : UIViewController, GameManager {
     }
     
     func endGame() {
-        let action: ((UIAlertAction) -> Swift.Void) = { _ in self.performSegue(withIdentifier: "home", sender: self) }
         musicPlaying = false
-        alertWithTitle(title: "Game Over", message: "Uh oh! You're out of lives, your score is \(model.currentPlayer!.score)", ViewController: self, action: action)
+        let action: ((UIAlertAction) -> Swift.Void) = { _ in self.performSegue(withIdentifier: "home", sender: self) }
+        showPopup(title: "Game Over", message: "Uh oh! You're out of lives, your score is \(model.currentPlayer!.score)", action)
     }
     
-    func showPopup(title: String, message: String) {
-        alertWithTitle(title: title, message:message, ViewController: self)
+    func showPopup(title: String, message: String, _ action: ((UIAlertAction) -> Swift.Void)? = nil) {
+        alertWithTitle(title: title, message:message, ViewController: self, action: action)
     }
     
 }
 
 protocol GameManager {
     func endGame()
-    func showPopup(title: String, message: String)
+    func showPopup(title: String, message: String, _ action: ((UIAlertAction) -> Swift.Void)?)
 }

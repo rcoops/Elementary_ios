@@ -14,7 +14,7 @@ class Player {
     var name: String
     var imageName: String
     var score: Int = 0
-    var lives: Int = 2
+    var lives: Int = 5
     
     init(_ name: String, _ imageName: String) {
         self.name = name
