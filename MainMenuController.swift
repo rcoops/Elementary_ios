@@ -82,6 +82,7 @@ class MainMenuController : UIViewController, UIPickerViewDataSource, UIPickerVie
     }
     
     @IBAction func newGameAction(_ sender: Any) {
+        soundPlayer?.play()
         if (isNameValid()) {
             appDelegate.appModel.initPlayer(name: txtPlayerName.text!, avatarName: selectedAvatarName) // txt must have content for name valid check
             musicPlaying = false

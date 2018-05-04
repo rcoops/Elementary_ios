@@ -56,8 +56,6 @@ class AppModel {
     }
     
     open func isHighScore(_ player: Player?) -> Bool {
-        let playerScore = player?.score ?? -1
-        let lowestScore = highScores.last?.score ?? -1
         return player?.score ?? -1 > (highScores.last?.score ?? -1)
     }
     
