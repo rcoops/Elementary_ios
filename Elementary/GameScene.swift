@@ -47,6 +47,43 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
         initInstructions()
     }
     
+    private func initBackground() {
+        let background = SKSpriteNode(imageNamed: "game_background")
+        background.position = CGPoint(x: frame.midX, y: frame.midY)
+        background.size = CGSize(width: frame.size.width, height: frame.size.height)
+        addChild(background)
+    }
+    
+    private func initElementSpinner(elements: [Element]){
+        let spinnerColour = UIColor(red: 255.0, green: 255.0, blue: 255.0, alpha: 0.5)
+        let spinnerShape = SKShapeNode(circleOfRadius: 120)
+        self.spinnerShape = spinnerShape
+        spinnerShape.position = CGPoint(x: frame.midX, y: frame.midY - 50)
+        spinnerShape.strokeColor = spinnerColour
+        spinnerShape.glowWidth = 1.0
+        spinnerShape.fillColor = spinnerColour
+        spinnerShape.name = "spinner"
+        spinnerShape.physicsBody = SKPhysicsBody(circleOfRadius: 120)
+        spinnerShape.physicsBody?.pinned = true
+        spinnerShape.physicsBody?.affectedByGravity = false
+        spinnerShape.physicsBody?.categoryBitMask = worldCategory
+        spinnerShape.physicsBody?.collisionBitMask = worldCategory
+        spinnerShape.physicsBody?.angularDamping = 0.25
+        let middle = SKShapeNode(circleOfRadius: 40)
+        middle.fillColor = UIColor.createTranslucent(red: 0, green: 50, blue: 255)
+        middle.glowWidth = 0.6
+        middle.zPosition = 0.5
+        middle.strokeColor = spinnerColour
+        middle.physicsBody = SKPhysicsBody(circleOfRadius: 40)
+        middle.physicsBody!.pinned = true
+        middle.physicsBody?.affectedByGravity = false
+        middle.physicsBody?.categoryBitMask = GameScene.elementCategory
+        middle.physicsBody?.collisionBitMask = GameScene.elementCategory
+        spinnerShape.addChild(middle)
+        addChild(spinnerShape)
+        initElements(spinnerShape, elements)
+    }
+    
     private func initInstructions() {
         arrow.alpha = 0.6
         addChild(arrow)
@@ -107,11 +144,6 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
         updateHud()
     }
     
-    private func updateHud() {
-        lives.text = String(model.currentPlayer!.lives)
-        score.text = String(model.currentPlayer!.score)
-    }
-
     private func initAnswers(answers: [Answer]) {
         let top = AnswerFacade(answer: answers[0], size: CGSize(width: frame.width, height: 30), position: CGPoint(x: frame.midX, y: frame.maxY - 79))
         let bottom = AnswerFacade(answer: answers[1], size: CGSize(width: frame.width, height: 30), position: CGPoint(x: frame.midX, y: frame.minY + 15))
@@ -120,6 +152,14 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
         answerFacades = [left, right, top, bottom]
         for facade in answerFacades {
             addChild(facade.container)
+        }
+    }
+    
+    func initElements(_ spinnerShape: SKShapeNode, _ elements: [Element]) {
+        for (index, element) in elements.enumerated() {
+            let elementFacade = ElementFacade(element: element, startingPosition: CGPoint(x: points[index].0, y: points[index].1), index: index)
+            elementFacades.append(elementFacade)
+            spinnerShape.addChild(elementFacade.shape)
         }
     }
     
@@ -166,11 +206,6 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
         }
         let dt = CGFloat(timestamp - startingTime!)
         let velocity = deltaAngle / dt
-        let x = node.children[1]
-        let y = x.name
-        print("\(node.zRotation)")
-        print("\(y)")
-        print("Position [x:]\(position.x), y: \(position.y)")
         node.physicsBody?.angularVelocity = velocity
         
         startingAngle = angle
@@ -181,6 +216,29 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
         startingAngle = 0
         startingTime = 0
         touching = false
+    }
+    
+    override func update(_ currentTime: CFTimeInterval) {
+        if touching {
+            let dt: CGFloat = 1.0 / 10.0
+            let spritePosition = calculateRotatedGlobalPosition()
+            let distance = CGVector(dx: touchPoint.x - spritePosition.x, dy: touchPoint.y - spritePosition.y)
+            let velocity = CGVector(dx: distance.dx / dt, dy: distance.dy / dt)
+            sprite.physicsBody?.pinned = false
+            sprite.physicsBody?.velocity = velocity
+        }
+        let allOut = elementFacades
+            .reduce(true, { current, node in (current && !intersects(node.shape)) })
+        if allOut && restart {
+            model.answeredCount = 4
+            restart = false
+            newRoundOrEndGame(matches: false)
+        }
+    }
+    
+    private func calculateRotatedGlobalPosition() -> CGPoint {
+        let rotatedLocalPosition = sprite.position.toRotatedPosition(rotationInRadians: spinnerShape!.zRotation)
+        return rotatedLocalPosition + spinnerShape!.position
     }
     
     func didBegin(_ contact: SKPhysicsContact) {
@@ -201,10 +259,6 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
         let redGreen: (CGFloat, CGFloat) = matches ? (0, 255) : (255, 0)
         answerFacade.container.fillColor = UIColor.createTranslucent(red: redGreen.0, green: redGreen.1, blue: 0)
         newRoundOrEndGame(matches: matches)
-    }
-    
-    private func playAnswerSound(matches: Bool) {
-        run(matches ? soundCorrect : soundIncorrect)
     }
     
     private func newRoundOrEndGame(matches: Bool) {
@@ -260,72 +314,13 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
         return (maskA == GameScene.elementCategory && maskB == GameScene.answerCategory) || (maskA == GameScene.answerCategory && maskB == GameScene.elementCategory)
     }
     
-    private func initBackground() {
-        let background = SKSpriteNode(imageNamed: "game_background")
-        background.position = CGPoint(x: frame.midX, y: frame.midY)
-        background.size = CGSize(width: frame.size.width, height: frame.size.height)
-        addChild(background)
+    private func updateHud() {
+        lives.text = String(model.currentPlayer!.lives)
+        score.text = String(model.currentPlayer!.score)
     }
     
-    private func initElementSpinner(elements: [Element]){
-        let spinnerColour = UIColor(red: 255.0, green: 255.0, blue: 255.0, alpha: 0.5)
-        let spinnerShape = SKShapeNode(circleOfRadius: 120)
-        self.spinnerShape = spinnerShape
-        spinnerShape.position = CGPoint(x: frame.midX, y: frame.midY - 50)
-        spinnerShape.strokeColor = spinnerColour
-        spinnerShape.glowWidth = 1.0
-        spinnerShape.fillColor = spinnerColour
-        spinnerShape.name = "spinner"
-        spinnerShape.physicsBody = SKPhysicsBody(circleOfRadius: 120)
-        spinnerShape.physicsBody?.pinned = true
-        spinnerShape.physicsBody?.affectedByGravity = false
-        spinnerShape.physicsBody?.categoryBitMask = worldCategory
-        spinnerShape.physicsBody?.collisionBitMask = worldCategory
-        spinnerShape.physicsBody?.angularDamping = 0.25
-        let middle = SKShapeNode(circleOfRadius: 40)
-        middle.fillColor = UIColor.createTranslucent(red: 0, green: 50, blue: 255)
-        middle.glowWidth = 0.6
-        middle.zPosition = 0.5
-        middle.strokeColor = spinnerColour
-        middle.physicsBody = SKPhysicsBody(circleOfRadius: 40)
-        middle.physicsBody!.pinned = true
-        middle.physicsBody?.affectedByGravity = false
-        middle.physicsBody?.categoryBitMask = GameScene.elementCategory
-        middle.physicsBody?.collisionBitMask = GameScene.elementCategory
-        spinnerShape.addChild(middle)
-        addChild(spinnerShape)
-        addElements(spinnerShape, elements)
-    }
-    
-    func addElements(_ spinnerShape: SKShapeNode, _ elements: [Element]) {
-        for (index, element) in elements.enumerated() {
-            let elementFacade = ElementFacade(element: element, startingPosition: CGPoint(x: points[index].0, y: points[index].1), index: index)
-            elementFacades.append(elementFacade)
-            spinnerShape.addChild(elementFacade.shape)
-        }
-    }
-    
-    override func update(_ currentTime: CFTimeInterval) {
-        if touching {
-            let dt: CGFloat = 1.0 / 10.0
-            let spritePosition = calculateRotatedGlobalPosition()
-            let distance = CGVector(dx: touchPoint.x - spritePosition.x, dy: touchPoint.y - spritePosition.y)
-            let velocity = CGVector(dx: distance.dx / dt, dy: distance.dy / dt)
-            sprite.physicsBody?.pinned = false
-            sprite.physicsBody?.velocity = velocity
-        }
-        let allOut = elementFacades
-            .reduce(true, { current, node in (current && !intersects(node.shape)) })
-        if allOut && restart {
-            model.answeredCount = 4
-            restart = false
-            newRoundOrEndGame(matches: false)
-        }
-    }
-    
-    private func calculateRotatedGlobalPosition() -> CGPoint {
-        let rotatedLocalPosition = sprite.position.toRotatedPosition(rotationInRadians: spinnerShape!.zRotation)
-        return rotatedLocalPosition + spinnerShape!.position
+    private func playAnswerSound(matches: Bool) {
+        run(matches ? soundCorrect : soundIncorrect)
     }
     
 }
