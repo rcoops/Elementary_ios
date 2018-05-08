@@ -10,7 +10,6 @@ import Foundation
 import UIKit
 
 extension UIColor {
-    // adapted https://gist.github.com/arshad/de147c42d7b3063ef7bc
     convenience init(_ hex: String) {
         // get each element RGB as string
         let redStr = hex.substring(to: 2)
@@ -25,6 +24,11 @@ extension UIColor {
         // make colour
         self.init(red: CGFloat(r) / 255.0, green: CGFloat(g) / 255.0, blue: CGFloat(b) / 255.0, alpha: 1.0)
     }
+    
+    static func createTranslucent(red: CGFloat, green: CGFloat, blue: CGFloat) -> UIColor {
+        return UIColor(red: red, green: green, blue: blue, alpha: 0.75)
+    }
+    
 }
 
 // Get round weird requirement for 'index' to be provided rather than just an int
@@ -51,6 +55,9 @@ extension CGFloat {
     func toRadians() -> CGFloat {
         return self * CGFloat(Double.pi) / 180
     }
+    func toDegrees() -> CGFloat {
+        return self * 180 / CGFloat(Double.pi)
+    }
 }
 
 extension CGPoint {
@@ -59,12 +66,6 @@ extension CGPoint {
     }
     static func - (lhs: CGPoint, rhs: CGPoint) -> CGPoint {
         return CGPoint(x: lhs.x - rhs.x, y: lhs.y - rhs.y)
-    }
-}
-
-extension UIColor {
-    static func createTranslucent(red: CGFloat, green: CGFloat, blue: CGFloat) -> UIColor {
-        return UIColor(red: red, green: green, blue: blue, alpha: 0.75)
     }
 }
 

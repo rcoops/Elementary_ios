@@ -36,12 +36,3 @@ class QuizQuestion {
     }
     
 }
-
-/*
- public let fullName : String
- public let atomicNumber : Int
- public let atomicMass : Int
- public let naturalState : State
- public let bondingType : BondingType
- public let group : Group
- */

@@ -23,25 +23,25 @@ class AppModel {
         readFile()
     }
     
-    open func isGameOverOnDeductLife() -> Bool {
+    func isGameOverOnDeductLife() -> Bool {
         currentPlayer?.lives -= 1
         return currentPlayer?.lives ?? 0 == 0
     }
     
-    open func initQuizQuestion() -> QuizQuestion {
+    func initQuizQuestion() -> QuizQuestion {
         quizQuestion = QuizQuestion()
         return quizQuestion!
     }
     
-    open func initPlayer(name: String, avatarName: String) {
+    func initPlayer(name: String, avatarName: String) {
         currentPlayer = Player(name, avatarName)
     }
     
-    open func adjustPlayerScore(scoreAdjustment: Int) {
+    func adjustPlayerScore(scoreAdjustment: Int) {
         currentPlayer?.adjustScore(scoreAdjustment)
     }
     
-    open func newScore() {
+    func newScore() {
         let scoresFull = highScores.count > 9
         if (isHighScore(currentPlayer) || !scoresFull) {
             if scoresFull {
@@ -55,11 +55,11 @@ class AppModel {
         writeToFile()
     }
     
-    open func isHighScore(_ player: Player?) -> Bool {
+    func isHighScore(_ player: Player?) -> Bool {
         return player?.score ?? -1 > (highScores.last?.score ?? -1)
     }
     
-    open func writeToFile() {
+    func writeToFile() {
         var fileUrl = Bundle.main.path(forResource: scoresFileName, ofType: scoresFileExtension)!
         
         let outStr = highScores.map { $0.toCsvString() }.joined(separator: "\n")

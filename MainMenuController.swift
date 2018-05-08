@@ -25,9 +25,9 @@ class MainMenuController : UIViewController, UIPickerViewDataSource, UIPickerVie
     var musicPlaying = false
     
     override func viewDidLoad() {
+        super.viewDidLoad()
         UserDefaults.standard.addObserver(self, forKeyPath: "volume", options: .new, context: nil)
         UserDefaults.standard.addObserver(self, forKeyPath: "musicToggle", options: .new, context: nil)
-        super.viewDidLoad()
         self.navigationController?.interactivePopGestureRecognizer?.addTarget(self, action:#selector(self.handlePopGesture))
         initSound()
         handlePopGesture()
@@ -94,8 +94,6 @@ class MainMenuController : UIViewController, UIPickerViewDataSource, UIPickerVie
         return avatarNames.count
     }
     
-    // MARK: UIPickerViewDelegate
-    
     func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
         
         let myView = UIView(frame: CGRect(origin: CGPoint(x: 0, y: 0), size: CGSize(width: pickerView.bounds.width - 30, height: 60)))
@@ -110,7 +108,6 @@ class MainMenuController : UIViewController, UIPickerViewDataSource, UIPickerVie
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         selectedAvatarName = avatarNames[row]
-        // do something with selected row
     }
     
     @IBAction func newGameAction(_ sender: Any) {
