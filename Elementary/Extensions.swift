@@ -67,6 +67,30 @@ extension CGPoint {
     static func - (lhs: CGPoint, rhs: CGPoint) -> CGPoint {
         return CGPoint(x: lhs.x - rhs.x, y: lhs.y - rhs.y)
     }
+    
+    /*
+     calc displacement around an axis
+     https://www.youtube.com/watch?v=LhL59Ipehms
+     https://math.stackexchange.com/questions/156833/how-to-find-a-point-after-rotation
+     positive angle (counter-clockwise)
+     x' = y*sin(a) + x*cos(a)
+     y' = y*cos(a) - x*sin(a)
+     negative angle (clockwise)
+     x' = x*cos(a) - y*sin(a)
+     y' = y*cos(a) + x*sin(a)
+     */
+    func toRotatedPosition(rotationInRadians: CGFloat) -> CGPoint {
+        if rotationInRadians >= 0 {
+            let spritePositionX = self.y * sin(rotationInRadians) + self.x * cos(rotationInRadians)
+            let spritePositionY = self.y * cos(rotationInRadians) - self.x * sin(rotationInRadians)
+            return CGPoint(x: spritePositionX, y: spritePositionY)
+
+        } else {
+            let spritePositionX = self.x * cos(rotationInRadians) - self.y * sin(rotationInRadians)
+            let spritePositionY = self.y * cos(rotationInRadians) + self.x * sin(rotationInRadians)
+            return CGPoint(x: spritePositionX, y: spritePositionY)
+        }
+    }
 }
 
 extension UIViewController {

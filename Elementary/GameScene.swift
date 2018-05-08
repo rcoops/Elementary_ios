@@ -322,32 +322,10 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
             newRoundOrEndGame(matches: false)
         }
     }
-
     
-    /*
-     calc displacement around an axis
-     https://www.youtube.com/watch?v=LhL59Ipehms
-     https://math.stackexchange.com/questions/156833/how-to-find-a-point-after-rotation
-     positive angle (counter-clockwise)
-     x' = y*sin(a) + x*cos(a)
-     y' = y*cos(a) - x*sin(a)
-     negative angle (clockwise)
-     x' = x*cos(a) - y*sin(a)
-     y' = y*cos(a) + x*sin(a)
-     */
     private func calculateRotatedGlobalPosition() -> CGPoint {
-        let rotation = spinnerShape!.zRotation
-        if rotation >= 0 {
-            let spritePositionX = sprite.position.y * sin(rotation) + sprite.position.x * cos(rotation)
-            let spritePositionY = sprite.position.y * cos(rotation) - sprite.position.x * sin(rotation)
-            let rotatedLocal = CGPoint(x: spritePositionX, y: spritePositionY)
-            return rotatedLocal + spinnerShape!.position
-        } else {
-            let spritePositionX = sprite.position.x * cos(rotation) - sprite.position.y * sin(rotation)
-            let spritePositionY = sprite.position.y * cos(rotation) + sprite.position.x * sin(rotation)
-            let rotatedLocal = CGPoint(x: spritePositionX, y: spritePositionY)
-            return rotatedLocal + spinnerShape!.position
-        }
+        let rotatedLocalPosition = sprite.position.toRotatedPosition(rotationInRadians: spinnerShape!.zRotation)
+        return rotatedLocalPosition + spinnerShape!.position
     }
     
 }
