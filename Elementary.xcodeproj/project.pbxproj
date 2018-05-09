@@ -149,7 +149,6 @@
 				A2D71BF82098C65A00DFECF7 /* Scene */,
 				A2F52FFD209788F200C01FFF /* Controller */,
 				A2F52FF820977B2C00C01FFF /* Model */,
-				1D02D85F2083CF29001F7BAF /* Constants */,
 				1D02D8312083CB50001F7BAF /* AppDelegate.swift */,
 				1D02D8352083CB50001F7BAF /* Main.storyboard */,
 				1D02D8382083CB50001F7BAF /* Assets.xcassets */,
@@ -232,6 +231,7 @@
 		A2F52FF820977B2C00C01FFF /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				1D02D85F2083CF29001F7BAF /* Constants */,
 				A2F52FF92097871500C01FFF /* Player.swift */,
 				A2F52FFB2097884200C01FFF /* AppModel.swift */,
 				A2C491D12099DF7B0000A122 /* QuizQuestion.swift */,
