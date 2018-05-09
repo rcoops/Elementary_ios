@@ -53,15 +53,15 @@ class UserDefaultsObservingController: UIViewController {
     
     internal func toggleMusic() {
         if UserDefaults.standard.bool(forKey: "musicToggle") {
-            MusicPlayer.musicPlayer.audioPlayer?.play()
+            MusicPlayer.musicPlayer.play()
         } else {
-            MusicPlayer.musicPlayer.audioPlayer?.pause()
+            MusicPlayer.musicPlayer.pause()
         }
     }
     
     internal func setVolume() {
         let volume = UserDefaults.standard.float(forKey: "volume")
-        MusicPlayer.musicPlayer.audioPlayer?.setVolume(volume, fadeDuration: 0.2)
+        MusicPlayer.musicPlayer.setVolume(volume, fadeDuration: 0.2)
     }
     
 }

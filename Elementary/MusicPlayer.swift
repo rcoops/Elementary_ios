@@ -12,7 +12,8 @@ import AVFoundation
 class MusicPlayer {
     
     static let musicPlayer = MusicPlayer()
-    var audioPlayer: AVAudioPlayer?
+    
+    private var audioPlayer: AVAudioPlayer?
     
     func playBackgroundMusic(url: URL) {
         if audioPlayer != nil {
@@ -28,6 +29,18 @@ class MusicPlayer {
             print("Cannot play the file")
             print(error)
         }
+    }
+    
+    func play() {
+        audioPlayer?.play()
+    }
+    
+    func pause() {
+        audioPlayer?.pause()
+    }
+    
+    func setVolume(_ volume: Float, fadeDuration: TimeInterval) {
+        audioPlayer?.setVolume(volume, fadeDuration: fadeDuration)
     }
     
 }
