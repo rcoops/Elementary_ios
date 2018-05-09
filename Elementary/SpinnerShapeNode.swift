@@ -12,15 +12,15 @@ import UIKit
 
 class SpinnerShapeNode: SKShapeNode {
     
-    let spinnerColour = UIColor(red: 255.0, green: 255.0, blue: 255.0, alpha: 0.5)
+    private static let spinnerColour = UIColor(red: 255.0, green: 255.0, blue: 255.0, alpha: 0.5)
 
     init(circleOfRadius radius: CGFloat, position: CGPoint, name: String) {
         super.init()
         self.path = CGPath(ellipseIn: CGRect(origin: .zero, size: CGSize(width: radius, height: radius)), transform: nil)
         self.position = CGPoint(x: frame.midX, y: frame.midY - 50)
-        self.strokeColor = spinnerColour
+        self.strokeColor = SpinnerShapeNode.spinnerColour
         self.glowWidth = 1.0
-        self.fillColor = spinnerColour
+        self.fillColor = SpinnerShapeNode.spinnerColour
         self.name = name
         self.physicsBody = SKPhysicsBody(circleOfRadius: radius)
         self.physicsBody?.pinned = true
@@ -32,7 +32,7 @@ class SpinnerShapeNode: SKShapeNode {
         middle.fillColor = UIColor.createTranslucent(red: 0, green: 50, blue: 255)
         middle.glowWidth = 0.6
         middle.zPosition = 0.5
-        middle.strokeColor = spinnerColour
+        middle.strokeColor = SpinnerShapeNode.spinnerColour
         middle.physicsBody = SKPhysicsBody(circleOfRadius: 40)
         middle.physicsBody!.pinned = true
         middle.physicsBody?.affectedByGravity = false

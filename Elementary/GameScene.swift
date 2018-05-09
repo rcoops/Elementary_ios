@@ -130,7 +130,7 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
         let right = AnswerFacade(answer: answers[3], size: CGSize(width: frame.height - 126, height: 30), position: CGPoint(x: frame.maxX - 15, y: frame.midY - 32), rotationDegrees: -90)
         answerFacades = [left, right, top, bottom]
         for facade in answerFacades {
-            addChild(facade.container)
+            addChild(facade.getNode())
         }
     }
     
@@ -139,7 +139,7 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
             let startingPosition = CGPoint(x: elementStartingPoints[index].0, y: elementStartingPoints[index].1)
             let elementFacade = ElementFacade(element: element, startingPosition: startingPosition, index: index)
             elementFacades.append(elementFacade)
-            spinnerShape.addChild(elementFacade.shape)
+            spinnerShape.addChild(elementFacade.getNode())
         }
     }
     
@@ -208,7 +208,7 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
             sprite.physicsBody?.velocity = velocity
         }
         let allOut = elementFacades
-            .reduce(true, { current, node in (current && !intersects(node.shape)) })
+            .reduce(true, { current, node in (current && !intersects(node.getNode())) })
         if allOut && restart {
             model.answeredCount = 4
             restart = false
@@ -234,7 +234,7 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
         let answerFacade = getFacade(nodeA: bodyA?.node, nodeB: bodyB?.node, facades: answerFacades)
         let elementFacade = getFacade(nodeA: bodyA?.node, nodeB: bodyB?.node, facades: elementFacades)
         let isCorrect = Element.Property.hasMatchingPropertyValue(for: elementFacade.element, and: answerFacade.answer.property, matches: answerFacade.answer.value)
-        performActionsOnAnswer(isCorrect: isCorrect, answerBox: answerFacade.container)
+        performActionsOnAnswer(isCorrect: isCorrect, answerBox: answerFacade.getNode())
     }
     
     private func performActionsOnAnswer(isCorrect: Bool, answerBox: SKShapeNode) {

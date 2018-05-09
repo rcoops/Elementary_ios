@@ -13,23 +13,23 @@ class AnswerFacade : SKNodeFacade {
     
     private let label = SKLabelNode()
     private static let backgroundColour = UIColor.createTranslucent(red: 255, green: 255, blue: 255)
-    let answer: Answer
+    private let shape: SKShapeNode
     
-    let container: SKShapeNode
+    let answer: Answer
     
     init(answer: Answer, size: CGSize, position: CGPoint, rotationDegrees: CGFloat = 0) {
         self.answer = answer
-        container = SKShapeNode(rectOf: size)
-        container.fillColor = AnswerFacade.backgroundColour
-        container.strokeColor = AnswerFacade.backgroundColour
+        shape = SKShapeNode(rectOf: size)
+        shape.fillColor = AnswerFacade.backgroundColour
+        shape.strokeColor = AnswerFacade.backgroundColour
         initLabel(answer)
-        container.position = position
-        container.zRotation = rotationDegrees.toRadians()
-        setRecanglularPhysicsBody(for: container, rotated: rotationDegrees != 0)
+        shape.position = position
+        shape.zRotation = rotationDegrees.toRadians()
+        setRecanglularPhysicsBody(for: shape, rotated: rotationDegrees != 0)
     }
     
     func getNode() -> SKShapeNode {
-        return container
+        return shape
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -40,8 +40,8 @@ class AnswerFacade : SKNodeFacade {
         label.fontSize = 20
         label.text = "\(answer.property): \(answer.value)"
         label.fontColor = SKColor.black
-        label.position = CGPoint(x: container.frame.midX, y: container.frame.midY - label.frame.midY)
-        container.addChild(label)
+        label.position = CGPoint(x: shape.frame.midX, y: shape.frame.midY - label.frame.midY)
+        shape.addChild(label)
     }
     
     private func setRecanglularPhysicsBody(for node: SKNode, rotated: Bool = false) {

@@ -10,14 +10,16 @@ import Foundation
 import SpriteKit
 
 class ElementFacade : SKNodeFacade {
+    
     let element: Element
-    let shape: SKShapeNode
+    
+    private let shape: SKShapeNode
+    private let name = SKLabelNode(fontNamed: "Chalkduster")
     
     init(element: Element, startingPosition: CGPoint, index: Int) {
         self.element = element
         shape = SKShapeNode(circleOfRadius: 20)
         shape.fillColor = UIColor(element.hexColourCode)
-        let name = SKLabelNode(fontNamed: "Chalkduster")
         name.text = element.chemicalSymbol
         name.fontSize = 20
         name.position = CGPoint(x: shape.frame.midX, y: shape.frame.midY - 6)
@@ -41,11 +43,8 @@ class ElementFacade : SKNodeFacade {
         return shape
     }
     
-    func getElement() -> Element {
-        return element
-    }
-    
     // https://stackoverflow.com/questions/2509443/check-if-uicolor-is-dark-or-bright
+    // Colour text so you can see it
     private func getTextColour(colour: UIColor) -> UIColor {
         let components = colour.cgColor.components!.map { $0 * 255 }
         let brightness = (components[0] * 299 + components[1] * 587 + components[2] * 114) / 1000
