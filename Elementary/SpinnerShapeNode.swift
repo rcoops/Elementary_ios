@@ -13,6 +13,7 @@ import UIKit
 class SpinnerShapeNode: SKShapeNode {
     
     private static let spinnerColour = UIColor(red: 255.0, green: 255.0, blue: 255.0, alpha: 0.5)
+    private let middle = SKShapeNode(circleOfRadius: 40)
 
     init(circleOfRadius radius: CGFloat, position: CGPoint, name: String) {
         super.init()
@@ -28,10 +29,9 @@ class SpinnerShapeNode: SKShapeNode {
         self.physicsBody?.categoryBitMask = GameScene.worldCategory
         self.physicsBody?.collisionBitMask = GameScene.worldCategory
         self.physicsBody?.angularDamping = 0.25
-        let middle = SKShapeNode(circleOfRadius: 40)
         middle.fillColor = UIColor.createTranslucent(red: 0, green: 50, blue: 255)
         middle.glowWidth = 0.6
-        middle.zPosition = 0.5
+        middle.zPosition = 0.5 // Bit further forward
         middle.strokeColor = SpinnerShapeNode.spinnerColour
         middle.physicsBody = SKPhysicsBody(circleOfRadius: 40)
         middle.physicsBody!.pinned = true
