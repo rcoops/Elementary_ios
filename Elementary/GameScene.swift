@@ -12,33 +12,34 @@ import UIKit
 
 class GameScene : SKScene, SKPhysicsContactDelegate {
     
-    var gameManager: GameManager?
+    private var gameManager: GameManager?
+    private let model = (UIApplication.shared.delegate as! AppDelegate).appModel
     
-    var sprite: SKNode!
-    var touchPoint: CGPoint = CGPoint()
-    var touching: Bool = false
-    var restart = true
+    private var touchPoint: CGPoint = CGPoint()
+    private let elementStartingPoints = [(-75, 0), (-52, 52), (0, 75), (52, 52), (75, 0), (52, -52), (0, -75), (-52, -52)]
     
-    let lives = SKLabelNode(fontNamed: "AvenirNext-Bold")
-    let score = SKLabelNode(fontNamed: "AvenirNext-Bold")
-    let model = (UIApplication.shared.delegate as! AppDelegate).appModel
-    let points = [(-75, 0), (-52, 52), (0, 75), (52, 52), (75, 0), (52, -52), (0, -75), (-52, -52)]
-    var spinnerShape: SKShapeNode?
-    var startingAngle: CGFloat? = 0
-    var startingTime: TimeInterval? = 0
-    var answerFacades = [AnswerFacade]()
-    var elementFacades = [ElementFacade]()
+    private var startingAngle: CGFloat? = 0
+    private var startingTime: TimeInterval? = 0
+    private var touching: Bool = false
+    private var restart = true
+    
+    private let arrow = SKSpriteNode(imageNamed: "arrow-2.png")
+    private let lives = SKLabelNode(fontNamed: "AvenirNext-Bold")
+    private let score = SKLabelNode(fontNamed: "AvenirNext-Bold")
+    private var spinnerShape: SKShapeNode?
+    private var sprite: SKNode!
+    
+    private var answerFacades = [AnswerFacade]()
+    private var elementFacades = [ElementFacade]()
     
     static let elementCategory: UInt32 = 0x1 << 1;
     static let answerCategory: UInt32 = 0x1 << 2;
-    let spinnerMiddleCategory: UInt32 = 0x1 << 3;
-    let worldCategory: UInt32 = 0x1 << 4;
-    let fallingCategory: UInt32 = 0x1 << 5;
+    static let worldCategory: UInt32 = 0x1 << 4;
+    private let fallingCategory: UInt32 = 0x1 << 5;
     
-    let soundCorrect = SKAction.playSoundFileNamed("positive.wav", waitForCompletion: false)
-    let soundIncorrect = SKAction.playSoundFileNamed("negative.wav", waitForCompletion: false)
-    let soundGameOver = SKAction.playSoundFileNamed("game_over.wav", waitForCompletion: false)
-    let arrow = SKSpriteNode(imageNamed: "arrow-2.png")
+    private let soundCorrect = SKAction.playSoundFileNamed("positive.wav", waitForCompletion: false)
+    private let soundIncorrect = SKAction.playSoundFileNamed("negative.wav", waitForCompletion: false)
+    private let soundGameOver = SKAction.playSoundFileNamed("game_over.wav", waitForCompletion: false)
     
     override func didMove(to view: SKView) {
         initQuizRound()
@@ -55,50 +56,28 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
     }
     
     private func initElementSpinner(elements: [Element]){
-        let spinnerColour = UIColor(red: 255.0, green: 255.0, blue: 255.0, alpha: 0.5)
-        let spinnerShape = SKShapeNode(circleOfRadius: 120)
-        self.spinnerShape = spinnerShape
-        spinnerShape.position = CGPoint(x: frame.midX, y: frame.midY - 50)
-        spinnerShape.strokeColor = spinnerColour
-        spinnerShape.glowWidth = 1.0
-        spinnerShape.fillColor = spinnerColour
-        spinnerShape.name = "spinner"
-        spinnerShape.physicsBody = SKPhysicsBody(circleOfRadius: 120)
-        spinnerShape.physicsBody?.pinned = true
-        spinnerShape.physicsBody?.affectedByGravity = false
-        spinnerShape.physicsBody?.categoryBitMask = worldCategory
-        spinnerShape.physicsBody?.collisionBitMask = worldCategory
-        spinnerShape.physicsBody?.angularDamping = 0.25
-        let middle = SKShapeNode(circleOfRadius: 40)
-        middle.fillColor = UIColor.createTranslucent(red: 0, green: 50, blue: 255)
-        middle.glowWidth = 0.6
-        middle.zPosition = 0.5
-        middle.strokeColor = spinnerColour
-        middle.physicsBody = SKPhysicsBody(circleOfRadius: 40)
-        middle.physicsBody!.pinned = true
-        middle.physicsBody?.affectedByGravity = false
-        middle.physicsBody?.categoryBitMask = GameScene.elementCategory
-        middle.physicsBody?.collisionBitMask = GameScene.elementCategory
-        spinnerShape.addChild(middle)
-        addChild(spinnerShape)
-        initElements(spinnerShape, elements)
+        spinnerShape = SpinnerShapeNode(circleOfRadius: 120, position: CGPoint(x: frame.midX, y: frame.midY - 50), name: "spinner")
+        addChild(spinnerShape!)
+        initElements(spinnerShape!, elements)
     }
     
     private func initInstructions() {
         arrow.alpha = 0.6
         addChild(arrow)
+        // curve round spinner
         let arrowPath = UIBezierPath(arcCenter: spinnerShape!.position, radius: 140, startAngle: CGFloat(345).toRadians(), endAngle: CGFloat(-15).toRadians(), clockwise: false)
         arrowPath.move(to: spinnerShape!.position)
         let rotate = SKAction.rotate(byAngle: CGFloat(90).toRadians(), duration: 0)
         let arc = SKAction.follow(arrowPath.cgPath, speed: 600)
-        
-        let rotate2 = SKAction.rotate(byAngle: (arrow.zRotation - 180).toRadians(), duration: 0)
+        let rotate2 = SKAction.rotate(byAngle: -arrow.zRotation, duration: 0)
         let teleport2 = SKAction.move(to: CGPoint(x: frame.midX, y: frame.midY + 60), duration: 0)
         let line = SKAction.move(to: CGPoint(x: frame.midX, y: frame.maxY + 80), duration: 1)
         let teleport = SKAction.move(to: CGPoint(x: 0, y: 0), duration: 0)
         arrow.run(SKAction.repeatForever(SKAction.sequence([rotate, arc, rotate2, teleport2, line, teleport])))
+        // Remove arrow child asynchronously after 6 seconds (async so screen wont pause)
         let action: ((UIAlertAction) -> Swift.Void) = { _ in
-            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(4), execute: {
+            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(6), execute: {
+                self.arrow.removeAllActions()
                 self.removeChildren(in: [self.arrow])
             })
         }
@@ -157,7 +136,8 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
     
     func initElements(_ spinnerShape: SKShapeNode, _ elements: [Element]) {
         for (index, element) in elements.enumerated() {
-            let elementFacade = ElementFacade(element: element, startingPosition: CGPoint(x: points[index].0, y: points[index].1), index: index)
+            let startingPosition = CGPoint(x: elementStartingPoints[index].0, y: elementStartingPoints[index].1)
+            let elementFacade = ElementFacade(element: element, startingPosition: startingPosition, index: index)
             elementFacades.append(elementFacade)
             spinnerShape.addChild(elementFacade.shape)
         }
@@ -232,7 +212,7 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
         if allOut && restart {
             model.answeredCount = 4
             restart = false
-            newRoundOrEndGame(matches: false)
+            newRoundOrEndGame(isCorrect: false)
         }
     }
     
@@ -250,39 +230,50 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
     }
     
     private func resolveAnswer(bodyA: SKPhysicsBody?, bodyB: SKPhysicsBody?) {
-        [bodyA, bodyB].forEach({ setNodeToFall(physicsBody: $0) })
-        model.answeredCount += 1
+        [bodyA, bodyB].forEach({ setFalling(physicsBody: $0) })
         let answerFacade = getFacade(nodeA: bodyA?.node, nodeB: bodyB?.node, facades: answerFacades)
         let elementFacade = getFacade(nodeA: bodyA?.node, nodeB: bodyB?.node, facades: elementFacades)
-        let matches = Element.Property.hasMatchingPropertyValue(for: elementFacade.element, and: answerFacade.answer.property, matches: answerFacade.answer.value)
-        playAnswerSound(matches: matches)
-        let redGreen: (CGFloat, CGFloat) = matches ? (0, 255) : (255, 0)
-        answerFacade.container.fillColor = UIColor.createTranslucent(red: redGreen.0, green: redGreen.1, blue: 0)
-        newRoundOrEndGame(matches: matches)
+        let isCorrect = Element.Property.hasMatchingPropertyValue(for: elementFacade.element, and: answerFacade.answer.property, matches: answerFacade.answer.value)
+        performActionsOnAnswer(isCorrect: isCorrect, answerBox: answerFacade.container)
     }
     
-    private func newRoundOrEndGame(matches: Bool) {
-        if matches {
-            model.correctAnswerCount += 1
-            model.currentPlayer!.adjustScore(model.correctAnswerCount * 10)
+    private func performActionsOnAnswer(isCorrect: Bool, answerBox: SKShapeNode) {
+        playAnswerSound(isCorrect: isCorrect)
+        colourInHitAnswerBox(isCorrect: isCorrect, answerBox: answerBox)
+        newRoundOrEndGame(isCorrect: isCorrect)
+    }
+    
+    private func colourInHitAnswerBox(isCorrect: Bool, answerBox: SKShapeNode) {
+        let redGreen: (CGFloat, CGFloat) = isCorrect ? (0, 255) : (255, 0)
+        answerBox.fillColor = UIColor.createTranslucent(red: redGreen.0, green: redGreen.1, blue: 0)
+    }
+    
+    private func newRoundOrEndGame(isCorrect: Bool) {
+        model.answeredCount += 1
+        if isCorrect {
+            model.actionOnCorrectAnswer()
         } else if model.isGameOverOnDeductLife() {
             endGame()
         }
         if model.answeredCount == 4 {
-            let goodScore = model.correctAnswerCount > 2
-            let messagePrefix = goodScore ? "Well done!" : "Uh Oh,"
-            gameManager?.showPopup(title: "Round End", message: "\(messagePrefix) You got \(goodScore ? "" : "only ")\(String(model.correctAnswerCount)) answers correct", nil)
-            initQuizRound()
+            endRound()
         } else {
-            var title = "Wrong!"
-            var message = "No points =/"
-            if matches {
-                title = "Correct!"
-                message = "Have another \(String(model.correctAnswerCount * 10)) points!"
-            }
-            gameManager?.showPopup(title: title, message: message, nil)
-            updateHud()
+            continueRound(isCorrect: isCorrect)
         }
+    }
+    
+    private func continueRound(isCorrect: Bool) {
+        let title = isCorrect ? "Correct!" : "Wrong!"
+        let message = isCorrect ? "Have another \(String(model.correctAnswerCount * 10)) points!" : "No points =/"
+        gameManager?.showPopup(title: title, message: message, nil)
+        updateHud()
+    }
+    
+    private func endRound() {
+        let goodScore = model.isGoodScore()
+        let messagePrefix = goodScore ? "Well done!" : "Uh Oh,"
+        gameManager?.showPopup(title: "Round End", message: "\(messagePrefix) You got \(goodScore ? "" : "only ")\(String(model.correctAnswerCount)) answers correct", nil)
+        initQuizRound()
     }
     
     private func endGame() {
@@ -291,7 +282,7 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
         gameManager?.endGame()
     }
     
-    private func setNodeToFall(physicsBody: SKPhysicsBody?) {
+    private func setFalling(physicsBody: SKPhysicsBody?) {
         physicsBody?.categoryBitMask = fallingCategory
         physicsBody?.contactTestBitMask = fallingCategory
         physicsBody?.collisionBitMask = fallingCategory
@@ -319,8 +310,8 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
         score.text = String(model.currentPlayer!.score)
     }
     
-    private func playAnswerSound(matches: Bool) {
-        run(matches ? soundCorrect : soundIncorrect)
+    private func playAnswerSound(isCorrect: Bool) {
+        run(isCorrect ? soundCorrect : soundIncorrect)
     }
     
 }

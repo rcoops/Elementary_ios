@@ -10,25 +10,19 @@ import Foundation
 import UIKit
 import AVFoundation
 
-class MainMenuController : UIViewController, UIPickerViewDataSource, UIPickerViewDelegate {
-    
-    let appDelegate = UIApplication.shared.delegate as! AppDelegate
-    let avatarNames = (1...7).map { "av_\(String($0))" }
-    var selectedAvatarName = ""
+class MainMenuController : UserDefaultsObservingController, UIPickerViewDataSource, UIPickerViewDelegate {
+    private let avatarNames = (1...7).map { "av_\(String($0))" }
+    private var selectedAvatarName = ""
     
     @IBOutlet weak var avatarPicker: UIPickerView!
     
     @IBOutlet weak var txtPlayerName: UITextField!
     
-    let clickSound = URL(fileURLWithPath: Bundle.main.path(forResource: "click", ofType: "wav")!)
-    var soundPlayer: AVAudioPlayer?
-    var musicPlaying = false
+    private let clickSound = URL(fileURLWithPath: Bundle.main.path(forResource: "click", ofType: "wav")!)
+    private var soundPlayer: AVAudioPlayer?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        UserDefaults.standard.addObserver(self, forKeyPath: "volume", options: .new, context: nil)
-        UserDefaults.standard.addObserver(self, forKeyPath: "musicToggle", options: .new, context: nil)
-        self.navigationController?.interactivePopGestureRecognizer?.addTarget(self, action:#selector(self.handlePopGesture))
         initSound()
         handlePopGesture()
         setBackground(#imageLiteral(resourceName: "main_background"))
@@ -36,41 +30,9 @@ class MainMenuController : UIViewController, UIPickerViewDataSource, UIPickerVie
         txtPlayerName.becomeFirstResponder()
     }
     
-    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
-        if let keyPath = keyPath {
-            switch keyPath {
-            case "volume":
-                setVolume()
-                break
-            case "musicToggle":
-                toggleMusic()
-                break
-            default:
-                break
-            }
-        }
-    }
     
-    @objc private func handlePopGesture() {
-        if !musicPlaying {
-            setVolume()
-            MusicPlayer.musicPlayer.playBackgroundMusic(url: URL(fileURLWithPath: Bundle.main.path(forResource: "music_menu", ofType: "mp3")!))
-            toggleMusic()
-            musicPlaying = true
-        }
-    }
-    
-    private func toggleMusic() {
-        if UserDefaults.standard.bool(forKey: "musicToggle") {
-            MusicPlayer.musicPlayer.audioPlayer?.play()
-        } else {
-            MusicPlayer.musicPlayer.audioPlayer?.pause()
-        }
-    }
-    
-    private func setVolume() {
-        let volume = UserDefaults.standard.float(forKey: "volume")
-        MusicPlayer.musicPlayer.audioPlayer?.setVolume(volume, fadeDuration: 0.2)
+    override internal func getMusicFileName() -> String {
+        return "music_menu"
     }
     
     private func initSound() {

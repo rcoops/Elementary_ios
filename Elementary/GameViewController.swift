@@ -10,18 +10,11 @@ import Foundation
 import UIKit
 import SpriteKit
 
-class GameViewController : UIViewController, GameManager {
-    
-    let model = (UIApplication.shared.delegate as! AppDelegate).appModel
-    
-    var musicPlaying = false
+class GameViewController : UserDefaultsObservingController, GameManager {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        UserDefaults.standard.addObserver(self, forKeyPath: "volume", options: .new, context: nil)
-        UserDefaults.standard.addObserver(self, forKeyPath: "musicToggle", options: .new, context: nil)
         setVolume()
-        self.navigationController?.interactivePopGestureRecognizer?.addTarget(self, action:#selector(self.handlePopGesture))
         handlePopGesture()
         let scene = GameScene(size: view.bounds.size)
         scene.setGameManager(self)
@@ -30,47 +23,14 @@ class GameViewController : UIViewController, GameManager {
         skView.presentScene(scene)
     }
     
-    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
-        if let keyPath = keyPath {
-            switch keyPath {
-            case "volume":
-                setVolume()
-                break
-            case "musicToggle":
-                toggleMusic()
-                break
-            default:
-                break
-            }
-        }
-    }
-    
-    private func setVolume() {
-        let volume = UserDefaults.standard.float(forKey: "volume")
-        MusicPlayer.musicPlayer.audioPlayer?.setVolume(volume, fadeDuration: 0.2)
-    }
-    
-    private func toggleMusic() {
-        if UserDefaults.standard.bool(forKey: "musicToggle") {
-            MusicPlayer.musicPlayer.audioPlayer?.play()
-        } else {
-            MusicPlayer.musicPlayer.audioPlayer?.pause()
-        }
-    }
-    
-    @objc private func handlePopGesture() {
-        if !musicPlaying {
-            setVolume()
-            MusicPlayer.musicPlayer.playBackgroundMusic(url: URL(fileURLWithPath: Bundle.main.path(forResource: "music_game", ofType: "mp3")!))
-            toggleMusic()
-            musicPlaying = true
-        }
+    override internal func getMusicFileName() -> String {
+        return "music_game"
     }
     
     func endGame() {
         musicPlaying = false
         let action: ((UIAlertAction) -> Swift.Void) = { _ in self.performSegue(withIdentifier: "home", sender: self) }
-        showPopup(title: "Game Over", message: "Uh oh! You're out of lives, your score is \(model.currentPlayer!.score)", action)
+        showPopup(title: "Game Over", message: "Uh oh! You're out of lives, your score is \(appDelegate.appModel.currentPlayer!.score)", action)
     }
     
     func showPopup(title: String, message: String, _ action: ((UIAlertAction) -> Swift.Void)? = nil) {

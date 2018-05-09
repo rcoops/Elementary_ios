@@ -23,6 +23,15 @@ class AppModel {
         readFile()
     }
     
+    func isGoodScore() -> Bool {
+        return correctAnswerCount > 2
+    }
+    
+    func actionOnCorrectAnswer() {
+        correctAnswerCount += 1
+        currentPlayer!.adjustScore(correctAnswerCount * 10)
+    }
+    
     func isGameOverOnDeductLife() -> Bool {
         currentPlayer?.lives -= 1
         return currentPlayer?.lives ?? 0 == 0
@@ -55,11 +64,11 @@ class AppModel {
         writeToFile()
     }
     
-    func isHighScore(_ player: Player?) -> Bool {
+    private func isHighScore(_ player: Player?) -> Bool {
         return player?.score ?? -1 > (highScores.last?.score ?? -1)
     }
     
-    func writeToFile() {
+    private func writeToFile() {
         var fileUrl = Bundle.main.path(forResource: scoresFileName, ofType: scoresFileExtension)!
         
         let outStr = highScores.map { $0.toCsvString() }.joined(separator: "\n")

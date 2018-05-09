@@ -11,16 +11,15 @@ import UIKit
 
 class HighScoresController : UITableViewController {
     
-    let cellIdentifier = "scoreIdentifier"
+    private let cellIdentifier = "scoreIdentifier"
     
-    let model = (UIApplication.shared.delegate as! AppDelegate).appModel
+    private let model = (UIApplication.shared.delegate as! AppDelegate).appModel
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setBackground(#imageLiteral(resourceName: "game_background"))
         self.tableView.reloadData()
     }
-    let appDelegate = UIApplication.shared.delegate as! AppDelegate
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return model.highScores.count
