@@ -27,7 +27,12 @@ class AppModel {
         return correctAnswerCount > 2
     }
     
-    func actionOnCorrectAnswer() {
+    func resetAnswerCount() {
+        answeredCount = 0
+        correctAnswerCount = 0
+    }
+    
+    func onCorrectAnswer() {
         correctAnswerCount += 1
         currentPlayer!.adjustScore(correctAnswerCount * 10)
     }

@@ -36,7 +36,7 @@ class AnswerFacade : SKNodeFacade {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func initLabel(_ answer: Answer) {
+    private func initLabel(_ answer: Answer) {
         label.fontSize = 20
         label.text = "\(answer.property): \(answer.value)"
         label.fontColor = SKColor.black

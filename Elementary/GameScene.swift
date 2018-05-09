@@ -95,8 +95,7 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
     }
     
     private func initQuizRound() {
-        model.answeredCount = 0
-        model.correctAnswerCount = 0
+        model.resetAnswerCount()
         removeAllChildren()
         initBackground()
         let quizQuestion = model.initQuizQuestion()
@@ -134,7 +133,7 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
         }
     }
     
-    func initElements(_ spinnerShape: SKShapeNode, _ elements: [Element]) {
+    private func initElements(_ spinnerShape: SKShapeNode, _ elements: [Element]) {
         for (index, element) in elements.enumerated() {
             let startingPosition = CGPoint(x: elementStartingPoints[index].0, y: elementStartingPoints[index].1)
             let elementFacade = ElementFacade(element: element, startingPosition: startingPosition, index: index)
@@ -212,7 +211,7 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
         if allOut && restart {
             model.answeredCount = 4
             restart = false
-            newRoundOrEndGame(isCorrect: false)
+            updateModel(isCorrect: false)
         }
     }
     
@@ -240,7 +239,7 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
     private func performActionsOnAnswer(isCorrect: Bool, answerBox: SKShapeNode) {
         playAnswerSound(isCorrect: isCorrect)
         colourInHitAnswerBox(isCorrect: isCorrect, answerBox: answerBox)
-        newRoundOrEndGame(isCorrect: isCorrect)
+        updateModel(isCorrect: isCorrect)
     }
     
     private func colourInHitAnswerBox(isCorrect: Bool, answerBox: SKShapeNode) {
@@ -248,10 +247,10 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
         answerBox.fillColor = UIColor.createTranslucent(red: redGreen.0, green: redGreen.1, blue: 0)
     }
     
-    private func newRoundOrEndGame(isCorrect: Bool) {
+    private func updateModel(isCorrect: Bool) {
         model.answeredCount += 1
         if isCorrect {
-            model.actionOnCorrectAnswer()
+            model.onCorrectAnswer()
         } else if model.isGameOverOnDeductLife() {
             endGame()
         }
