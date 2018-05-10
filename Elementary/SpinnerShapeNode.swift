@@ -25,6 +25,7 @@ class SpinnerShapeNode: SKShapeNode {
         self.fillColor = SpinnerShapeNode.spinnerColour
         self.name = name
         initPhysicsBody()
+        initCentre()
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -46,7 +47,7 @@ class SpinnerShapeNode: SKShapeNode {
         centre.zPosition = 0.5 // Bit further forward
         centre.strokeColor = SpinnerShapeNode.spinnerColour
         centre.physicsBody = SKPhysicsBody(circleOfRadius: 40)
-        centre.physicsBody!.pinned = true
+        centre.physicsBody?.pinned = true
         centre.physicsBody?.affectedByGravity = false
         centre.physicsBody?.categoryBitMask = GameScene.elementCategory
         centre.physicsBody?.collisionBitMask = GameScene.elementCategory
