@@ -26,7 +26,7 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
     private let arrow = SKSpriteNode(imageNamed: "arrow-2.png")
     private let lives = SKLabelNode(fontNamed: "AvenirNext-Bold")
     private let score = SKLabelNode(fontNamed: "AvenirNext-Bold")
-    private var spinnerShape: SKShapeNode?
+    private var spinnerShape: SpinnerShapeNode?
     private var sprite: SKNode!
     
     private var answerFacades = [AnswerFacade]()
@@ -232,7 +232,7 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
         [bodyA, bodyB].forEach({ setFalling(physicsBody: $0) })
         let answerFacade = getFacade(nodeA: bodyA?.node, nodeB: bodyB?.node, facades: answerFacades)
         let elementFacade = getFacade(nodeA: bodyA?.node, nodeB: bodyB?.node, facades: elementFacades)
-        let isCorrect = Element.Property.hasMatchingPropertyValue(for: elementFacade.element, and: answerFacade.answer.property, matches: answerFacade.answer.value)
+        let isCorrect = Element.Property.hasMatchingPropertyValue(property: answerFacade.answer.property, ofElement: elementFacade.element, hasValue: answerFacade.answer.value)
         performActionsOnAnswer(isCorrect: isCorrect, answerBox: answerFacade.getNode())
     }
     

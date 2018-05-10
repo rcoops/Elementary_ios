@@ -255,8 +255,8 @@ struct Element : Equatable, Hashable {
             return all().first(where: { $0.label == propertyLabel })!
         }
         
-        public static func hasMatchingPropertyValue(for element: Element, and propertyLabel: String, matches expectedValue: String) -> Bool {
-            let actualPropertyValue = getValue(for: propertyLabel, from: element)
+        public static func hasMatchingPropertyValue(property: String, ofElement element: Element, hasValue expectedValue: String) -> Bool {
+            let actualPropertyValue = getValue(for: property, from: element)
             return actualPropertyValue == expectedValue
         }
         
