@@ -41,7 +41,6 @@ class UserDefaultsObservingController: UIViewController {
         preconditionFailure("this method is abstract and must be overridden")
     }
     
-    
     @objc internal func handlePopGesture() {
         if !musicPlaying {
             setVolume()

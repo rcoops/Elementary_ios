@@ -61,6 +61,7 @@ extension CGFloat {
 }
 
 extension CGPoint {
+    
     static func + (lhs: CGPoint, rhs: CGPoint) -> CGPoint {
         return CGPoint(x: lhs.x + rhs.x, y: lhs.y + rhs.y)
     }
@@ -84,13 +85,13 @@ extension CGPoint {
             let spritePositionX = self.y * sin(rotationInRadians) + self.x * cos(rotationInRadians)
             let spritePositionY = self.y * cos(rotationInRadians) - self.x * sin(rotationInRadians)
             return CGPoint(x: spritePositionX, y: spritePositionY)
-
         } else {
             let spritePositionX = self.x * cos(rotationInRadians) - self.y * sin(rotationInRadians)
             let spritePositionY = self.y * cos(rotationInRadians) + self.x * sin(rotationInRadians)
             return CGPoint(x: spritePositionX, y: spritePositionY)
         }
     }
+    
 }
 
 extension UIViewController {

@@ -62,6 +62,9 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
     }
     
     private func initInstructions() {
+        func reverseRotation(_ rotation: CGFloat) -> CGFloat {
+            return rotation > 0 ? -rotation : rotation
+        }
         arrow.alpha = 0.6
         addChild(arrow)
         // curve round spinner
@@ -69,7 +72,7 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
         arrowPath.move(to: spinnerShape!.position)
         let rotate = SKAction.rotate(byAngle: CGFloat(90).toRadians(), duration: 0)
         let arc = SKAction.follow(arrowPath.cgPath, speed: 600)
-        let rotate2 = SKAction.rotate(byAngle: -arrow.zRotation, duration: 0)
+        let rotate2 = SKAction.rotate(byAngle: reverseRotation(arrow.zRotation), duration: 0)
         let teleport2 = SKAction.move(to: CGPoint(x: frame.midX, y: frame.midY + 60), duration: 0)
         let line = SKAction.move(to: CGPoint(x: frame.midX, y: frame.maxY + 80), duration: 1)
         let teleport = SKAction.move(to: CGPoint(x: 0, y: 0), duration: 0)
@@ -232,7 +235,7 @@ class GameScene : SKScene, SKPhysicsContactDelegate {
         [bodyA, bodyB].forEach({ setFalling(physicsBody: $0) })
         let answerFacade = getFacade(nodeA: bodyA?.node, nodeB: bodyB?.node, facades: answerFacades)
         let elementFacade = getFacade(nodeA: bodyA?.node, nodeB: bodyB?.node, facades: elementFacades)
-        let isCorrect = Element.Property.hasMatchingPropertyValue(property: answerFacade.answer.property, ofElement: elementFacade.element, hasValue: answerFacade.answer.value)
+        let isCorrect = Element.Property.isMatching(property: answerFacade.answer.property, ofElement: elementFacade.element, hasValue: answerFacade.answer.value)
         performActionsOnAnswer(isCorrect: isCorrect, answerBox: answerFacade.getNode())
     }
     

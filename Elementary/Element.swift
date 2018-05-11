@@ -130,10 +130,11 @@ struct Element : Equatable, Hashable {
     public static let BK    = Element("Bk", "Berkelium",    97, 247, "8A4FE3", State.SOLID,  BondingType.METALLIC,         Group.ACTINOID)
     public static let CF    = Element("Cf", "Californium",  98, 251, "A136D4", State.SOLID,  BondingType.METALLIC,         Group.ACTINOID);
     
-    public static let all = [H, HE, LI, BE, B, C, N, O, F, NE, NA, MG, AL, SI, P, S, CL, AR, K, CA, SC, TI, V, CR, MN, FE, CO, NI, CU, ZN, GA, GE, AS, SE, BR, KR, RB, SR, Y, ZR, NB, MO, TC, RU, RH, PD, AG, CD, IN, SN, SB, TE, I, XE, CS, BA, LA, CE, PR, ND, PM, SM, EU, GD, TB, DY, HO, ER, TM, YB, LU, HF, TA, W, RE, OS, IR, PT, AU, HG, TL, PB, BI, PO, AT, RN, FR, RA, AC, TH, PA, U, NP, PU, AM, CM, BK, CF]
+    public static let all = Set([H, HE, LI, BE, B, C, N, O, F, NE, NA, MG, AL, SI, P, S, CL, AR, K, CA, SC, TI, V, CR, MN, FE, CO, NI, CU, ZN, GA, GE, AS, SE, BR, KR, RB, SR, Y, ZR, NB, MO, TC, RU, RH, PD, AG, CD, IN, SN, SB, TE, I, XE, CS, BA, LA, CE, PR, ND, PM, SM, EU, GD, TB, DY, HO, ER, TM, YB, LU, HF, TA, W, RE, OS, IR, PT, AU, HG, TL, PB, BI, PO, AT, RN, FR, RA, AC, TH, PA, U, NP, PU, AM, CM, BK, CF])
     
     
     public static func getRandomEight() -> [Element] {
+        let all = Array(Element.all)
         var chosen = Set<Int>()
         while (chosen.count < 8) {
             chosen.insert(Int(arc4random_uniform(UInt32(Element.all.count))))
@@ -148,8 +149,14 @@ struct Element : Equatable, Hashable {
     }
     
     static func == (lhs: Element, rhs: Element) -> Bool {
-        // all should be unique but just to be sure check symbol AND name
-        return lhs.chemicalSymbol == rhs.chemicalSymbol && lhs.fullName == rhs.fullName
+        return lhs.chemicalSymbol == rhs.chemicalSymbol
+            && lhs.fullName == rhs.fullName
+            && lhs.atomicMass == rhs.atomicMass
+            && lhs.atomicNumber == rhs.atomicNumber
+            && lhs.hexColourCode == rhs.hexColourCode
+            && lhs.naturalState == rhs.naturalState
+            && lhs.bondingType == rhs.bondingType
+            && lhs.group == rhs.group
     }
     
     struct State : Equatable, Hashable {
@@ -255,7 +262,7 @@ struct Element : Equatable, Hashable {
             return all().first(where: { $0.label == propertyLabel })!
         }
         
-        public static func hasMatchingPropertyValue(property: String, ofElement element: Element, hasValue expectedValue: String) -> Bool {
+        public static func isMatching(property: String, ofElement element: Element, hasValue expectedValue: String) -> Bool {
             let actualPropertyValue = getValue(for: property, from: element)
             return actualPropertyValue == expectedValue
         }
