@@ -48,24 +48,22 @@ class MainMenuController : UserDefaultsObservingController, UIPickerViewDataSour
         return 1
     }
     
-    func pickerView(_ pickerView: UIPickerView, rowHeightForComponent component: Int) -> CGFloat {
-        return 60
-    }
-    
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         return avatarNames.count
     }
     
+    func pickerView(_ pickerView: UIPickerView, rowHeightForComponent component: Int) -> CGFloat {
+        return 60
+    }
+    
     func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
+        let frame = UIView(frame: CGRect(origin: .zero, size: CGSize(width: pickerView.bounds.width - 30, height: 60)))
+        let imageView = UIImageView(frame: CGRect(origin: CGPoint(x: frame.center.x - 25, y: 0), size: CGSize(width: 50, height: 50)))
         
-        let myView = UIView(frame: CGRect(origin: CGPoint(x: 0, y: 0), size: CGSize(width: pickerView.bounds.width - 30, height: 60)))
+        imageView.image = UIImage(named: avatarNames[row])
+        frame.addSubview(imageView)
         
-        let myImageView = UIImageView(frame: CGRect(origin: CGPoint(x: myView.center.x - 25, y: 0), size: CGSize(width: 50, height: 50)))
-        
-        myImageView.image = UIImage(named: avatarNames[row])
-        myView.addSubview(myImageView)
-        
-        return myView
+        return frame
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
